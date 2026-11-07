@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Join the Market · Almond Tree Market</title>
+<meta name="description" content="Become a vendor at Almond Tree Market, Marsh Harbour. 8 covered slots, $25 a day with a table and chair. For Abaco growers, crafters, bakers and makers. Register in two minutes.">
+<meta property="og:title" content="Join the Market · Almond Tree Market">
+<meta property="og:description" content="Become a vendor at Almond Tree Market, Marsh Harbour. 8 covered slots, $25 a day with a table and chair. For Abaco growers, crafters, bakers and makers. Register in two minutes.">
+<meta property="og:image" content="https://almondtreemarket.com/img/hero.jpg">
+<meta property="og:url" content="https://almondtreemarket.com/join.html">
+<meta name="theme-color" content="#06120c">
+<link rel="canonical" href="https://almondtreemarket.com/join.html">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css?v=35">
+</head>
+<body data-page="join">
+<div id="site-top"></div>
+<main id="main">
+<section class="hero page-hero">
+  <img src="/img/IMG_0166.jpg" alt="Market tables dressed in blue cloths ready for shoppers" fetchpriority="high">
+  <div class="wrap">
+    <div class="chips"><span>Vendor registration open</span><span>$25 a day</span><span>8 slots</span></div>
+    <h1>Grow it? Bake it? Plait it? Sell it here.</h1>
+    <p class="lead">Book a covered slot at Almond Tree Market for $25 a Saturday, table and chair included. Takes two minutes.</p>
+    <div class="cta"><a class="btn primary" href="#register">Register now</a><a class="btn ghost" href="#faq">Questions</a></div>
+  </div>
+</section>
+<section>
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">How it works</span><h2>Sign-up to selling in four steps</h2></div>
+    <div class="steps">
+      <div class="step"><b>Register</b><p>Fill in the form below. It sends straight to us on WhatsApp, or email if you prefer.</p></div>
+      <div class="step"><b>We confirm</b><p>We reply within a day with your slot number and date.</p></div>
+      <div class="step"><b>Pay to hold it</b><p>$25 per slot per day, cash or bank transfer. Your slot is held once paid.</p></div>
+      <div class="step"><b>Show up and sell</b><p>Arrive from 6 a.m. Your table and chair are waiting, and your slot goes up on the website.</p></div>
+    </div>
+  </div>
+</section>
+<section class="alt">
+  <div class="wrap split">
+    <div class="price-card">
+      <span class="eyebrow m">One price · no contract</span>
+      <div class="big"><span data-price>$25</span><br><small>per slot · per day</small></div>
+      <ul id="includes"></ul>
+      <p style="margin-top:1rem;font-weight:300">Need more room? Book two slots side by side.</p>
+    </div>
+    <div>
+      <span class="eyebrow">Market day</span>
+      <h2 style="margin:.9rem 0 1.2rem">Saturday schedule</h2>
+      <ol class="timeline" id="timeline"></ol>
+      <p class="muted" style="margin-top:1rem">Special markets have their own times on the <a href="/events.html">events calendar</a>.</p>
+    </div>
+  </div>
+</section>
+<section>
+  <div class="wrap split" style="align-items:start">
+    <div>
+      <span class="eyebrow m">Bring</span>
+      <h2 style="margin:.9rem 0 1rem">What to bring</h2>
+      <ul class="ticks">
+        <li>Your goods, priced and ready</li>
+        <li>A tablecloth and a sign with your name</li>
+        <li>Small bills and coins for change</li>
+        <li>Bags or boxes for customers</li>
+        <li>A cooler and ice for drinks, souse or seafood</li>
+      </ul>
+    </div>
+    <div>
+      <span class="eyebrow">House rules</span>
+      <h2 style="margin:.9rem 0 1rem">Keeping it native</h2>
+      <ul class="ticks">
+        <li>Sell what you grow, make, bake or cook here in Abaco</li>
+        <li>Hot food: check with us first, so we don't compete with the restaurants next door</li>
+        <li>Set up by 7 a.m., stay until noon</li>
+        <li>Leave your slot clean</li>
+        <li>Can't make it? Tell us by Thursday</li>
+      </ul>
+    </div>
+  </div>
+</section>
+<section class="alt" id="register">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="eyebrow">Vendor registration</span>
+      <h2>Reserve your slot</h2>
+      <p class="lead">Fill this in and tap Send. WhatsApp opens with everything typed out; just press send. Nothing is charged until we confirm.</p>
+    </div>
+    <form class="form" id="reg-form" novalidate>
+      <div class="row">
+        <label>Your name<input name="name" autocomplete="name" required></label>
+        <label>Business or stall name <small>(optional)</small><input name="business" autocomplete="organization"></label>
+      </div>
+      <div class="row">
+        <label>Phone / WhatsApp<input name="phone" type="tel" autocomplete="tel" required inputmode="tel"></label>
+        <label>Email <small>(optional)</small><input name="email" type="email" autocomplete="email"></label>
+      </div>
+      <div class="row">
+        <label>Category<select name="cat" id="reg-cat"></select></label>
+        <label>Which slot?<select name="slot" id="reg-slot"></select></label>
+      </div>
+      <label>What will you sell?<textarea name="sell" rows="2" required placeholder="e.g. Straw bags and hats, pepper sauce, soursop trees, guava duff"></textarea></label>
+      <fieldset><legend>Which dates?</legend><div class="checks" id="reg-dates"></div></fieldset>
+      <fieldset><legend>Extras</legend>
+        <div class="checks">
+          <label><input type="checkbox" name="local" value="1"> Made or grown in Abaco</label>
+          <label><input type="checkbox" name="tent" value="1"> I'll bring my own tent</label>
+          <label><input type="checkbox" name="power" value="1"> I need power</label>
+        </div>
+        <label style="margin-top:.9rem;max-width:300px">How many slots?<select name="count"><option>1 slot</option><option>2 slots (side by side)</option></select></label>
+      </fieldset>
+      <label>Anything else? <small>(optional)</small><textarea name="notes" rows="2"></textarea></label>
+      <p class="err" id="reg-err" role="alert"></p>
+      <div class="send">
+        <button class="btn wa" type="submit"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Z"/></svg> Send on WhatsApp</button>
+        <button class="btn ghost" type="button" id="reg-mail">Send by email instead</button>
+      </div>
+      <p class="note">Goes to Almond Tree Market · (242) 809-5667 · underthealmondtree242@gmail.com</p>
+    </form>
+  </div>
+</section>
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head"><span class="eyebrow">Questions</span><h2>Frequently asked</h2></div>
+    <div class="faq">
+      <details><summary>How much is a slot?</summary><p>$25 per slot per day: a covered spot under the market roof, one table and one chair. No contract, no monthly fee.</p></details>
+      <details><summary>When is the market?</summary><p>Every Saturday, 7:00 a.m. to 12:00 noon. Vendors set up from 6:00 a.m. Special markets are on the events calendar.</p></details>
+      <details><summary>Who can sell?</summary><p>Abaco growers and makers: produce, plants and fruit trees, straw work and crafts, candles and soaps, sauces and preserves, small food items, desserts, and fundraisers.</p></details>
+      <details><summary>Do I have to come every week?</summary><p>No. Book one Saturday, a few, or ask to be a regular and keep the same slot every week.</p></details>
+      <details><summary>How do I pay?</summary><p>Cash or bank transfer once we confirm. Your slot is held as soon as it's paid.</p></details>
+      <details><summary>What if it rains?</summary><p>The slots are under the market roof, so light rain is fine. If we have to cancel for weather, we'll message every booked vendor and your day moves to the next Saturday.</p></details>
+      <details><summary>Can I hold a fundraiser?</summary><p>Yes. See the <a href="/community.html">fundraisers page</a> and send us a request.</p></details>
+      <details><summary>Will my slot be on the website?</summary><p>Yes. Every vendor gets their slot on <a href="/slots.html">The Eight</a> with a photo, what they sell and how to reach them.</p></details>
+    </div>
+  </div>
+</section>
+<section class="alt">
+  <div class="wrap split" style="align-items:start">
+    <div>
+      <span class="eyebrow">Still wondering?</span>
+      <h2 style="margin:.9rem 0 1.1rem">Ask us anything.</h2>
+      <p class="lead">Joining, slots, dates. We answer on WhatsApp.</p>
+    </div>
+    <form class="form" id="q-form">
+      <label>Your name <small>(optional)</small><input name="name" autocomplete="name"></label>
+      <label>Your question<textarea name="q" rows="4" required></textarea></label>
+      <div class="send"><button class="btn wa" type="submit">Ask on WhatsApp</button></div>
+    </form>
+  </div>
+</section>
+</main>
+<footer id="site-foot"></footer>
+<script src="/js/data.js?v=35"></script>
+<script src="/js/app.js?v=35"></script>
+</body>
+</html>

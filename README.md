@@ -1,0 +1,55 @@
+# Almond Tree Market website (almondtreemarket.com)
+
+A plain static website: HTML, CSS and a little JavaScript. No database, no build step, no monthly fee. Sister site to underthealmondtree.market, in the same modern style as bahamasreefworks.com (dark, Syne headlines, mono labels), with a jungle-green, mango and hibiscus island palette and a sugar-apple logo.
+
+## Pages
+
+| File | What it is |
+| --- | --- |
+| `index.html` | Home: coming-soon stripe, countdown, **"Hungry? Check out next door."** (links to the food vendors on underthealmondtree.market), the 8 slots, what sells here, nursery, fundraisers, Christmas, next market days, the 10 × 7 Shop with a floor plan, photos, map |
+| `slots.html` | **The Eight**: one big panel per slot with photo, story, tags and contact |
+| `nursery.html` | **Plant shop**: 28 plants in small cards (7 across), search, categories, sort. Customers tap Reserve, pick any open day (Monday to Saturday), get a pickup code + QR code, and send the reservation to you on WhatsApp. They pay at pickup. A preview window of 4 plants sits at the top of the home page |
+| `events.html` | Month calendar and list, "Add to calendar", "Book a slot" |
+| `community.html` | Medical fundraisers, souse-outs, cook-outs and bake sales, with a request form |
+| `join.html` | How to join, price, schedule, rules, **registration form**, FAQ, questions |
+| `js/data.js` | **The only file you need to edit** |
+
+## When someone takes a slot
+
+Open `js/data.js`, find `window.SLOTS`, and change that slot from `status: "open"` to `"taken"`, filling in `name`, `what`, `blurb`, `tags`, `days`, `contact` (WhatsApp digits) and `instagram`. Put their photo in `img/` (about 1400 px wide) and set `img: "img/slot3.jpg"`. With no photo the slot shows a drawing (`art:` soursop, sugarapple, citrus, mango, coconut, pineapple, strawbag, candle, jar, cake, pot, heart, gift).
+
+Or just tell Claude: "Slot 4 is taken by Ms. Rolle, straw bags, here's her photo."
+
+## Other changes (all in `js/data.js`)
+
+- **Plants for sale:** `window.PLANTS`. Each has `price`, `size`, `stock` (`"in"`, `"low"`, `"pre"` pre-order, `"out"` sold out), a short description and care notes. Add a square photo with `img`. `featured: true` puts it in the home-page window. **The prices and stock are starting guesses; set your real ones.**
+- **Pickup days and hours:** `nursery` in `js/data.js`. `openDays` sets which days customers can choose (Monday to Saturday now). Fill in `hours` (e.g. "8am to 5pm") to show them.
+- **At pickup:** the customer shows a QR code. Scan it with your phone camera to see their code, name, plants and total. The same details arrive in your WhatsApp when they reserve.
+- **Events:** `window.EVENTS` is empty for now, so the calendar is blank. Add an event there (there is an example in the file) or tell Claude. To fill every Saturday into the calendar automatically, set `weekly.onCalendar: true`. The Join form always offers the next 12 Saturdays.
+- **Coming-soon stripe:** `stripe`. Set `comingSoon: false` to switch it to next-market messages.
+- **"Hungry?" link:** `nextDoor`.
+- **Price, schedule, includes:** `price`, `schedule`, `includes`.
+
+After changing `css/style.css` or `js/app.js`, change `?v=10` to `?v=11` in the HTML files so phones load the new version.
+
+## Forms
+
+Registration, fundraiser requests and questions all open WhatsApp to (242) 809-5667 with the message typed out. Nothing is stored on the website.
+
+## Going live
+
+See [DEPLOY.md](DEPLOY.md).
+
+## Check before launch
+
+- [ ] Wally is happy to be in Slot 2. Swap in a real photo.
+- [ ] Slot 1 is the Plant Collective. Change it if not.
+- [ ] Plant list and "potting up" status match what you'll really have.
+- [ ] Christmas Market hours (7 a.m. to 1 p.m.) and the Dec 23 pop-up (marked "to be confirmed").
+- [ ] Rules, the Thursday cancellation rule and 6 a.m. set-up are general wording.
+
+## Plant photos
+
+- `img/plants/` holds example photos that are **public domain or CC0**, so no credit is needed anywhere on the site. Plants without one show their cartoon drawing instead.
+- To use your own photo, save it in `img/plants/` (square, about 560 px) and set that plant's `img:` in `js/data.js`.
+- Over a photo, the mouse pointer turns into that plant's cartoon fruit (its `art:`). On phones the cartoon shows as a little badge in the corner.

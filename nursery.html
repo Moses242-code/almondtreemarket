@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Native Nursery · Shop plants online · Almond Tree Market</title>
+<meta name="description" content="Shop native Bahamian plants and fruit trees online: soursop, sugar apple, key lime, lignum vitae, seagrape, thatch palm and bush medicine herbs. Reserve online, get a QR code, and pick up any day Monday to Saturday in Marsh Harbour.">
+<meta property="og:title" content="Native Nursery · Shop plants online · Almond Tree Market">
+<meta property="og:description" content="Shop native Bahamian plants and fruit trees online: soursop, sugar apple, key lime, lignum vitae, seagrape, thatch palm and bush medicine herbs. Reserve online, get a QR code, and pick up any day Monday to Saturday in Marsh Harbour.">
+<meta property="og:image" content="https://almondtreemarket.com/img/hero.jpg">
+<meta property="og:url" content="https://almondtreemarket.com/nursery.html">
+<meta name="theme-color" content="#06120c">
+<link rel="canonical" href="https://almondtreemarket.com/nursery.html">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css?v=5">
+</head>
+<body data-page="nursery">
+<div id="site-top"></div>
+<main id="main">
+<section class="shop-hero">
+  <div class="wrap">
+    <div class="chips"><span>Native nursery</span><span>Reserve online</span><span>Pick up Mon–Sat</span><span>Pay at pickup</span></div>
+    <h1>Plant something that belongs here.</h1>
+    <p class="lead">Island fruit trees, native Bahamian plants and bush medicine, grown in Abaco. Tap <b>Reserve</b>, get a QR code, and collect your plants any day we&#39;re open: <b>Monday to Saturday</b> (closed Sunday).</p>
+    <ol class="how">
+      <li><b>01</b><span>Tap Reserve on the plants you want</span></li>
+      <li><b>02</b><span>Pick a pickup day and get your QR code</span></li>
+      <li><b>03</b><span>Come in Mon–Sat, scan, pay and take them home</span></li>
+    </ol>
+  </div>
+</section>
+
+<section class="shop" aria-label="Plants for sale">
+  <div class="wrap">
+    <div class="toolbar">
+      <label class="search"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="shop-q" type="search" placeholder="Search soursop, palm, aloe…" aria-label="Search plants"></label>
+      <label class="sel">Sort<select id="shop-sort"><option value="featured">Featured</option><option value="low">Price: low to high</option><option value="high">Price: high to low</option><option value="az">Name A–Z</option></select></label>
+      <label class="tog"><input id="shop-instock" type="checkbox"> In stock only</label>
+      <span class="count" id="shop-count"></span>
+    </div>
+    <div class="shop-cats" id="shop-cats" role="group" aria-label="Plant categories"></div>
+    <div class="shop-grid" id="shop-grid"></div>
+    <p class="muted shop-note">Prices are per plant, in Bahamian dollars. Stock changes every week; pre-order plants are growing on now and we'll message you when they're ready. Want something not listed? <a data-wa="Hi! I'm looking for a plant that isn't on your nursery page:" href="#">Ask us</a>.</p>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap split">
+    <div>
+      <span class="eyebrow m">Why native</span>
+      <h2 style="margin:.9rem 0 1.1rem">Built for Abaco.</h2>
+      <ul class="ticks">
+        <li>Native plants handle salt spray, drought and hurricane wind far better than imports</li>
+        <li>They feed our birds, butterflies and bees</li>
+        <li>Fruit trees put food in the yard for years</li>
+        <li>Less water, less fertiliser, less fuss</li>
+      </ul>
+    </div>
+    <figure class="photo"><img src="/img/2025-01-12_779B2A.jpg" alt="Potted fruit trees and plants under the almond tree" loading="lazy"><figcaption>Plants under the almond tree</figcaption></figure>
+  </div>
+</section>
+
+<dialog id="plant-dialog" aria-label="Plant details"></dialog>
+<button class="basket-fab" id="basket-fab" hidden aria-label="Open your plant basket"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 10h14l-1.5 10h-11Z"/><path d="M9 10V7a3 3 0 0 1 6 0v3"/></svg><span><b id="basket-n">0</b> <span id="basket-w">plants</span> · <b id="basket-t">$0</b></span><em>Reserve</em></button>
+<aside class="basket" id="basket" aria-hidden="true" aria-label="Your plant basket"><div class="bpanel"></div></aside>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</main>
+<footer id="site-foot"></footer>
+<script src="/js/data.js?v=35"></script>
+<script src="/js/shop.js?v=35"></script>
+<script src="/js/app.js?v=35"></script>
+</body>
+</html>
