@@ -1,5 +1,11 @@
 # Putting almondtreemarket.com online with GitHub Pages (free)
 
+**Live since 7 Nov 2026** at <https://almondtreemarket.com>, from the GitHub repository `Moses242-code/almondtreemarket` (branch `main`, root folder). GoDaddy DNS: four A records for `@` (185.199.108.153, .109.153, .110.153, .111.153) and `www` CNAME to `moses242-code.github.io`.
+
+**To update the live site:** change files in this folder (or ask Claude), then in this folder run `git add -A && git commit -m "Update" && git push`. It is live about a minute later. The push uses the deploy key `~/.ssh/almondtreemarket_deploy` (set up only for this repository; remove it any time under the repository Settings > Deploy keys).
+
+The steps below are kept for reference.
+
 About 20 minutes, plus up to a few hours for the domain to switch over. Nothing here touches underthealmondtree.market.
 
 > Note: underthealmondtree.market and pos.underthealmondtree.market are on **Cloudflare Pages**, not GitHub. This site works on either. If you'd rather keep everything in one place, the Cloudflare steps are at the bottom.
