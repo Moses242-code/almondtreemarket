@@ -318,7 +318,7 @@ var COMPASS = (function () {
     tree.classList.remove("gust", "drop"); void tree.getBoundingClientRect();
     tree.classList.add("gust"); if (drop) tree.classList.add("drop");
     setTimeout(function () { tree.classList.remove("gust"); if (!drop) busy = false; }, 1650);
-    if (drop) setTimeout(function () { tree.classList.remove("drop"); busy = false; }, 4250);
+    if (drop) setTimeout(function () { tree.classList.remove("drop"); busy = false; }, 6050);
   });
 })();
   if (window.ATM_SHOP) window.ATM_SHOP();
