@@ -15,7 +15,7 @@
 <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/style.css?v=39">
+<link rel="stylesheet" href="/css/style.css?v=40">
 </head>
 <body data-page="index">
 <div id="site-top"></div>
@@ -38,9 +38,9 @@
 </g>
 </g>
 <g class="wind" fill="none" stroke="#dff7e8" stroke-linecap="round" stroke-width="2"><path d="M-30 52 q22 -6 44 0 t40 0"/><path d="M-50 104 q20 -5 40 0 t36 0"/><path d="M-20 150 q18 -5 36 0"/></g>
-<clipPath id="atm-ground"><rect x="-200" y="-200" width="700" height="446"/></clipPath>
-  <ellipse class="shade-hole" cx="105" cy="244" rx="15" ry="3.2" fill="#000"/>
-  <g clip-path="url(#atm-ground)"><g class="shade"><g class="shade-body" fill="#020705" stroke="rgba(107,229,156,.45)" stroke-width="1.2" stroke-linejoin="round">
+<filter id="atm-blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2"/></filter><clipPath id="atm-ground"><rect x="-200" y="-200" width="700" height="446"/></clipPath>
+  <ellipse class="shade-hole" cx="105" cy="244" rx="15" ry="3.2" fill="#000" filter="url(#atm-blur)"/>
+  <g clip-path="url(#atm-ground)"><g class="shade"><g class="shade-body" fill="#000" opacity=".72" filter="url(#atm-blur)">
     <g class="leg leg-a"><path d="M97 219 L98 244 L104 244 L106 222Z"/></g>
     <g class="leg leg-b"><path d="M104 222 L106 244 L112 244 L113 219Z"/></g>
     <path d="M97 196 L92 218 L96 219 L100 199Z"/>
@@ -161,8 +161,8 @@
 </section>
 </main>
 <footer id="site-foot"></footer>
-<script src="/js/data.js?v=39"></script>
-<script src="/js/shop.js?v=39"></script>
-<script src="/js/app.js?v=39"></script>
+<script src="/js/data.js?v=40"></script>
+<script src="/js/shop.js?v=40"></script>
+<script src="/js/app.js?v=40"></script>
 </body>
 </html>
