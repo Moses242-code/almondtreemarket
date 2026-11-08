@@ -315,10 +315,11 @@ var COMPASS = (function () {
   place();
   if (mq.addEventListener) mq.addEventListener("change", place); else mq.addListener(place);
 })();
-/* almond leaf: drifts down from the top of the hero to a resting spot.
-   Wide screens: from the top middle to beside "Grown here." (or the last line of the headline).
-   Narrow screens: from the sky at the top to the empty space right of the nursery sign arrow,
-   or across the sky on phones, where there is no room beside the arrow. Point at it or tap it to send it again. */
+/* almond leaf: drifts down from the top of the hero on page load and lands at spot A.
+   Click or tap it and it flutters over to spot B; click again and it flutters back to A, and so on.
+   Wide screens: A beside "Grown here.", B beside "almond tree." (the last headline line).
+   Tablets: A in the empty space right of the nursery sign arrow, B beside the headline if there is room.
+   Phones: A at the top right of the sky, B at the top left. */
 (function () {
   var hero = document.querySelector(".hero"), h1 = document.querySelector(".hero h1");
   if (!hero || !h1 || !document.querySelector("#plant-window")) return;
@@ -326,55 +327,66 @@ var COMPASS = (function () {
   leaf.className = "atm-leaf"; leaf.setAttribute("aria-hidden", "true");
   leaf.innerHTML = '<img src="/img/almond-leaf.png" alt="" width="420" height="182">';
   hero.appendChild(leaf);
-  var still = matchMedia("(prefers-reduced-motion: reduce)").matches, busy = false;
+  var still = matchMedia("(prefers-reduced-motion: reduce)").matches, busy = false, at = 0, P = null;
   var rel = function (r) { var h = hero.getBoundingClientRect(); return { l: r.left - h.left, t: r.top - h.top, r: r.right - h.left, b: r.bottom - h.top, w: r.width, h: r.height }; };
-  /* a spot right beside the end of a headline line ("Grown here." or "almond tree."), if it fits before rightLimit */
-  var h1Spot = function (rightLimit, w, lh) {
-    var spots = [], first = h1.firstChild;
+  /* spots right beside the end of a headline line ("Grown here." and "almond tree.") that fit before rightLimit */
+  var h1Spots = function (rightLimit, w, lh) {
+    var spots = [], out = [], first = h1.firstChild;
     if (first && first.nodeType === 3) { var rg = document.createRange(); rg.selectNodeContents(first); spots.push(rg.getBoundingClientRect()); }
-    var lf = h1.querySelector(".lf"); if (lf) spots.push(lf.getBoundingClientRect());
+    var lf = h1.querySelector(".lf"); if (lf) { var rects = lf.getClientRects(); spots.push(rects[rects.length - 1] || lf.getBoundingClientRect()); }
     var em = h1.querySelector("em"), emR = em ? em.getBoundingClientRect() : null;
     for (var i = 0; i < spots.length; i++) {
       if (i === 0 && emR && Math.abs(emR.top - spots[i].top) < 10) continue; /* "Made" shares the first line */
       var s = rel(spots[i]), gap = Math.max(14, w * .16);
-      if (s.r + gap + w <= rightLimit) return [s.r + gap, s.t + (s.h - lh) / 2];
+      if (s.r + gap + w <= rightLimit) out.push([s.r + gap, s.t + (s.h - lh) / 2]);
     }
-    return null;
+    return out;
   };
   var place = function () {
     var H = rel(hero.getBoundingClientRect()), vw = window.innerWidth, wide = vw > 960;
     var w = wide ? 150 : (vw < 600 ? 92 : 118), lh = w * 182 / 420;
     var head = document.querySelector("header"), top0 = Math.max(16, (head ? rel(head.getBoundingClientRect()).b : 0) + 18);
     var chips = document.querySelector(".hero .chips"), C = chips ? rel(chips.getBoundingClientRect()) : { t: top0 + 200 };
-    var x0, y0, x1, y1;
+    var start, cands = [];
     if (wide) {
-      x0 = H.w / 2 - w / 2; y0 = top0;
-      var T = rel(document.querySelector(".hero-text").getBoundingClientRect()), sp = h1Spot(T.r + 8, w, lh);
-      if (sp) { x1 = sp[0]; y1 = sp[1]; } else { x1 = T.r - w; y1 = C.t - lh - 14; }
+      start = [H.w / 2 - w / 2, top0];
+      var T = rel(document.querySelector(".hero-text").getBoundingClientRect());
+      cands = h1Spots(T.r + 8, w, lh);
+      if (!cands.length) cands.push([T.r - w, C.t - lh - 14]);
     } else {
-      x0 = H.w * .22; y0 = top0;
+      start = [H.w * .22, top0];
       var A = document.querySelector(".hero-side .ns-arrow"), S = document.querySelector(".hero-side");
       var aR = A ? rel(A.getBoundingClientRect()) : null, sR = S ? rel(S.getBoundingClientRect()) : null;
       var room = aR && sR ? Math.min(sR.r, H.w - 12) - aR.r : 0;
-      if (aR && room >= w + 20) { x1 = aR.r + (room - w) / 2; y1 = aR.t + aR.h / 2 - lh / 2; }
-      else { var sp2 = h1Spot(H.w - 12, w, lh); x0 = 16;
-        if (sp2) { x1 = sp2[0]; y1 = sp2[1]; } else { x1 = H.w - w - 16; y1 = Math.max(top0 + 30, C.t - lh - 18); } }
+      if (aR && room >= w + 20) cands.push([aR.r + (room - w) / 2, aR.t + aR.h / 2 - lh / 2]);
+      cands = cands.concat(h1Spots(H.w - 12, w, lh));
+      if (!cands.length) { start = [16, top0]; cands.push([H.w - w - 16, Math.max(top0 + 30, C.t - lh - 18)]); }
     }
+    if (cands.length < 2) cands.push(start); /* only one free spot: the second place is back up where it started */
+    P = { start: start, a: cands[0], b: cands[1] };
     leaf.style.setProperty("--w", w + "px");
     leaf.style.setProperty("--sw", Math.round(wide ? 70 : 40) + "px");
-    leaf.style.setProperty("--x0", Math.round(x0) + "px"); leaf.style.setProperty("--y0", Math.round(y0) + "px");
-    leaf.style.setProperty("--x1", Math.round(x1) + "px"); leaf.style.setProperty("--y1", Math.round(y1) + "px");
+    if (!busy) setTo(at ? P.b : P.a);
   };
-  var drop = function () {
-    if (busy || still) return; busy = true;
+  var px = function (n) { return Math.round(n) + "px"; };
+  var setFrom = function (p) { leaf.style.setProperty("--x0", px(p[0])); leaf.style.setProperty("--y0", px(p[1])); };
+  var setTo = function (p) { leaf.style.setProperty("--x1", px(p[0])); leaf.style.setProperty("--y1", px(p[1])); };
+  var fly = function (from, to, fadeIn) {
+    setFrom(from); setTo(to);
+    leaf.style.setProperty("--o0", fadeIn ? "0" : "1");
+    if (still) return;
+    busy = true;
     leaf.classList.remove("fall"); void leaf.offsetWidth; leaf.classList.add("fall");
     setTimeout(function () { busy = false; }, 7100);
   };
-  var go = function () { place(); leaf.classList.add("ready"); drop(); };
+  var go = function () { place(); leaf.classList.add("ready"); fly(P.start, P.a, true); };
   (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function () { setTimeout(go, 300); });
   var rt; window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(place, 150); });
-  leaf.addEventListener("mouseenter", drop);
-  leaf.addEventListener("touchstart", drop, { passive: true });
+  leaf.addEventListener("click", function () {
+    if (busy || !P) return;
+    var from = at ? P.b : P.a; at = 1 - at;
+    fly(from, at ? P.b : P.a, false);
+  });
 })();
 /* palm hover: a gust each time; the third gust drops a coconut on a passer-by, then it all starts over */
 (function () {

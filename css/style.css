@@ -768,7 +768,7 @@ footer .base .bs-flag { width: 20px; height: 10px; margin: 0 .2em; }
 .atm-leaf.ready img { animation: leaf-rest 4.5s ease-in-out infinite; }
 .atm-leaf.fall img { animation: leaf-flutter 7s ease-in-out both, leaf-rest 4.5s ease-in-out 7s infinite; }
 @keyframes leaf-fall {
-  0% { opacity: 0; transform: translate(var(--x0), var(--y0)); }
+  0% { opacity: var(--o0, 0); transform: translate(var(--x0), var(--y0)); }
   5% { opacity: 1; }
   20% { transform: translate(calc(var(--x0) + (var(--x1) - var(--x0)) * .2 + var(--sw)), calc(var(--y0) + (var(--y1) - var(--y0)) * .14)); }
   40% { transform: translate(calc(var(--x0) + (var(--x1) - var(--x0)) * .4 - var(--sw)), calc(var(--y0) + (var(--y1) - var(--y0)) * .36)); }
