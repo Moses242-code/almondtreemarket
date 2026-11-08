@@ -341,21 +341,29 @@ window.ATM_SHOP = function (cfg) {
   });
 
   /* ---------- basket drawer ---------- */
-  /* pickup days: the next 12 days the shop is open (Monday to Saturday by default), starting tomorrow,
-     since we need up to 24 hours to get an order ready */
+  /* pickup days: the next 12 days the shop is open (Monday to Saturday by default). The nursery starts tomorrow,
+     since it needs up to 24 hours to get an order ready; produce is ready during business hours, so it can start today */
   var fab = $("#basket-fab"), drawer = $("#basket"), dates = [];
   for (var dd = new Date(), guard = 0; dates.length < 12 && guard < 40; guard++) {
-    dd.setDate(dd.getDate() + 1);
+    if (guard > 0 || !cfg.sameDay) dd.setDate(dd.getDate() + 1);
     if (N.openDays.indexOf(dd.getDay()) < 0) continue;
     var dc = new Date(dd.getFullYear(), dd.getMonth(), dd.getDate());
-    dates.push({ d: dc, date: dc.getFullYear() + "-" + (dc.getMonth() + 1) + "-" + dc.getDate() });
+    dates.push({ d: dc, date: dc.getFullYear() + "-" + (dc.getMonth() + 1) + "-" + dc.getDate(), today: cfg.sameDay && guard === 0 });
   }
   /* the pickup fine print: shown in the basket, on the QR confirmation, and in the message we receive */
-  var FINE = '<p class="fine"><b>How pickup works:</b> we need up to 24 hours<sup>*</sup> to get your order ready, and we&#39;ll message you when it is. ' +
-    "Then you have <b>24 hours</b> to collect it with your QR code, or it goes back into stock." +
-    '<span class="fine-star"><sup>*</sup> Sometimes it can take more than 24 hours, depending on where your item is. We will let you know.</span></p>';
-  var FINE_TXT = ["Ready within 24 hours* (we'll message you). Collect within 24 hours of that message or it goes back into stock.",
-    "*Sometimes more than 24 hours, depending on where the item is. We will let you know."];
+  var BH = N.daysText + (N.hours ? ", " + N.hours : "");
+  var FINE = cfg.sameDay
+    ? '<p class="fine"><b>How pickup works:</b> your order is usually ready the same day, during business hours (' + esc(BH) + ')<sup>*</sup>, and we&#39;ll message you when it is. ' +
+      "Then you have <b>24 hours</b> to collect it with your QR code, or it goes back into stock." +
+      '<span class="fine-star fine-xs"><sup>*</sup> If it will take more than 24 hours, we will let you know.</span></p>'
+    : '<p class="fine"><b>How pickup works:</b> we need up to 24 hours<sup>*</sup> to get your order ready, and we&#39;ll message you when it is. ' +
+      "Then you have <b>24 hours</b> to collect it with your QR code, or it goes back into stock." +
+      '<span class="fine-star"><sup>*</sup> Sometimes it can take more than 24 hours, depending on where your item is. We will let you know.</span></p>';
+  var FINE_TXT = cfg.sameDay
+    ? ["Ready during business hours (" + BH + ")* (we'll message you). Collect within 24 hours of that message or it goes back into stock.",
+      "*If it will take more than 24 hours, we will let you know."]
+    : ["Ready within 24 hours* (we'll message you). Collect within 24 hours of that message or it goes back into stock.",
+      "*Sometimes more than 24 hours, depending on where the item is. We will let you know."];
   function pulse() { fab.classList.remove("pulse"); void fab.offsetWidth; fab.classList.add("pulse"); }
   function openDrawer() { drawer.classList.add("open"); drawer.setAttribute("aria-hidden", "false"); document.body.classList.add("lock"); renderDrawer(); refresh(); }
   function closeDrawer() { drawer.classList.remove("open"); drawer.setAttribute("aria-hidden", "true"); document.body.classList.remove("lock"); refresh(); }
@@ -388,7 +396,7 @@ window.ATM_SHOP = function (cfg) {
       '<form class="bform" id="res-form" novalidate><div class="eyebrow">Buy for pickup</div>' +
       '<label>Your name<input name="name" autocomplete="name" required></label>' +
       '<label>Phone / WhatsApp<input name="phone" type="tel" autocomplete="tel" required></label>' +
-      '<label>Pickup day <small>(open ' + esc(N.daysText) + ", " + esc(N.closedText) + ')</small><select name="day">' + dates.map(function (e) { return '<option value="' + e.date + '">' + esc(A.longDate(e.d)) + (N.hours ? " · " + esc(N.hours) : "") + "</option>"; }).join("") + "</select></label>" +
+      '<label>Pickup day <small>(open ' + esc(N.daysText) + ", " + esc(N.closedText) + ')</small><select name="day">' + dates.map(function (e) { return '<option value="' + e.date + '">' + (e.today ? "Today, " : "") + esc(A.longDate(e.d)) + (N.hours ? " · " + esc(N.hours) : "") + "</option>"; }).join("") + "</select></label>" +
       '<label>Notes <small>(optional)</small><input name="notes" placeholder="' + esc(W.notesHint) + '"></label>' +
       '<p class="err" id="res-err" role="alert"></p><button class="btn primary" type="submit">Buy &amp; get my QR code</button>' +
       '<p class="note">No payment online. We hold your ' + esc(W.many) + " and you pay when you pick them up.</p>" + FINE + "</form>";
@@ -481,7 +489,7 @@ window.ATM_SHOP.NURSERY = {
     askHint: "e.g. Is it fruiting yet? Can you deliver to Hope Town?", notesHint: "e.g. I need help loading" }
 };
 window.ATM_SHOP.PRODUCE = {
-  page: "produce", items: function () { return window.PRODUCE; }, cats: function () { return window.PRODUCE_CATS; },
+  page: "produce", sameDay: true, items: function () { return window.PRODUCE; }, cats: function () { return window.PRODUCE_CATS; },
   rpc: "pos_web_produce", feedCache: "atm-pos-produce", basketKey: "atm-basket-produce", lastResKey: "atm-last-res-produce", codePrefix: "ATF", hash: "fruit-",
   defaultSize: "Each", moreCat: "More produce", moreArt: "mango", moreText: "At the market now. Tap Interested for a current photo or more about it.",
   windowSel: "#produce-window", countAttr: "data-produce-count", winEyebrow: "Local produce · now online", winHead: "Buy island fruit online. Pick it up any day,", winGo: "Shop local produce",
