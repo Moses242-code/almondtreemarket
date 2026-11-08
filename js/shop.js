@@ -52,7 +52,7 @@ window.ATM_SHOP = function (cfg) {
     });
     var groups = {}, extras = {}, pics = {};
     rows.forEach(function (r) {
-      if (!r || !r.name) return;
+      if (!r || !r.name || /^\s*test\b/i.test(r.name)) return; /* register test items never show on the site */
       var key = norm(baseName(r)), p = alias[key], pot = potLabel(r);
       /* "Star Fruit – Big": the part after a dash is the size when the part before it names an item here */
       if (!p) {
