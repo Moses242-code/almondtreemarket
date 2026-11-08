@@ -306,6 +306,15 @@ var COMPASS = (function () {
 
   /* shared with js/shop.js */
   window.ATM = { ART: ART, art: art, esc: esc, wa: wa, upcoming: upcoming, longDate: longDate, MON: MON, t12: t12 };
+/* the nursery sign sits in the hero text on wide screens, and just above the nursery window on narrow ones */
+(function () {
+  var sign = document.querySelector(".nursery-sign"), side = document.querySelector(".hero-side"), text = document.querySelector(".hero-text");
+  if (!sign || !side || !text) return;
+  var mq = matchMedia("(max-width: 960px)");
+  var place = function () { if (mq.matches) side.insertBefore(sign, side.firstChild); else text.insertBefore(sign, text.firstChild); };
+  place();
+  if (mq.addEventListener) mq.addEventListener("change", place); else mq.addListener(place);
+})();
 /* palm hover: a gust each time; the third gust drops a coconut on a passer-by, then it all starts over */
 (function () {
   var tree = document.querySelector(".ns-tree");

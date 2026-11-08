@@ -596,11 +596,12 @@ footer .base .bs-flag { width: 20px; height: 10px; margin: 0 .2em; }
 }
 
 /* ================= hanging "Native Nursery · Online" sign (desktop) ================= */
-.nursery-sign { display: none; }
 @media (min-width: 961px) {
   .hero .wrap.has-window { align-items: stretch; }
   .hero-side { align-self: end; }
   .hero-text { display: flex; flex-direction: column; justify-content: flex-end; }
+}
+/* the sign shows at every width; on narrow screens app.js moves it just above the nursery window */
   .nursery-sign { display: flex; align-items: center; gap: 1rem; align-self: flex-end; margin: 0 0 auto; padding-top: 34px; position: relative;
     text-decoration: none; color: var(--cream); transform-origin: 50% 0; animation: swing 5s ease-in-out infinite; }
   /* the two hanging strings */
@@ -618,7 +619,6 @@ footer .base .bs-flag { width: 20px; height: 10px; margin: 0 .2em; }
   .ns-arrow svg { width: 30px; height: 30px; }
   .nursery-sign:hover .ns-board { border-color: var(--mango); }
   .nursery-sign:hover .ns-arrow { animation-duration: .6s, 1.8s; }
-}
 @keyframes swing { 0%, 100% { transform: rotate(-1.2deg); } 50% { transform: rotate(1.2deg); } }
 @keyframes neon {
   0%, 100% { box-shadow: 0 0 0 1px rgba(107,229,156,.25), 0 0 22px rgba(107,229,156,.45), inset 0 0 14px rgba(107,229,156,.15); }
@@ -643,14 +643,11 @@ footer .base .bs-flag { width: 20px; height: 10px; margin: 0 .2em; }
 @media (prefers-reduced-motion: reduce) { .ns-coco, .ns-coco .frond { animation: none !important; } }
 
 /* full coconut palm beside the nursery sign (replaces the coconut cluster) */
-.ns-tree { display: none; }
-@media (min-width: 961px) {
-  .ns-tree { display: block; width: 200px; flex: none; align-self: flex-end; margin: -170px -2.2rem -6px -1.4rem; position: relative; z-index: 1;
+.ns-tree { display: block; width: 200px; flex: none; align-self: flex-end; margin: -170px -2.2rem -6px -1.4rem; position: relative; z-index: 1;
     filter: drop-shadow(0 16px 20px rgba(0,0,0,.4)); }
   .ns-tree svg { display: block; width: 100%; height: auto; overflow: visible; }
   .ns-tree .fronds { animation: frond-wave 2.6s ease-in-out infinite; transform-box: view-box; }
   .ns-board { z-index: 2; }
-}
 @keyframes palm-sway { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(3.5deg); } 75% { transform: rotate(-3deg); } }
 @keyframes frond-wave { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(4deg); } }
 @media (prefers-reduced-motion: reduce) { .ns-tree, .ns-tree * { animation: none !important; } }
@@ -722,3 +719,25 @@ footer .base .bs-flag { width: 20px; height: 10px; margin: 0 .2em; }
 @keyframes leg-a { 0%, 60% { transform: rotate(0); } 63% { transform: rotate(16deg); } 69% { transform: rotate(-16deg); } 75% { transform: rotate(16deg); } 81% { transform: rotate(-16deg); } 87% { transform: rotate(16deg); } 92%, 100% { transform: rotate(0); } }
 @keyframes leg-b { 0%, 60% { transform: rotate(0); } 63% { transform: rotate(-16deg); } 69% { transform: rotate(16deg); } 75% { transform: rotate(-16deg); } 81% { transform: rotate(16deg); } 87% { transform: rotate(-16deg); } 92%, 100% { transform: rotate(0); } }
 @keyframes stars { 0%, 28.3% { opacity: 0; transform: rotate(0) scale(.4); } 31% { opacity: 1; transform: rotate(40deg) scale(1.1); } 48% { opacity: 1; transform: rotate(220deg) scale(1); } 54%, 100% { opacity: 0; transform: rotate(300deg) scale(.6); } }
+
+/* narrow windows, tablets and phones: palm + sign sit in their own row just above the nursery window, arrow points down */
+@media (max-width: 960px) {
+  .hero-side .nursery-sign { grid-column: 1 / -1; align-items: flex-end; align-self: start; justify-self: start; padding-top: 0; margin: .4rem 0 .2rem; gap: .8rem; max-width: 100%; }
+  .hero-side .ns-tree { width: 132px; margin: 0 -1.5rem -4px -.4rem; }
+  .hero-side .ns-board { min-width: 0; padding: .85rem 1.1rem .95rem; }
+  .hero-side .ns-board b { font-size: clamp(1.35rem, 4.2vw, 1.9rem); }
+  .hero-side .ns-sub { font-size: .82rem; }
+  .hero-side .ns-arrow { width: 52px; height: 52px; align-self: center; animation: nudge-down 1.2s ease-in-out infinite, ring 1.8s ease-out infinite; }
+  .hero-side .ns-arrow svg { width: 26px; height: 26px; transform: rotate(90deg); }
+}
+@media (max-width: 480px) {
+  .hero-side .nursery-sign { gap: .5rem; }
+  .hero-side .ns-tree { width: 104px; margin-right: -1.3rem; }
+  .hero-side .ns-board { padding: .7rem .85rem .8rem; }
+  .hero-side .ns-board b { font-size: 1.22rem; }
+  .hero-side .ns-top { font-size: .58rem; letter-spacing: .12em; }
+  .hero-side .ns-sub { font-size: .74rem; }
+  .hero-side .ns-arrow { width: 40px; height: 40px; }
+  .hero-side .ns-arrow svg { width: 20px; height: 20px; }
+}
+@keyframes nudge-down { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
