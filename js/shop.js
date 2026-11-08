@@ -41,7 +41,8 @@ window.ATM_SHOP = function () {
     return (curCache[key] = 'url("data:image/svg+xml,' + encodeURIComponent(svg) + '") 28 28, pointer');
   }
   function media(p) {
-    if (!p.img) return A.art(p.art);
+    /* same cartoon-fruit hover pointer whether the plant has a photo yet or still shows its drawing */
+    if (!p.img) return A.art(p.art).replace("<div ", '<div style="cursor:' + esc(cursor(p.art)) + '" ');
     return '<img src="' + esc(p.img) + '" alt="' + esc(p.name) + '" loading="lazy" style="cursor:' + esc(cursor(p.art)) + '">' +
       '<span class="fruit-badge" aria-hidden="true">' + (A.ART[p.art] || "") + "</span>";
   }
