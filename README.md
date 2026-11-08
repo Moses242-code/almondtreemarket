@@ -7,7 +7,7 @@ A plain static website: HTML, CSS and a little JavaScript. No database, no build
 | File | What it is |
 | --- | --- |
 | `index.html` | Home: coming-soon stripe, nursery sign with the palm tree, **"Hungry? Check out next door."** (links to the food vendors on underthealmondtree.market), what sells here, nursery, Christmas, the 10 × 7 Shop with a floor plan, photos, map |
-| `nursery.html` | **Plant shop**: 28 plants in small cards (7 across), search, categories, sort. Customers tap Reserve, pick any open day (Monday to Saturday), get a pickup code + QR code, and send the reservation to you on WhatsApp. They pay at pickup. A preview window of 4 plants sits at the top of the home page |
+| `nursery.html` | **Plant shop**: 76 Bahamian plants in small cards (7 across), each with its pot sizes, search, categories, sort. Customers tap Reserve, pick any open day (Monday to Saturday), get a pickup code + QR code, and send the reservation to you on WhatsApp. They pay at pickup. A preview window of 4 plants sits at the top of the home page |
 | `join.html` | How to join, price, schedule, rules, **registration form**, FAQ, questions |
 | `js/data.js` | **The only file you need to edit** |
 
@@ -19,8 +19,10 @@ Or just tell Claude: "Slot 4 is taken by Ms. Rolle, straw bags, here's her photo
 
 ## Other changes (all in `js/data.js`)
 
-- **Plants for sale:** `window.PLANTS`. Each has `price`, `size`, `stock` (`"in"`, `"low"`, `"pre"` pre-order, `"out"` sold out), a short description and care notes. Add a square photo with `img`. `featured: true` puts it in the home-page window. **The prices and stock are starting guesses; set your real ones.**
+- **Plants for sale:** `window.PLANTS`. Each has `sizes`, one entry per pot size: `{ pot: "3 gal", price: 0, qty: 1 }`. A price of 0 shows "Price on request"; a qty of 0 shows that size as sold out. Add as many sizes as you have (1 gal, 3 gal, 7 gal, 25 gal...). Set `pre: true` for pre-order plants. Each plant also has, a short description and care notes. Add a square photo with `img`. `featured: true` puts it in the home-page window. **The prices and stock are starting guesses; set your real ones.**
 - **Open days and hours:** `nursery` in `js/data.js`. `openDays` sets the days the market is open (Monday to Saturday now): the nursery pickup dates and the vendor booking dates on the Join form both use it. Fill in `hours` (e.g. "8am to 5pm") to show them.
+- **Interested button:** every plant has an Interested button. The customer picks a size, ticks what they want (a current photo, the price, availability, a different size, a question), adds a message and their name and phone, and it opens WhatsApp to (242) 809-5667, or their email app to your email, with everything typed out, including a link straight to that plant.
+- **Link to one plant:** `https://almondtreemarket.com/nursery.html#plant-soursop` opens the soursop directly (use the plant id).
 - **At pickup:** the customer shows a QR code. Scan it with your phone camera to see their code, name, plants and total. The same details arrive in your WhatsApp when they reserve.
 - **Events:** `window.EVENTS` is empty for now, so the calendar is blank. Add an event there (there is an example in the file) or tell Claude. The market is open all week, so regular days are not put on the calendar; it only shows special days. The Join form offers the next 18 open days.
 - **Coming-soon stripe:** `stripe`. Set `comingSoon: false` to switch it to next-market messages.

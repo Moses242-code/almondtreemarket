@@ -1,12 +1,37 @@
-/* Almond Tree Market — plant shop: grid, basket, reserve with QR, home window.
-   Plants and prices live in js/data.js (window.PLANTS). */
+/* Almond Tree Market — plant shop: grid, pot sizes, basket, reserve with QR, "Interested" messages, home window.
+   Plants, pot sizes, prices and quantities live in js/data.js (window.PLANTS). */
 window.ATM_SHOP = function () {
   "use strict";
-  var A = window.ATM, M = window.MARKET, N = M.nursery || { openDays: [1, 2, 3, 4, 5, 6], daysText: "Monday to Saturday", closedText: "closed Sunday", hours: "" }, PLANTS = window.PLANTS || [], esc = A.esc;
+  var A = window.ATM, M = window.MARKET, N = M.nursery || { openDays: [1, 2, 3, 4, 5, 6], daysText: "Monday to Saturday", closedText: "closed Sunday", hours: "" }, esc = A.esc;
   var $ = function (s, r) { return (r || document).querySelector(s); };
+  var SITE = "https://almondtreemarket.com/nursery.html";
+
+  /* ---------- plants and their pot sizes ---------- */
+  var PLANTS = (window.PLANTS || []).map(function (p) {
+    var sizes = (p.sizes && p.sizes.length ? p.sizes : [{ pot: p.size || "Pot", price: p.price || 0, qty: p.stock === "out" ? 0 : 1 }])
+      .map(function (s) { return { pot: String(s.pot), price: +s.price || 0, qty: Math.max(0, parseInt(s.qty, 10) || 0) }; });
+    return Object.assign({}, p, { sizes: sizes });
+  });
   var byId = {}; PLANTS.forEach(function (p) { byId[p.id] = p; });
-  var STOCK = { in: ["in", "In stock"], low: ["low", "Only a few"], pre: ["pre", "Pre-order"], out: ["out", "Sold out"] };
+  function avail(p) { return p.sizes.reduce(function (s, z) { return s + z.qty; }, 0); }
+  function sizeOf(p, pot) { return p.sizes.filter(function (z) { return z.pot === pot; })[0]; }
   function money(n) { return "$" + (Math.round(n * 100) / 100).toFixed(n % 1 ? 2 : 0); }
+  function priceTxt(n) { return n > 0 ? money(n) : "Price on request"; }
+  function fromPrice(p) {
+    var ps = p.sizes.map(function (z) { return z.price; }).filter(function (x) { return x > 0; });
+    if (!ps.length) return "Price on request";
+    var lo = Math.min.apply(null, ps);
+    return (p.sizes.length > 1 ? "From " : "") + money(lo);
+  }
+  function sortPrice(p) { var ps = p.sizes.map(function (z) { return z.price; }).filter(function (x) { return x > 0; }); return ps.length ? Math.min.apply(null, ps) : Infinity; }
+  function sizesTxt(p) { return p.sizes.length > 1 ? p.sizes.length + " sizes: " + p.sizes.map(function (z) { return z.pot; }).join(", ") : p.sizes[0].pot; }
+  function status(p) {
+    var n = avail(p);
+    if (!n) return ["out", "Sold out"];
+    if (p.pre) return ["pre", "Pre-order"];
+    return [n <= 2 ? "low" : "in", n + " available"];
+  }
+
   /* Real photo when there is one; the cartoon fruit becomes the mouse pointer over it,
      plus a little badge in the corner (for phones, which have no pointer). */
   var curCache = {};
@@ -21,14 +46,25 @@ window.ATM_SHOP = function () {
       '<span class="fruit-badge" aria-hidden="true">' + (A.ART[p.art] || "") + "</span>";
   }
 
-  /* ---------- basket (kept on this phone only) ---------- */
+  /* ---------- basket (kept on this phone only): { "plantId|pot": qty } ---------- */
   var basket = {};
   try { basket = JSON.parse(localStorage.getItem("atm-basket") || "{}") || {}; } catch (e) { basket = {}; }
-  Object.keys(basket).forEach(function (k) { if (!byId[k] || byId[k].stock === "out") delete basket[k]; });
+  function split(k) { var i = k.indexOf("|"); return i < 0 ? null : { p: byId[k.slice(0, i)], pot: k.slice(i + 1) }; }
+  Object.keys(basket).forEach(function (k) {
+    var s = split(k), z = s && s.p && sizeOf(s.p, s.pot);
+    if (!z || !z.qty) delete basket[k]; else basket[k] = Math.min(basket[k], z.qty);
+  });
   function save() { try { localStorage.setItem("atm-basket", JSON.stringify(basket)); } catch (e) {} }
   function count() { return Object.keys(basket).reduce(function (s, k) { return s + basket[k]; }, 0); }
-  function total() { return Object.keys(basket).reduce(function (s, k) { return s + basket[k] * byId[k].price; }, 0); }
-  function setQty(id, q) { if (q <= 0) delete basket[id]; else basket[id] = Math.min(q, 20); save(); refresh(); }
+  function total() { return Object.keys(basket).reduce(function (s, k) { var x = split(k); return s + basket[k] * sizeOf(x.p, x.pot).price; }, 0); }
+  function anyTBA() { return Object.keys(basket).some(function (k) { var x = split(k); return !sizeOf(x.p, x.pot).price; }); }
+  function totalTxt() { var t = total(); return anyTBA() ? (t > 0 ? money(t) + " + items priced on request" : "Price on request") : money(t); }
+  function inBasket(id) { return Object.keys(basket).reduce(function (s, k) { return k.indexOf(id + "|") === 0 ? s + basket[k] : s; }, 0); }
+  function setQty(key, q) {
+    var x = split(key), z = x && x.p && sizeOf(x.p, x.pot); if (!z) return;
+    if (q <= 0) delete basket[key]; else basket[key] = Math.min(q, z.qty);
+    save(); refresh();
+  }
 
   /* ---------- home page window ---------- */
   Array.prototype.forEach.call(document.querySelectorAll("[data-plant-count]"), function (el) { el.textContent = PLANTS.length; });
@@ -38,7 +74,8 @@ window.ATM_SHOP = function () {
     win.innerHTML = '<div class="pw-head"><span class="eyebrow">Native nursery · now online</span><span class="pw-count">' + PLANTS.length + ' plants</span></div>' +
       '<h3>Reserve a tree online. Pick it up any day, ' + esc(N.daysText) + '.</h3>' +
       '<div class="pw-grid">' + feat.map(function (p) {
-        return '<div class="pw-card"><div class="media">' + media(p) + '</div><b>' + esc(p.name) + '</b><span>' + esc(p.size) + ' · <em>' + money(p.price) + "</em></span></div>";
+        var sz = p.sizes.length > 1 ? p.sizes.length + " sizes" : p.sizes[0].pot, pr = fromPrice(p);
+        return '<div class="pw-card"><div class="media">' + media(p) + '</div><b>' + esc(p.name) + '</b><span>' + esc(sz) + (pr === "Price on request" ? "" : ' · <em>' + esc(pr) + "</em>") + "</span></div>";
       }).join("") + "</div>" +
       '<span class="pw-go">Shop the nursery <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>';
   }
@@ -52,33 +89,29 @@ window.ATM_SHOP = function () {
     return '<button aria-pressed="false" data-cat="' + esc(c) + '">' + esc(c) + " <small>" + PLANTS.filter(function (p) { return p.cat === c; }).length + "</small></button>";
   }).join("");
 
-  function btnFor(p) {
-    if (p.stock === "out") return '<button class="btn small add" disabled>Sold out</button>';
-    var q = basket[p.id] || 0;
-    if (q) return '<div class="stepper" data-id="' + p.id + '"><button data-step="-1" aria-label="One fewer ' + esc(p.name) + '">−</button><span>' + q + '</span><button data-step="1" aria-label="One more ' + esc(p.name) + '">+</button></div>';
-    return '<button class="btn small add" data-add="' + p.id + '">' + (p.stock === "pre" ? "Pre-order" : "Reserve") + "</button>";
-  }
   function card(p) {
-    var st = STOCK[p.stock] || STOCK.in;
-    return '<article class="pcard' + (p.stock === "out" ? " is-out" : "") + '" data-id="' + p.id + '">' +
+    var st = status(p), n = inBasket(p.id), out = !avail(p);
+    return '<article class="pcard' + (out ? " is-out" : "") + '" data-id="' + p.id + '" id="plant-' + p.id + '">' +
       '<button class="pmedia" data-open="' + p.id + '" aria-label="More about ' + esc(p.name) + '">' + media(p) + '<span class="stock ' + st[0] + '">' + st[1] + "</span></button>" +
       '<div class="pbody"><span class="pcat">' + esc(p.cat) + '</span><button class="pname" data-open="' + p.id + '">' + esc(p.name) + '</button><span class="platin">' + esc(p.latin) + "</span>" +
-      '<p class="pdesc">' + esc(p.text) + '</p><div class="pfoot"><span class="pprice">' + money(p.price) + '</span><span class="psize">' + esc(p.size) + "</span></div>" + btnFor(p) + "</div></article>";
+      '<p class="pdesc">' + esc(p.text) + '</p><div class="pfoot pfoot2"><span class="pprice' + (sortPrice(p) === Infinity ? " tba" : "") + '">' + esc(fromPrice(p)) + '</span><span class="pchips">' + p.sizes.map(function (z) { return '<i class="' + (z.qty ? "" : "none") + '">' + esc(z.pot) + "</i>"; }).join("") + "</span></div>" +
+      '<div class="pacts"><button class="btn small add" data-open="' + p.id + '"' + (out ? " disabled" : "") + ">" + (out ? "Sold out" : n ? "In basket · " + n : p.pre ? "Pre-order" : "Reserve") + "</button>" +
+      '<button class="btn small ghost int" data-interest="' + p.id + '">Interested</button></div></div></article>';
   }
   function list() {
     var q = state.q.trim().toLowerCase();
     var out = PLANTS.filter(function (p) {
-      return (!state.cat || p.cat === state.cat) && (!state.instock || p.stock === "in" || p.stock === "low") &&
-        (!q || (p.name + " " + p.latin + " " + p.cat + " " + p.text).toLowerCase().indexOf(q) > -1);
+      return (!state.cat || p.cat === state.cat) && (!state.instock || avail(p) > 0) &&
+        (!q || (p.name + " " + p.latin + " " + p.cat + " " + p.text + " " + p.sizes.map(function (z) { return z.pot; }).join(" ")).toLowerCase().indexOf(q) > -1);
     });
-    if (state.sort === "low") out.sort(function (a, b) { return a.price - b.price; });
-    if (state.sort === "high") out.sort(function (a, b) { return b.price - a.price; });
+    if (state.sort === "low") out.sort(function (a, b) { return sortPrice(a) - sortPrice(b); });
+    if (state.sort === "high") out.sort(function (a, b) { var x = sortPrice(a), y = sortPrice(b); return (y === Infinity ? -1 : y) - (x === Infinity ? -1 : x); });
     if (state.sort === "az") out.sort(function (a, b) { return a.name.localeCompare(b.name); });
     return out;
   }
   function draw() {
     var l = list();
-    grid.innerHTML = l.map(card).join("") || '<p class="muted" style="grid-column:1/-1">No plants match that. Try another search.</p>';
+    grid.innerHTML = l.map(card).join("") || '<p class="muted" style="grid-column:1/-1">No plants match that. Try another search, or tap Interested on a similar plant and ask us.</p>';
     $("#shop-count").textContent = l.length + (l.length === 1 ? " plant" : " plants");
   }
   $("#shop-cats").addEventListener("click", function (e) {
@@ -89,25 +122,93 @@ window.ATM_SHOP = function () {
   $("#shop-sort").addEventListener("change", function () { state.sort = this.value; draw(); });
   $("#shop-instock").addEventListener("change", function () { state.instock = this.checked; draw(); });
 
-  /* ---------- quick view ---------- */
-  var dlg = $("#plant-dialog");
+  /* ---------- quick view: pick a pot size, how many, then reserve ---------- */
+  var dlg = $("#plant-dialog"), pick = { id: "", pot: "", n: 1 };
+  function sizeBtns(p) {
+    return '<div class="sizes" role="radiogroup" aria-label="Pot size">' + p.sizes.map(function (z) {
+      var on = z.pot === pick.pot;
+      return '<button type="button" role="radio" aria-checked="' + on + '" data-pot="' + esc(z.pot) + '"' + (z.qty ? "" : " disabled") + ">" +
+        "<b>" + esc(z.pot) + "</b><span>" + esc(priceTxt(z.price)) + "</span><small>" + (z.qty ? z.qty + " available" : "Sold out") + "</small></button>";
+    }).join("") + "</div>";
+  }
+  function pickPanel(p) {
+    var z = sizeOf(p, pick.pot), have = z ? basket[p.id + "|" + z.pot] || 0 : 0, left = z ? z.qty - have : 0;
+    if (pick.n > Math.max(1, left)) pick.n = Math.max(1, left);
+    return '<div class="dpick"><span class="eyebrow">Choose a pot size</span>' + sizeBtns(p) +
+      (z ? '<div class="dqty"><span>How many</span><div class="stepper"><button type="button" data-n="-1" aria-label="Fewer">−</button><span>' + pick.n + '</span><button type="button" data-n="1" aria-label="More">+</button></div>' +
+        '<small>' + (have ? have + " already in your basket · " : "") + z.qty + " " + esc(z.pot) + " available</small></div>" : "") +
+      '<div class="dacts"><button class="btn primary" type="button" data-addpick' + (z && left > 0 ? "" : " disabled") + ">" +
+      (z && left <= 0 ? "All " + esc(z.pot) + " are in your basket" : (p.pre ? "Pre-order" : "Reserve") + (z ? " " + esc(z.pot) + (z.price ? " · " + money(z.price * pick.n) : "") : "")) + "</button>" +
+      '<button class="btn ghost" type="button" data-interest="' + p.id + '">Interested? Ask us</button></div></div>';
+  }
   function openPlant(id) {
-    var p = byId[id]; if (!p) return; var st = STOCK[p.stock] || STOCK.in;
+    var p = byId[id]; if (!p) return;
+    var first = p.sizes.filter(function (z) { return z.qty > 0; })[0] || p.sizes[0];
+    pick = { id: id, pot: first.qty ? first.pot : "", n: 1 };
+    var st = status(p);
     dlg.innerHTML = '<div class="dlg"><button class="x" data-close aria-label="Close">×</button><div class="dmedia">' + media(p) + "</div>" +
       '<div class="dbody"><span class="pcat">' + esc(p.cat) + '</span><h3>' + esc(p.name) + '</h3><span class="platin">' + esc(p.latin) + "</span>" +
-      '<div class="dprice"><span class="pprice">' + money(p.price) + '</span><span class="psize">' + esc(p.size) + '</span><span class="stock ' + st[0] + '">' + st[1] + "</span></div>" +
+      '<div class="dprice"><span class="pprice' + (sortPrice(p) === Infinity ? " tba" : "") + '">' + esc(fromPrice(p)) + '</span><span class="stock ' + st[0] + '">' + st[1] + "</span></div>" +
       "<p>" + esc(p.text) + "</p>" + (p.care ? '<p class="care"><b>Care:</b> ' + esc(p.care) + "</p>" : "") +
-      '<div class="dacts" data-id="' + p.id + '">' + btnFor(p) + "</div></div></div>";
-    if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", "");
+      '<div class="dpick-wrap">' + pickPanel(p) + "</div></div></div>";
+    if (!dlg.open) { if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", ""); }
+    try { history.replaceState(null, "", "#plant-" + id); } catch (e) {}
   }
-  dlg.addEventListener("click", function (e) { if (e.target === dlg || e.target.closest("[data-close]")) dlg.close(); });
+  function redrawPick() { var w = $(".dpick-wrap", dlg); if (w && byId[pick.id]) w.innerHTML = pickPanel(byId[pick.id]); }
+  function closeDlg() { dlg.close(); try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {} }
+  dlg.addEventListener("click", function (e) {
+    if (e.target === dlg || e.target.closest("[data-close]")) { closeDlg(); return; }
+    var pb = e.target.closest("[data-pot]"); if (pb && !pb.disabled) { pick.pot = pb.getAttribute("data-pot"); pick.n = 1; redrawPick(); return; }
+    var nb = e.target.closest("[data-n]"); if (nb) { pick.n = Math.max(1, pick.n + +nb.getAttribute("data-n")); redrawPick(); return; }
+    if (e.target.closest("[data-addpick]")) {
+      var key = pick.id + "|" + pick.pot; setQty(key, (basket[key] || 0) + pick.n); pulse(); closeDlg(); openDrawer();
+    }
+  });
 
-  /* ---------- clicks: add / step / open ---------- */
+  /* ---------- "Interested": ask for a current photo, the price, a size, or anything else ---------- */
+  function openInterest(id) {
+    var p = byId[id]; if (!p) return;
+    var want = ["Send me a current photo", "Tell me the price", "Tell me when it's available", "I'd like a different size", "I have a question"];
+    dlg.innerHTML = '<div class="dlg dlg-int"><button class="x" data-close aria-label="Close">×</button>' +
+      '<div class="int-head"><div class="bthumb">' + media(p) + '</div><div><span class="eyebrow">Interested in</span><h3>' + esc(p.name) + '</h3><span class="platin">' + esc(p.latin) + "</span></div></div>" +
+      '<form class="form int-form" id="int-form" novalidate>' +
+      '<label>Pot size<select name="pot"><option>Any size</option>' + p.sizes.map(function (z) { return "<option>" + esc(z.pot) + "</option>"; }).join("") + "</select></label>" +
+      '<fieldset><legend>What would you like?</legend>' + want.map(function (w, i) { return '<label class="chk"><input type="checkbox" name="want" value="' + esc(w) + '"' + (i === 0 ? " checked" : "") + "> " + esc(w) + "</label>"; }).join("") + "</fieldset>" +
+      '<label>Message <small>(optional)</small><textarea name="msg" rows="3" placeholder="e.g. Is it fruiting yet? Can you deliver to Hope Town?"></textarea></label>' +
+      '<div class="two"><label>Your name<input name="name" autocomplete="name" required></label><label>Phone / WhatsApp<input name="phone" type="tel" autocomplete="tel" required></label></div>' +
+      '<p class="err" id="int-err" role="alert"></p>' +
+      '<div class="dacts"><button class="btn wa" type="submit" name="via" value="wa">Send on WhatsApp</button><button class="btn ghost" type="button" data-int-mail>Send by email</button></div>' +
+      '<p class="note">It comes straight to us at Almond Tree Market. We usually reply the same day.</p></form></div>';
+    if (!dlg.open) { if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", ""); }
+    var f = $("#int-form");
+    var build = function () {
+      var d = new FormData(f), err = $("#int-err"); err.textContent = "";
+      if (!d.get("name") || !d.get("phone")) { err.textContent = "Please add your name and phone number so we can reply."; return null; }
+      return ["*Almond Tree Market: plant enquiry*", "", "Plant: " + p.name + " (" + p.latin + ")", "Pot size: " + d.get("pot"),
+        "Wants: " + (d.getAll("want").join(", ") || "-"), "Message: " + (d.get("msg") || "-"), "",
+        "Name: " + d.get("name"), "Phone: " + d.get("phone"), "Link: " + SITE + "#plant-" + p.id].join("\n");
+    };
+    f.addEventListener("submit", function (e) { e.preventDefault(); var m = build(); if (m) { window.open(A.wa(m), "_blank", "noopener"); thanks(p); } });
+    $("[data-int-mail]", f).addEventListener("click", function () {
+      var m = build(); if (!m) return;
+      location.href = "mailto:" + M.email + "?subject=" + encodeURIComponent("Plant enquiry: " + p.name) + "&body=" + encodeURIComponent(m.replace(/\*/g, ""));
+      thanks(p);
+    });
+  }
+  function thanks(p) {
+    var f = $("#int-form"); if (!f) return;
+    f.outerHTML = '<div class="int-done"><b>Thanks! Your message about the ' + esc(p.name) + ' is ready to send.</b><p>Press send in WhatsApp or your email app and it comes straight to us. We usually reply the same day.</p>' +
+      '<button class="btn ghost" type="button" data-close>Back to the plants</button></div>';
+  }
+
+  /* ---------- clicks on the grid ---------- */
   document.addEventListener("click", function (e) {
-    var o = e.target.closest("[data-open]"); if (o) { openPlant(o.getAttribute("data-open")); return; }
-    var a = e.target.closest("[data-add]"); if (a) { setQty(a.getAttribute("data-add"), 1); pulse(); return; }
-    var s = e.target.closest("[data-step]");
-    if (s) { var id = s.closest("[data-id]").getAttribute("data-id"); setQty(id, (basket[id] || 0) + +s.getAttribute("data-step")); }
+    if (dlg.contains(e.target)) {
+      var i2 = e.target.closest("[data-interest]"); if (i2) openInterest(i2.getAttribute("data-interest"));
+      return;
+    }
+    var i = e.target.closest("[data-interest]"); if (i) { openInterest(i.getAttribute("data-interest")); return; }
+    var o = e.target.closest("[data-open]"); if (o && !o.disabled) { openPlant(o.getAttribute("data-open")); return; }
   });
 
   /* ---------- basket drawer ---------- */
@@ -119,30 +220,34 @@ window.ATM_SHOP = function () {
     dates.push({ d: dc, date: dc.getFullYear() + "-" + (dc.getMonth() + 1) + "-" + dc.getDate(), today: guard === 0 });
   }
   function pulse() { fab.classList.remove("pulse"); void fab.offsetWidth; fab.classList.add("pulse"); }
-  function openDrawer() { drawer.classList.add("open"); drawer.setAttribute("aria-hidden", "false"); document.body.classList.add("lock"); renderDrawer(); }
-  function closeDrawer() { drawer.classList.remove("open"); drawer.setAttribute("aria-hidden", "true"); document.body.classList.remove("lock"); }
+  function openDrawer() { drawer.classList.add("open"); drawer.setAttribute("aria-hidden", "false"); document.body.classList.add("lock"); renderDrawer(); refresh(); }
+  function closeDrawer() { drawer.classList.remove("open"); drawer.setAttribute("aria-hidden", "true"); document.body.classList.remove("lock"); refresh(); }
   fab.addEventListener("click", openDrawer);
   drawer.addEventListener("click", function (e) {
-    if (e.target === drawer || e.target.closest("[data-close-basket]")) closeDrawer();
-    var r = e.target.closest("[data-remove]"); if (r) setQty(r.getAttribute("data-remove"), 0);
+    if (e.target === drawer || e.target.closest("[data-close-basket]")) { closeDrawer(); return; }
+    var r = e.target.closest("[data-remove]"); if (r) { setQty(r.getAttribute("data-remove"), 0); return; }
+    var s = e.target.closest("[data-step]");
+    if (s) { var k = s.closest("[data-key]").getAttribute("data-key"); setQty(k, (basket[k] || 0) + +s.getAttribute("data-step")); }
   });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape" && drawer.classList.contains("open")) closeDrawer(); });
 
   function renderDrawer() {
-    var panel = $(".bpanel", drawer), ids = Object.keys(basket);
-    if (!ids.length) {
+    var panel = $(".bpanel", drawer), keys = Object.keys(basket);
+    if (!keys.length) {
       panel.innerHTML = '<div class="bhead"><h3>Your plants</h3><button class="x" data-close-basket aria-label="Close">×</button></div>' +
-        '<div class="bempty">' + A.ART.pot + "<p>No plants yet. Tap <b>Reserve</b> on any plant to add it.</p></div>";
+        '<div class="bempty">' + A.ART.pot + "<p>No plants yet. Tap <b>Reserve</b> on any plant, pick a pot size and add it.</p></div>";
       return;
     }
     panel.innerHTML = '<div class="bhead"><h3>Your plants</h3><button class="x" data-close-basket aria-label="Close">×</button></div>' +
-      '<ul class="blist">' + ids.map(function (id) {
-        var p = byId[id];
-        return '<li><div class="bthumb">' + media(p) + '</div><div class="binfo"><b>' + esc(p.name) + "</b><span>" + esc(p.size) + " · " + money(p.price) + (p.stock === "pre" ? " · pre-order" : "") + '</span>' +
-          '<div class="stepper" data-id="' + id + '"><button data-step="-1" aria-label="One fewer">−</button><span>' + basket[id] + '</span><button data-step="1" aria-label="One more">+</button></div></div>' +
-          '<div class="bline"><b>' + money(p.price * basket[id]) + '</b><button class="link" data-remove="' + id + '">Remove</button></div></li>';
+      '<ul class="blist">' + keys.map(function (k) {
+        var x = split(k), p = x.p, z = sizeOf(p, x.pot), atMax = basket[k] >= z.qty;
+        return '<li><div class="bthumb">' + media(p) + '</div><div class="binfo"><b>' + esc(p.name) + "</b><span>" + esc(z.pot) + " · " + esc(priceTxt(z.price)) + (p.pre ? " · pre-order" : "") + '</span>' +
+          '<div class="stepper" data-key="' + esc(k) + '"><button data-step="-1" aria-label="One fewer">−</button><span>' + basket[k] + '</span><button data-step="1" aria-label="One more"' + (atMax ? " disabled" : "") + ">+</button></div>" +
+          (atMax ? '<small class="bmax">That\'s all the ' + esc(z.pot) + " we have</small>" : "") + "</div>" +
+          '<div class="bline"><b>' + esc(z.price ? money(z.price * basket[k]) : "TBA") + '</b><button class="link" data-remove="' + esc(k) + '">Remove</button></div></li>';
       }).join("") + "</ul>" +
-      '<div class="btotal"><span>Total · pay at pickup</span><b>' + money(total()) + "</b></div>" +
+      '<div class="btotal"><span>Total · pay at pickup</span><b' + (anyTBA() ? ' class="tba"' : "") + '>' + esc(totalTxt()) + "</b></div>" +
+      (anyTBA() ? '<p class="note" style="margin:-.4rem 0 .8rem">Some prices are not set yet. We\'ll confirm them when we reply to your reservation.</p>' : "") +
       '<form class="bform" id="res-form" novalidate><div class="eyebrow">Reserve for pickup</div>' +
       '<label>Your name<input name="name" autocomplete="name" required></label>' +
       '<label>Phone / WhatsApp<input name="phone" type="tel" autocomplete="tel" required></label>' +
@@ -159,13 +264,13 @@ window.ATM_SHOP = function () {
     e.preventDefault();
     var f = new FormData(e.target), err = $("#res-err");
     if (!f.get("name") || !f.get("phone")) { err.textContent = "Please add your name and phone number."; return; }
-    var day = dates.filter(function (d) { return d.date === f.get("day"); })[0], c = code(), ids = Object.keys(basket);
-    var lines = ids.map(function (id) { var p = byId[id]; return basket[id] + " x " + p.name + " (" + p.size + ") " + money(p.price * basket[id]) + (p.stock === "pre" ? " [pre-order]" : ""); });
+    var day = dates.filter(function (d) { return d.date === f.get("day"); })[0], c = code(), keys = Object.keys(basket);
+    var lines = keys.map(function (k) { var x = split(k), z = sizeOf(x.p, x.pot); return basket[k] + " x " + x.p.name + " (" + z.pot + ") " + (z.price ? money(z.price * basket[k]) : "price on request") + (x.p.pre ? " [pre-order]" : ""); });
     var dayTxt = day ? A.longDate(day.d) : f.get("day");
-    var qrText = ascii(["ALMOND TREE MARKET - PLANT PICKUP", "Code: " + c, "Name: " + f.get("name"), "Phone: " + f.get("phone"), "Pickup: " + dayTxt].concat(lines, ["Total: " + money(total()) + " (pay at pickup)"]).join("\n"));
+    var qrText = ascii(["ALMOND TREE MARKET - PLANT PICKUP", "Code: " + c, "Name: " + f.get("name"), "Phone: " + f.get("phone"), "Pickup: " + dayTxt].concat(lines, ["Total: " + totalTxt() + " (pay at pickup)"]).join("\n"));
     var msg = ["*Almond Tree Market: plant reservation " + c + "*", "", "Name: " + f.get("name"), "Phone: " + f.get("phone"), "Pickup: " + dayTxt, ""].concat(lines,
-      ["", "Total: " + money(total()) + " (pay at pickup)", "Notes: " + (f.get("notes") || "-")]).join("\n");
-    var res = { code: c, msg: msg, qr: qrText, day: dayTxt, total: money(total()), lines: lines, name: f.get("name") };
+      ["", "Total: " + totalTxt() + " (pay at pickup)", "Notes: " + (f.get("notes") || "-")]).join("\n");
+    var res = { code: c, msg: msg, qr: qrText, day: dayTxt, total: totalTxt(), lines: lines, name: f.get("name") };
     try { localStorage.setItem("atm-last-res", JSON.stringify(res)); } catch (x) {}
     showConfirm(res);
   }
@@ -196,10 +301,13 @@ window.ATM_SHOP = function () {
   function refresh() {
     var n = count();
     fab.hidden = n === 0 && !drawer.classList.contains("open");
-    $("#basket-n").textContent = n; $("#basket-w").textContent = n === 1 ? "plant" : "plants"; $("#basket-t").textContent = money(total());
+    $("#basket-n").textContent = n; $("#basket-w").textContent = n === 1 ? "plant" : "plants";
+    $("#basket-t").textContent = anyTBA() ? (total() > 0 ? money(total()) + "+" : "price TBA") : money(total());
     draw();
     if (drawer.classList.contains("open") && !$(".conf", drawer)) renderDrawer();
-    if (dlg.open) { var d = $(".dacts", dlg); if (d) d.innerHTML = btnFor(byId[d.getAttribute("data-id")]); }
   }
   refresh();
+
+  /* open a plant straight from a link like nursery.html#plant-soursop */
+  var m = /^#plant-([\w-]+)$/.exec(location.hash); if (m && byId[m[1]]) openPlant(m[1]);
 };

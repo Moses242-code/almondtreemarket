@@ -802,3 +802,54 @@ header.nav .brand small { justify-content: center; }
   header.nav .brand small .bs-flag { width: 14px; height: 7px; }
 }
 @media (max-width: 360px) { header.nav .brand .brand-home { display: none; } }
+
+/* ================= nursery: pot sizes, quantities and "Interested" ================= */
+.pacts { display: grid; grid-template-columns: 1fr; gap: .35rem; margin-top: .55rem; }
+.pcard .pacts .add { margin-top: 0; }
+.btn.int { padding: .5em .8em; font-size: .8rem; border-color: rgba(255,178,63,.55); color: var(--mango); }
+.btn.int:hover { background: rgba(255,178,63,.1); }
+.pcard .psize { text-align: right; line-height: 1.35; }
+.pcard .pprice { font-size: 1.05rem; }
+.dpick { display: grid; gap: .7rem; margin-top: .4rem; padding-top: .8rem; border-top: 1px solid var(--line); }
+.sizes { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: .45rem; }
+.sizes button { all: unset; box-sizing: border-box; cursor: pointer; display: grid; gap: .1rem; padding: .6rem .7rem; border: 1px solid var(--line); border-radius: 12px; background: var(--night); }
+.sizes button b { font: 800 1.05rem/1.1 var(--display); color: var(--cream); }
+.sizes button span { font: 600 .8rem var(--body); color: var(--mango); }
+.sizes button small { font: 400 .62rem var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--mist); }
+.sizes button[aria-checked="true"] { border-color: var(--leaf); background: rgba(107,229,156,.1); box-shadow: 0 0 0 1px var(--leaf); }
+.sizes button:disabled { opacity: .45; cursor: not-allowed; }
+.sizes button:not(:disabled):hover { border-color: #3a6b4c; }
+.dqty { display: grid; grid-template-columns: auto 130px; align-items: center; gap: .3rem .8rem; }
+.dqty > span { font: 400 .7rem var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--mist); }
+.dqty small { grid-column: 1 / -1; color: var(--mist); font-size: .8rem; }
+.dpick .dacts { max-width: none; display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 0; padding-top: .2rem; }
+.dpick .dacts .btn { flex: 1 1 180px; justify-content: center; }
+.dpick .btn.primary:disabled { opacity: .5; cursor: not-allowed; }
+.dlg-int { display: block; padding: 1.4rem; }
+.int-head { display: flex; gap: .9rem; align-items: center; margin: 0 2.6rem 1rem 0; }
+.int-head h3 { font-size: 1.5rem; margin: .2rem 0 .1rem; }
+.int-form { padding: 1rem; border-radius: 18px; gap: .9rem; }
+.int-form fieldset { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: .45rem; }
+.int-form .chk { display: flex; align-items: center; gap: .5rem; font: 500 .92rem var(--body); letter-spacing: 0; text-transform: none; color: var(--cream); }
+.int-form .chk input { width: 18px; height: 18px; accent-color: var(--leaf); }
+.int-form .two { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
+@media (max-width: 560px) { .int-form .two { grid-template-columns: 1fr; } }
+.int-form .dacts { max-width: none; display: flex; flex-wrap: wrap; gap: .5rem; padding-top: 0; }
+.int-form .dacts .btn { flex: 1 1 170px; justify-content: center; }
+.int-done { padding: 1.2rem; border: 1px solid var(--leaf); border-radius: 18px; background: rgba(107,229,156,.08); display: grid; gap: .6rem; justify-items: start; }
+.int-done b { font-size: 1.1rem; }
+.int-done p { color: #d3dfd5; font-weight: 300; }
+.bmax { display: block; color: var(--mango); font-size: .75rem; margin-top: .25rem; }
+.stepper button:disabled { opacity: .35; cursor: not-allowed; }
+.pfoot2 { flex-direction: column; align-items: flex-start; gap: .35rem; }
+.pprice.tba { font: 600 .82rem var(--body); color: var(--mango); letter-spacing: 0; }
+.pchips { display: flex; flex-wrap: wrap; gap: .25rem; }
+.pchips i { font: 500 .62rem var(--mono); font-style: normal; letter-spacing: .04em; text-transform: uppercase; padding: .2em .5em; border-radius: 999px; border: 1px solid #2c5a3f; color: var(--leaf); }
+.pchips i.none { color: var(--mist); border-color: var(--line); text-decoration: line-through; }
+.dlg:not(.dlg-int) { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
+.dlg .dmedia { align-self: start; position: sticky; top: 0; }
+.dbody { min-width: 0; }
+.dbody h3 { overflow-wrap: anywhere; }
+@media (max-width: 640px) { .dlg:not(.dlg-int) { grid-template-columns: 1fr; } .dlg .dmedia { position: static; } }
+.dprice .pprice.tba { font: 600 1.05rem var(--body); }
+.btotal b.tba { font: 600 1rem var(--body); color: var(--mango); text-align: right; }
