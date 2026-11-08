@@ -791,3 +791,14 @@ footer .base .bs-flag { width: 20px; height: 10px; margin: 0 .2em; }
 }
 @keyframes leaf-rest { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(5deg) translateY(-3px); } }
 @media (prefers-reduced-motion: reduce) { .atm-leaf, .atm-leaf img { animation: none !important; } }
+
+/* header brand: fruit badge · name with centred "Marsh Harbour · Abaco · The Bahamas" · homemade badge */
+header.nav .brand > span { text-align: center; }
+header.nav .brand small { justify-content: center; }
+@media (max-width: 480px) {
+  header.nav .brand { gap: .45rem; }
+  header.nav .brand > svg { width: 32px; height: 32px; }
+  header.nav .brand small { font-size: .5rem; letter-spacing: .05em; gap: .3em; }
+  header.nav .brand small .bs-flag { width: 14px; height: 7px; }
+}
+@media (max-width: 360px) { header.nav .brand .brand-home { display: none; } }
