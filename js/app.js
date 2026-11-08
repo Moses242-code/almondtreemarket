@@ -96,7 +96,7 @@ var COMPASS = (function () {
   function art(key) { return '<div class="art-bg ' + (TONE[key] || "") + '">' + (ART[key] || ART.sugarapple) + "</div>"; }
 
   /* ---------- shared header + footer ---------- */
-  var NAV = [["index.html", "Market"], ["slots.html", "The Eight"], ["nursery.html", "Nursery"], ["events.html", "Events"], ["community.html", "Fundraisers"], ["join.html", "Join"]];
+  var NAV = [["index.html", "Market"], ["nursery.html", "Nursery"], ["join.html", "Join"]];
   function header() {
     var items = M.comingSoon ? M.stripe : nextMarketStripe();
     var run = items.map(function (s) { return "<span>" + esc(s) + "</span>"; }).join("");
@@ -120,7 +120,7 @@ var COMPASS = (function () {
   function footer() {
     return '<div class="bs-band" aria-hidden="true"></div><div class="wrap"><div><a class="brand" href="index.html">' + BRAND + "<span><b>Almond Tree Market</b><small>" + esc(M.place) + "</small></span></a>" +
       "<p>A native market for Abaco growers and makers. Fruit, plants, straw work, candles, sauces and sweets, Monday to Saturday under the almond tree.</p></div>" +
-      '<div><h4>Market</h4><ul><li><a href="slots.html">The Eight slots</a></li><li><a href="nursery.html">Native nursery</a></li><li><a href="events.html">Events calendar</a></li><li><a href="community.html">Fundraisers &amp; souse-outs</a></li><li><a href="join.html">Become a vendor</a></li><li><a href="' + M.nextDoor + '">Hungry? Food next door ↗</a></li></ul></div>' +
+      '<div><h4>Market</h4><ul><li><a href="nursery.html">Native nursery</a></li><li><a href="join.html">Become a vendor</a></li><li><a href="' + M.nextDoor + '">Hungry? Food next door ↗</a></li></ul></div>' +
       '<div><h4>Contact</h4><ul><li><a href="' + wa("Hi! I have a question about Almond Tree Market.") + '" target="_blank" rel="noopener">WhatsApp ' + esc(M.phoneDisplay) + "</a></li>" +
       '<li><a href="mailto:' + M.email + '">' + esc(M.email) + '</a></li><li><a href="' + M.instagram + '" target="_blank" rel="noopener">Instagram</a> · <a href="' + M.facebook + '" target="_blank" rel="noopener">Facebook</a></li>' +
       '<li><a href="' + M.mapsLink + '" target="_blank" rel="noopener">Directions · GWPQ+WQ</a></li></ul></div>' +
@@ -169,7 +169,7 @@ var COMPASS = (function () {
   var plan = $("#plan");
   if (plan) {
     var sq = function (s) { var l = s.status === "open" ? "Open" : s.status === "coming" ? "Soon" : "Taken";
-      return '<a class="sq ' + s.status + '" href="slots.html#slot-' + s.n + '" aria-label="Slot ' + s.n + ": " + l + '"><span><b>' + s.n + "</b><small>" + l + "</small></span></a>"; };
+      return '<a class="sq ' + s.status + '" href="join.html?slot=' + s.n + '#register" aria-label="Slot ' + s.n + ": " + l + '"><span><b>' + s.n + "</b><small>" + l + "</small></span></a>"; };
     plan.innerHTML = '<div class="lbl">Under the market roof</div><div class="grid">' + window.SLOTS.slice(0, 4).map(sq).join("") +
       '<div class="walk">Walkway</div>' + window.SLOTS.slice(4, 8).map(sq).join("") + '</div><div class="shop">The 10 × 7 Shop · opening 2027</div>' +
       '<div class="legend"><span><i style="background:var(--leaf)"></i>Open (' + openCount + ')</span><span><i style="background:var(--mango)"></i>Taken</span><span><i style="background:var(--hibiscus)"></i>Shop</span></div>';
