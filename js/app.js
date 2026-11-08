@@ -122,12 +122,18 @@ var COMPASS = (function () {
     natal: '<svg viewBox="0 0 120 120"><path d="M30 40c10-16 30-14 34 0-14 4-24 4-34 0Z" fill="#2fbf6f"/><path d="M90 38c-10-16-30-14-34 0 14 4 24 4 34 0Z" fill="#3fa85e"/><ellipse cx="48" cy="76" rx="18" ry="24" fill="#e2304f"/><ellipse cx="42" cy="66" rx="5" ry="8" fill="#ff8199" opacity=".7"/><polygon points="86.0 64.0 90.1 76.3 103.1 76.4 92.7 84.2 96.6 96.6 86.0 89.0 75.4 96.6 79.3 84.2 68.9 76.4 81.9 76.3" fill="#fff"/><circle cx="86" cy="82" r="4" fill="#ffd84d"/></svg>',
     jujube: '<svg viewBox="0 0 120 120"><circle cx="42" cy="64" r="22" fill="#c9e46a"/><path d="M42 64m-4.4 -22a22 22 0 0 1 24.200000000000003 33.0c-13.2 -4.4 -22 -17.6 -24.200000000000003 -33.0Z" fill="#b97a3a" opacity=".55"/><circle cx="34.3" cy="56.3" r="4.4" fill="#eaf8b0"/><circle cx="78" cy="70" r="20" fill="#c9e46a"/><path d="M78 70m-4.0 -20a20 20 0 0 1 22.0 30.0c-12.0 -4.0 -20 -16.0 -22.0 -30.0Z" fill="#b97a3a" opacity=".55"/><circle cx="71.0" cy="63.0" r="4.0" fill="#eaf8b0"/><circle cx="62" cy="96" r="15" fill="#c9e46a"/><path d="M62 96m-3.0 -15a15 15 0 0 1 16.5 22.5c-9.0 -3.0 -15 -12.0 -16.5 -22.5Z" fill="#b97a3a" opacity=".55"/><circle cx="56.75" cy="90.75" r="3.0" fill="#eaf8b0"/><path transform="rotate(-20 60 30)" d="M60 30c10-8 24-6 30-2-6 10-20 12-30 2Z" fill="#6be59c"/><path d="M42 42Q44 36 58 30" stroke="#8a5a2b" stroke-width="4" stroke-linecap="round" fill="none"/></svg>',
     neem: '<svg viewBox="0 0 120 120"><path d="M26 102Q56 66 92 22" stroke="#8a5a2b" stroke-width="3.4" fill="none" stroke-linecap="round"/><ellipse cx="30.0" cy="96.0" rx="13" ry="4.2" fill="#2fbf6f" transform="rotate(-114 30.0 96.0) translate(12 0)"/><ellipse cx="30.0" cy="96.0" rx="13" ry="4.2" fill="#3fa85e" transform="rotate(6 30.0 96.0) translate(12 0)"/><ellipse cx="41.2" cy="82.0" rx="13" ry="4.2" fill="#2fbf6f" transform="rotate(-114 41.2 82.0) translate(12 0)"/><ellipse cx="41.2" cy="82.0" rx="13" ry="4.2" fill="#3fa85e" transform="rotate(6 41.2 82.0) translate(12 0)"/><ellipse cx="52.4" cy="68.0" rx="13" ry="4.2" fill="#2fbf6f" transform="rotate(-114 52.4 68.0) translate(12 0)"/><ellipse cx="52.4" cy="68.0" rx="13" ry="4.2" fill="#3fa85e" transform="rotate(6 52.4 68.0) translate(12 0)"/><ellipse cx="63.6" cy="54.0" rx="13" ry="4.2" fill="#2fbf6f" transform="rotate(-114 63.6 54.0) translate(12 0)"/><ellipse cx="63.6" cy="54.0" rx="13" ry="4.2" fill="#3fa85e" transform="rotate(6 63.6 54.0) translate(12 0)"/><ellipse cx="74.8" cy="40.0" rx="13" ry="4.2" fill="#2fbf6f" transform="rotate(-114 74.8 40.0) translate(12 0)"/><ellipse cx="74.8" cy="40.0" rx="13" ry="4.2" fill="#3fa85e" transform="rotate(6 74.8 40.0) translate(12 0)"/><ellipse cx="86.0" cy="26.0" rx="13" ry="4.2" fill="#2fbf6f" transform="rotate(-114 86.0 26.0) translate(12 0)"/><ellipse cx="86.0" cy="26.0" rx="13" ry="4.2" fill="#3fa85e" transform="rotate(6 86.0 26.0) translate(12 0)"/><ellipse cx="94" cy="20" rx="11" ry="4" fill="#6be59c" transform="rotate(-52 94 20)"/><path d="M60 70q8 2 16 8M76 78l2 22M76 80l-10 8" stroke="#8a5a2b" stroke-width="1.6" fill="none"/><ellipse cx="70" cy="78" rx="4.6" ry="6.2" fill="#c9df4a"/><ellipse cx="68.6" cy="76" rx="1.4" ry="2" fill="#eef8b0" opacity=".8"/><ellipse cx="80" cy="82" rx="4.6" ry="6.2" fill="#c9df4a"/><ellipse cx="78.6" cy="80" rx="1.4" ry="2" fill="#eef8b0" opacity=".8"/><ellipse cx="74" cy="90" rx="4.6" ry="6.2" fill="#c9df4a"/><ellipse cx="72.6" cy="88" rx="1.4" ry="2" fill="#eef8b0" opacity=".8"/><ellipse cx="84" cy="92" rx="4.6" ry="6.2" fill="#c9df4a"/><ellipse cx="82.6" cy="90" rx="1.4" ry="2" fill="#eef8b0" opacity=".8"/><ellipse cx="66" cy="88" rx="4.6" ry="6.2" fill="#c9df4a"/><ellipse cx="64.6" cy="86" rx="1.4" ry="2" fill="#eef8b0" opacity=".8"/><ellipse cx="78" cy="100" rx="4.6" ry="6.2" fill="#c9df4a"/><ellipse cx="76.6" cy="98" rx="1.4" ry="2" fill="#eef8b0" opacity=".8"/></svg>',
+    pepper: '<svg viewBox="0 0 120 120"><g transform="translate(-14 6) rotate(-16 44 70)"><path d="M26 62c0-11 9-16 20-16s20 5 20 16c0 9-3 17-8 23-4 6-9 11-12 11s-8-5-12-11c-5-6-8-14-8-23Z" fill="#ffc83d"/><path d="M33 56c3-4 9-6 13-6M46 50v40" stroke="#e0a21a" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M36 48c5-5 15-5 20 0-6 3-14 3-20 0Z" fill="#2fbf6f"/></g><path d="M34 60c0-14 12-20 26-20s26 6 26 20c0 12-4 22-10 30-6 8-12 14-16 14s-10-6-16-14c-6-8-10-18-10-30Z" fill="#ff4f3a"/><path d="M48 52c0 14 2 30 8 46M72 52c0 14-2 30-8 46" stroke="#c9301f" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".7"/><ellipse cx="45" cy="60" rx="5" ry="9" fill="#fff" opacity=".3" transform="rotate(14 45 60)"/><path d="M44 43c6-6 26-6 32 0-8 4-24 4-32 0Z" fill="#2fbf6f"/><path d="M60 41c0-8 4-14 12-18" stroke="#1d7a44" stroke-width="5" stroke-linecap="round" fill="none"/></svg>',
+    root: '<svg viewBox="0 0 120 120"><path d="M58 46c-6-12 0-24 14-28 2 12-4 22-14 28Z" fill="#2fbf6f"/><path d="M60 46c2-10 10-16 20-16-2 10-10 16-20 16Z" fill="#6be59c"/><path d="M14 76c4-18 26-30 48-30s40 8 42 18c2 12-14 24-42 26-24 2-44 0-48-14Z" fill="#b2456e"/><path d="M22 68c10-12 28-16 44-16 14 0 28 4 32 10-14-4-52-4-76 6Z" fill="#d46a8f" opacity=".85"/><path d="M104 64c5 0 9-3 11-7M14 78c-4 2-8 2-10 0" stroke="#8a2f52" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M36 74l4 3M54 80l4 2M72 76l3 3M86 70l3 2M48 64l3 2" stroke="#7a2446" stroke-width="2.4" stroke-linecap="round"/></svg>',
+    okra: '<svg viewBox="0 0 120 120"><g transform="rotate(16 74 60)"><path d="M70 24c6 0 10 4 10 10 0 22-6 48-18 66-2 3-6 2-6-2 0-24 3-50 8-70 1-3 3-4 6-4Z" fill="#3fa85e"/><path d="M73 30c0 22-4 46-12 64" stroke="#6be59c" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".7"/><path d="M64 20h14l-2 8h-10Z" fill="#1d7a44"/><path d="M71 20v-8" stroke="#1d7a44" stroke-width="4" stroke-linecap="round"/></g><g transform="rotate(-12 44 60)"><path d="M40 22c6 0 10 4 10 10 0 22-6 50-20 70-2 3-6 2-6-2 0-26 4-52 10-74 1-3 3-4 6-4Z" fill="#4fbf5a"/><path d="M43 28c0 22-4 48-14 68" stroke="#a8f0b8" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".7"/><path d="M38 24c-2 20-6 44-12 62" stroke="#2f8f45" stroke-width="2" fill="none" stroke-linecap="round" opacity=".6"/><path d="M34 18h14l-2 8h-10Z" fill="#1d7a44"/><path d="M41 18v-8" stroke="#1d7a44" stroke-width="4" stroke-linecap="round"/></g></svg>',
+    pumpkin: '<svg viewBox="0 0 120 120"><path d="M70 36c10-12 26-12 32-4-10 8-22 10-32 4Z" fill="#2fbf6f"/><ellipse cx="60" cy="72" rx="46" ry="32" fill="#ff8a1f"/><ellipse cx="60" cy="72" rx="30" ry="32" fill="#ffa53a"/><ellipse cx="60" cy="72" rx="12" ry="32" fill="#ffb84f"/><path d="M30 46c-8 8-8 44 0 52M90 46c8 8 8 44 0 52M48 41c-4 10-4 52 0 62M72 41c4 10 4 52 0 62" stroke="#d96a0c" stroke-width="2.4" fill="none" opacity=".7"/><ellipse cx="44" cy="58" rx="6" ry="10" fill="#fff" opacity=".22" transform="rotate(20 44 58)"/><path d="M57 42c0-8 2-14 8-18l6 4c-4 4-6 8-6 14Z" fill="#6b8e23"/></svg>',
+    cane: '<svg viewBox="0 0 120 120"><g transform="translate(46 66) rotate(-14)"><rect x="-6" y="-50" width="12" height="100" rx="6" fill="#9fb83a"/><rect x="-7" y="-26" width="14" height="4" rx="2" fill="#6d8424"/><rect x="-7" y="2" width="14" height="4" rx="2" fill="#6d8424"/><rect x="-7" y="30" width="14" height="4" rx="2" fill="#6d8424"/><path d="M-3-46v92" stroke="#d8ec7a" stroke-width="2.4" opacity=".6"/></g><g transform="translate(74 70) rotate(10)"><rect x="-6" y="-46" width="12" height="94" rx="6" fill="#b8476e"/><rect x="-7" y="-22" width="14" height="4" rx="2" fill="#7f2a4b"/><rect x="-7" y="6" width="14" height="4" rx="2" fill="#7f2a4b"/><rect x="-7" y="32" width="14" height="4" rx="2" fill="#7f2a4b"/><path d="M-3-42v86" stroke="#e58aab" stroke-width="2.4" opacity=".6"/></g><path d="M36 20c-10-6-22-6-28 0 10 0 20 2 28 6ZM40 18c4-10 14-14 24-12-8 4-16 8-20 16ZM82 24c8-8 20-10 28-6-10 2-18 6-24 12Z" fill="#2fbf6f"/></svg>',
+    tomato: '<svg viewBox="0 0 120 120"><path d="M24 68c0-20 16-34 36-34s36 14 36 34-16 36-36 36-36-16-36-36Z" fill="#ff3d3d"/><path d="M44 40c-10 8-14 22-12 36M76 40c10 8 14 22 12 36" stroke="#d42424" stroke-width="2.4" fill="none" opacity=".6"/><ellipse cx="44" cy="56" rx="8" ry="5" fill="#fff" opacity=".35" transform="rotate(-30 44 56)"/><path d="M60 34l5 7 10-2-6 7 9 5-11 1-1 9-6-7-6 7-1-9-11-1 9-5-6-7 10 2Z" fill="#2fbf6f"/><path d="M60 36v-12" stroke="#1d7a44" stroke-width="4" stroke-linecap="round"/></svg>',
   };
-  var TONE = { soursop: "", sugarapple: "", pot: "", citrus: "m", mango: "m", pineapple: "m", strawbag: "m", cake: "m", candle: "", coconut: "", jar: "h", heart: "h", gift: "h", sapodilla: "m", guava: "h", pod: "m", tree: "", palm: "", seagrape: "", hibiscus: "h", herb: "", aloe: "", starfruit: "m", banana: "m", plantain: "", papaya: "m", avocado: "", pomegranate: "h", lychee: "h", longan: "m", jackfruit: "", breadfruit: "", cherry: "h", passionfruit: "h", ackee: "h", guinep: "", starapple: "h", mamey: "m", canistel: "m", plum: "h", redplum: "h", goldplum: "m", loquat: "m", berry: "h", cashew: "m", noni: "", malayapple: "h", roseapple: "m", gooseberry: "", custard: "m", almond: "", natal: "h", jujube: "", neem: "" };
+  var TONE = { soursop: "", sugarapple: "", pot: "", citrus: "m", mango: "m", pineapple: "m", strawbag: "m", cake: "m", candle: "", coconut: "", jar: "h", heart: "h", gift: "h", sapodilla: "m", guava: "h", pod: "m", tree: "", palm: "", seagrape: "", hibiscus: "h", herb: "", aloe: "", starfruit: "m", banana: "m", plantain: "", papaya: "m", avocado: "", pomegranate: "h", lychee: "h", longan: "m", jackfruit: "", breadfruit: "", cherry: "h", passionfruit: "h", ackee: "h", guinep: "", starapple: "h", mamey: "m", canistel: "m", plum: "h", redplum: "h", goldplum: "m", loquat: "m", berry: "h", cashew: "m", noni: "", malayapple: "h", roseapple: "m", gooseberry: "", custard: "m", almond: "", natal: "h", jujube: "", neem: "", pepper: "h", root: "m", okra: "", pumpkin: "m", cane: "", tomato: "h" };
   function art(key) { return '<div class="art-bg ' + (TONE[key] || "") + '">' + (ART[key] || ART.sugarapple) + "</div>"; }
 
   /* ---------- shared header + footer ---------- */
-  var NAV = [["index.html", "Market"], ["nursery.html", "Nursery"], ["join.html", "Join"]];
+  var NAV = [["index.html", "Market"], ["nursery.html", "Nursery"], ["produce.html", "Local Produce"], ["join.html", "Join"]];
   function header() {
     var items = M.comingSoon ? M.stripe : nextMarketStripe();
     var run = items.map(function (s) { return "<span>" + esc(s) + "</span>"; }).join("");
@@ -151,7 +157,7 @@ var COMPASS = (function () {
   function footer() {
     return '<div class="bs-band" aria-hidden="true"></div><div class="wrap"><div><a class="brand" href="index.html">' + BRAND + "<span><b>Almond Tree Market</b><small>" + esc(M.place) + "</small></span></a>" +
       "<p>A native market for Abaco growers and makers. Fruit, plants, straw work, candles, sauces and sweets, Monday to Saturday under the almond tree.</p></div>" +
-      '<div><h4>Market</h4><ul><li><a href="nursery.html">Native nursery</a></li><li><a href="join.html">Become a vendor</a></li><li><a href="' + M.nextDoor + '">Hungry? Food next door ↗</a></li></ul></div>' +
+      '<div><h4>Market</h4><ul><li><a href="nursery.html">Native nursery</a></li><li><a href="produce.html">Local produce</a></li><li><a href="join.html">Become a vendor</a></li><li><a href="' + M.nextDoor + '">Hungry? Food next door ↗</a></li></ul></div>' +
       '<div><h4>Contact</h4><ul><li><a href="' + wa("Hi! I have a question about Almond Tree Market.") + '" target="_blank" rel="noopener">WhatsApp ' + esc(M.phoneDisplay) + "</a></li>" +
       '<li><a href="mailto:' + M.email + '">' + esc(M.email) + '</a></li><li><a href="' + M.instagram + '" target="_blank" rel="noopener">Instagram</a> · <a href="' + M.facebook + '" target="_blank" rel="noopener">Facebook</a></li>' +
       '<li><a href="' + M.mapsLink + '" target="_blank" rel="noopener">Directions · GWPQ+WQ</a></li></ul></div>' +
@@ -337,14 +343,17 @@ var COMPASS = (function () {
 
   /* shared with js/shop.js */
   window.ATM = { ART: ART, art: art, esc: esc, wa: wa, upcoming: upcoming, longDate: longDate, MON: MON, t12: t12 };
-/* the nursery sign sits in the hero text on wide screens, and just above the nursery window on narrow ones */
+/* each hanging sign (Native Nursery, Local Produce) sits in its hero text on wide screens,
+   and just above its own window on narrow ones */
 (function () {
-  var sign = document.querySelector(".nursery-sign"), side = document.querySelector(".hero-side"), text = document.querySelector(".hero-text");
-  if (!sign || !side || !text) return;
   var mq = matchMedia("(max-width: 960px)");
-  var place = function () { if (mq.matches) side.insertBefore(sign, side.firstChild); else text.insertBefore(sign, text.firstChild); };
-  place();
-  if (mq.addEventListener) mq.addEventListener("change", place); else mq.addListener(place);
+  Array.prototype.forEach.call(document.querySelectorAll(".hero"), function (hero) {
+    var sign = hero.querySelector(".nursery-sign"), side = hero.querySelector(".hero-side"), text = hero.querySelector(".hero-text");
+    if (!sign || !side || !text) return;
+    var place = function () { if (mq.matches) side.insertBefore(sign, side.firstChild); else text.insertBefore(sign, text.firstChild); };
+    place();
+    if (mq.addEventListener) mq.addEventListener("change", place); else mq.addListener(place);
+  });
 })();
 /* almond leaf: drifts down from the top of the hero on page load and lands at spot A.
    Click or tap it and it flutters over to spot B; click again and it flutters back to A, and so on.
@@ -419,10 +428,10 @@ var COMPASS = (function () {
     fly(from, at ? P.b : P.a, false);
   });
 })();
-/* palm hover: a gust each time; the third gust drops a coconut on a passer-by, then it all starts over */
-(function () {
-  var tree = document.querySelector(".ns-tree");
-  if (!tree || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+/* tree hover (the coconut palm and the mango tree): a gust each time; the third gust drops a coconut
+   (or a mango) on a passer-by, then it all starts over */
+Array.prototype.forEach.call(document.querySelectorAll(".ns-tree"), function (tree) {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   var count = 0, busy = false;
   tree.addEventListener("mouseenter", function () {
     if (busy) return;
@@ -434,8 +443,8 @@ var COMPASS = (function () {
     setTimeout(function () { tree.classList.remove("gust"); if (!drop) busy = false; }, 1650);
     if (drop) setTimeout(function () { tree.classList.remove("drop"); busy = false; }, 6050);
   });
-})();
-  if (window.ATM_SHOP) window.ATM_SHOP();
+});
+  if (window.ATM_SHOP) { window.ATM_SHOP(window.ATM_SHOP.NURSERY); window.ATM_SHOP(window.ATM_SHOP.PRODUCE); }
 
   /* ---------- reveal on scroll ---------- */
   if ("IntersectionObserver" in window) {

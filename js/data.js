@@ -277,6 +277,158 @@ window.PLANTS = [
 ];
 
 /* --------------------------------------------------------------------------
+   LOCAL PRODUCE — the fruit (and a few island vegetables) on produce.html.
+   Sold by the piece, not by the pound. Works just like the nursery:
+
+   sizes:  how each item is sold, each with its own price and how many are ready:
+             sizes: [{ pot: "Each", price: 0, qty: 0 }]
+             sizes: [{ pot: "Each", price: 0, qty: 0 }, { pot: "Hand", price: 0, qty: 0 }]
+           pot    the selling unit: Each, Hand, Bunch, Bag, Stalk, Jelly, Dry ...
+           price  Bahamian dollars. 0 shows "Price on request"
+           qty    how many are ready. 0 shows "Out of stock"
+   care:   shown as "Season" in the details
+   art:    the cartoon (also the mouse pointer over the photo), same set as the nursery
+   aliases: other names people search for (and the names your register might use)
+
+   Live stock: add the fruit in the Plant Collective register as kind "Produce", counted by "each"
+   (or with a size like "Hand" or "Bag"), named like the card (e.g. "Haden mango", "Key lime").
+   The page then shows the register's prices and counts.
+   -------------------------------------------------------------------------- */
+window.PRODUCE_CATS = ["Mangoes", "Island fruit", "Citrus", "Bananas, coconuts & pineapples", "Wild & native fruit", "Peppers, peas & provisions"];
+
+window.PRODUCE = [
+  /* Mangoes: one card per variety */
+  { id: "mango-haden", featured: true, img: "/img/produce/mango-haden.jpg", name: "Haden mango", latin: "Mangifera indica 'Haden'", cat: "Mangoes", art: "mango", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["haden", "hayden", "hayden mango", "mango"],
+    text: "The classic Bahamian yard mango: red blush over yellow, sweet and juicy with a little fibre.", care: "May to July." },
+  { id: "mango-kent", img: "/img/produce/mango-kent.jpg", name: "Kent mango", latin: "Mangifera indica 'Kent'", cat: "Mangoes", art: "mango", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["kent"],
+    text: "Big, green with a red blush, rich and sweet with almost no strings. Great for slicing.", care: "July to September." },
+  { id: "mango-keitt", img: "/img/produce/mango-keitt.jpg", name: "Keitt mango", latin: "Mangifera indica 'Keitt'", cat: "Mangoes", art: "mango", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["keitt", "keith mango"],
+    text: "Stays green even when it's ripe. Huge, firm and sweet: the last mango of the summer.", care: "August to October." },
+  { id: "mango-julie", img: "/img/produce/mango-julie.jpg", name: "Julie mango", latin: "Mangifera indica 'Julie'", cat: "Mangoes", art: "mango", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["julie", "st julian"],
+    text: "Small, flat and fragrant: the old Caribbean favourite, spicy-sweet with a little tang.", care: "June to August." },
+  { id: "mango-number11", img: "/img/produce/mango-number11.jpg", name: "Number 11 mango", latin: "Mangifera indica", cat: "Mangoes", art: "mango", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["number eleven", "no 11", "no. 11", "turpentine mango", "yard mango"],
+    text: "The old island mango: small, stringy and full of flavour. Squeeze it soft and suck it off the seed.", care: "May to August." },
+
+  /* Island fruit */
+  { id: "soursop", featured: true, img: "/img/produce/soursop.jpg", name: "Soursop", latin: "Annona muricata", cat: "Island fruit", art: "soursop", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["guanabana", "graviola"],
+    text: "Spiky green outside, creamy and tangy inside. Soursop juice, ice cream and punch.", care: "Summer into fall." },
+  { id: "sugarapple", img: "/img/produce/sugarapple.jpg", name: "Sugar apple", latin: "Annona squamosa", cat: "Island fruit", art: "sugarapple", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["sweetsop"],
+    text: "Bumpy, sweet and custardy. Pull it apart when it gives a little and eat it with a spoon.", care: "July to October." },
+  { id: "custardapple", img: "/img/produce/custardapple.jpg", name: "Custard apple (bullock's heart)", latin: "Annona reticulata", cat: "Island fruit", art: "custard", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["bullocks heart", "custard apple"],
+    text: "Smooth reddish skin and soft sweet flesh, a cousin of the sugar apple.", care: "Winter into spring." },
+  { id: "sapodilla", img: "/img/produce/sapodilla.jpg", name: "Sapodilla (dilly)", latin: "Manilkara zapota", cat: "Island fruit", art: "sapodilla", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["dilly", "naseberry"],
+    text: "The Bahamian dilly: brown sugar and pear flavour, eaten soft and ripe.", care: "Most of the year, best in winter and spring." },
+  { id: "guava", img: "/img/produce/guava.jpg", name: "Guava", latin: "Psidium guajava", cat: "Island fruit", art: "guava", sizes: [{ pot: "Each", price: 0, qty: 0 }],
+    text: "Fragrant pink guava for guava duff, jam and juice.", care: "Summer into fall." },
+  { id: "guinep", img: "/img/plants/guinep.jpg", name: "Guinep", latin: "Melicoccus bijugatus", cat: "Island fruit", art: "guinep", sizes: [{ pot: "Bunch", price: 0, qty: 0 }], aliases: ["genip", "kenep", "spanish lime"],
+    text: "Crack the green shell, suck the sweet-tart pulp. A summer bunch for the road.", care: "July to September." },
+  { id: "starapple", img: "/img/produce/starapple.jpg", name: "Star apple", latin: "Chrysophyllum cainito", cat: "Island fruit", art: "starapple", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["caimito"],
+    text: "Cut it across and see the star. Purple, milky and sweet.", care: "January to April." },
+  { id: "mameysapote", img: "/img/produce/mameysapote.jpg", name: "Mamey sapote", latin: "Pouteria sapota", cat: "Island fruit", art: "mamey", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["mamey", "mammee sapote"],
+    text: "Rough brown skin, salmon-red flesh like sweet potato pie. Great in milkshakes.", care: "Spring into summer." },
+  { id: "canistel", img: "/img/plants/canistel.jpg", name: "Canistel (egg fruit)", latin: "Pouteria campechiana", cat: "Island fruit", art: "canistel", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["egg fruit", "eggfruit"],
+    text: "Golden, rich and dense like a cooked egg yolk. Lovely in smoothies.", care: "Fall into winter." },
+  { id: "jackfruit", img: "/img/produce/jackfruit.jpg", name: "Jackfruit", latin: "Artocarpus heterophyllus", cat: "Island fruit", art: "jackfruit", sizes: [{ pot: "Each", price: 0, qty: 0 }],
+    text: "The giant one: sweet golden pods when ripe, or cook it young.", care: "Summer." },
+  { id: "breadfruit", img: "/img/plants/breadfruit.jpg", name: "Breadfruit", latin: "Artocarpus altilis", cat: "Island fruit", art: "breadfruit", sizes: [{ pot: "Each", price: 0, qty: 0 }],
+    text: "Roast it, fry it, boil it: the island's starch straight off the tree.", care: "Summer into fall." },
+  { id: "ackee", img: "/img/plants/ackee.jpg", name: "Ackee", latin: "Blighia sapida", cat: "Island fruit", art: "ackee", sizes: [{ pot: "Each", price: 0, qty: 0 }],
+    text: "Picked only when the pods open on their own. For ackee and saltfish.", care: "Winter to spring, and again in summer." },
+  { id: "papaya", img: "/img/produce/papaya.jpg", name: "Papaya (pawpaw)", latin: "Carica papaya", cat: "Island fruit", art: "papaya", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["pawpaw"],
+    text: "Sweet orange pawpaw for breakfast, or green for chutney.", care: "All year." },
+  { id: "avocado", img: "/img/produce/avocado.jpg", name: "Avocado (pear)", latin: "Persea americana", cat: "Island fruit", art: "avocado", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["pear", "alligator pear", "avocado pear"],
+    text: "Big, buttery island pears. More varieties coming soon.", care: "July to December." },
+  { id: "starfruit", img: "/img/produce/starfruit.jpg", name: "Star fruit (five finger)", latin: "Averrhoa carambola", cat: "Island fruit", art: "starfruit", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["carambola", "five finger"],
+    text: "Slice it into stars: juicy, crisp, sweet and a little tart.", care: "Fall to spring." },
+  { id: "passionfruit", img: "/img/produce/passionfruit.jpg", name: "Passion fruit", latin: "Passiflora edulis", cat: "Island fruit", art: "passionfruit", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["granadilla"],
+    text: "Wrinkly purple shells full of tangy, perfumed pulp for juice.", care: "Summer into fall." },
+  { id: "tamarind", img: "/img/produce/tamarind.jpg", name: "Tamarind", latin: "Tamarindus indica", cat: "Island fruit", art: "pod", sizes: [{ pot: "Bag", price: 0, qty: 0 }], aliases: ["tambran"],
+    text: "Sweet-sour pods for tamarind balls, drinks and sauce.", care: "Winter into spring." },
+  { id: "pomegranate", img: "/img/produce/pomegranate.jpg", name: "Pomegranate", latin: "Punica granatum", cat: "Island fruit", art: "pomegranate", sizes: [{ pot: "Each", price: 0, qty: 0 }],
+    text: "Jewel-red seeds, sweet and tart.", care: "Fall." },
+  { id: "lychee", img: "/img/plants/lychee.jpg", name: "Lychee", latin: "Litchi chinensis", cat: "Island fruit", art: "lychee", sizes: [{ pot: "Bag", price: 0, qty: 0 }], aliases: ["litchi"],
+    text: "Peel the red shell for sweet, floral, juicy fruit. A short, special season.", care: "May to June." },
+  { id: "longan", img: "/img/plants/longan.jpg", name: "Longan", latin: "Dimocarpus longan", cat: "Island fruit", art: "longan", sizes: [{ pot: "Bag", price: 0, qty: 0 }],
+    text: "The lychee's cousin: little tan fruit, sweet and juicy.", care: "July to August." },
+  { id: "jujube", img: "/img/produce/jujube.jpg", name: "Jujube (dunks)", latin: "Ziziphus mauritiana", cat: "Island fruit", art: "jujube", sizes: [{ pot: "Bag", price: 0, qty: 0 }], aliases: ["dunks", "dunk", "jujubee"],
+    text: "Bahamian dunks: crunchy, sweet-tart little fruit. A bag goes fast.", care: "December to March." },
+  { id: "surinamcherry", img: "/img/plants/surinamcherry.jpg", name: "Surinam cherry", latin: "Eugenia uniflora", cat: "Island fruit", art: "cherry", sizes: [{ pot: "Bag", price: 0, qty: 0 }], aliases: ["pitanga"],
+    text: "Little ribbed red cherries, sweet with a spicy kick.", care: "Spring." },
+  { id: "barbadoscherry", img: "/img/produce/barbadoscherry.jpg", name: "Barbados cherry (acerola)", latin: "Malpighia emarginata", cat: "Island fruit", art: "cherry", sizes: [{ pot: "Bag", price: 0, qty: 0 }], aliases: ["acerola", "west indian cherry"],
+    text: "Bright red, tart and packed with vitamin C.", care: "Spring into fall." },
+  { id: "gooseberry", img: "/img/produce/gooseberry.jpg", name: "Gooseberry", latin: "Phyllanthus acidus", cat: "Island fruit", art: "gooseberry", sizes: [{ pot: "Bag", price: 0, qty: 0 }], aliases: ["otaheite gooseberry", "jimbilin"],
+    text: "Sour little pale-green berries for pickles, jam and syrup.", care: "Spring." },
+  { id: "malayapple", img: "/img/plants/malayapple.jpg", name: "Otaheite apple (Malay apple)", latin: "Syzygium malaccense", cat: "Island fruit", art: "malayapple", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["otaheite apple", "malay apple", "pommerac"],
+    text: "Glossy red, crisp and juicy like a watery pear.", care: "Spring into summer." },
+  { id: "roseapple", img: "/img/plants/roseapple.jpg", name: "Rose apple", latin: "Syzygium jambos", cat: "Island fruit", art: "roseapple", sizes: [{ pot: "Each", price: 0, qty: 0 }],
+    text: "Light and crunchy, and it really does taste like roses.", care: "Spring into summer." },
+  { id: "juneplum", img: "/img/produce/juneplum.jpg", name: "June plum (golden apple)", latin: "Spondias dulcis", cat: "Island fruit", art: "goldplum", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["golden apple", "ambarella", "june plum"],
+    text: "Crunchy and tart when green, sweet when golden. Great for juice.", care: "Fall into winter." },
+  { id: "spanishplum", img: "/img/produce/spanishplum.jpg", name: "Spanish plum (hog plum)", latin: "Spondias purpurea", cat: "Island fruit", art: "redplum", sizes: [{ pot: "Bag", price: 0, qty: 0 }], aliases: ["hog plum", "jocote", "scarlet plum"],
+    text: "Little red and yellow plums, sweet and tangy.", care: "Spring into summer." },
+  { id: "loquat", img: "/img/produce/loquat.jpg", name: "Loquat", latin: "Eriobotrya japonica", cat: "Island fruit", art: "loquat", sizes: [{ pot: "Bag", price: 0, qty: 0 }], aliases: ["japanese plum"],
+    text: "Small orange fruit, sweet-tart like apricot.", care: "Winter into spring." },
+  { id: "mulberry", img: "/img/plants/mulberry.jpg", name: "Mulberry", latin: "Morus nigra", cat: "Island fruit", art: "berry", sizes: [{ pot: "Bag", price: 0, qty: 0 }],
+    text: "Dark, sweet berries straight off the tree. Messy and worth it.", care: "Spring." },
+  { id: "mammeeapple", img: "/img/plants/mammeeapple.jpg", name: "Mammee apple", latin: "Mammea americana", cat: "Island fruit", art: "mamey", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["mamey apple"],
+    text: "Round and russet with firm apricot-like flesh, for preserves.", care: "Summer." },
+
+  /* Citrus */
+  { id: "keylime", featured: true, img: "/img/plants/keylime.jpg", name: "Key lime", latin: "Citrus aurantiifolia", cat: "Citrus", art: "citrus", sizes: [{ pot: "Each", price: 0, qty: 0 }, { pot: "Bag", price: 0, qty: 0 }], aliases: ["lime", "bahamian lime"],
+    text: "Small, juicy island limes for conch salad, souse and switcha.", care: "All year, heaviest in summer." },
+  { id: "persianlime", img: "/img/plants/persianlime.jpg", name: "Persian lime", latin: "Citrus × latifolia", cat: "Citrus", art: "citrus", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["tahiti lime"],
+    text: "The bigger, seedless lime.", care: "Most of the year." },
+  { id: "sourorange", img: "/img/plants/sourorange.jpg", name: "Sour orange", latin: "Citrus aurantium", cat: "Citrus", art: "citrus", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["seville orange", "bitter orange"],
+    text: "The one for marinating fish and chicken, and for marmalade.", care: "Winter." },
+  { id: "sweetorange", img: "/img/plants/sweetorange.jpg", name: "Sweet orange", latin: "Citrus × sinensis", cat: "Citrus", art: "citrus", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["orange"],
+    text: "Juicy island oranges for squeezing.", care: "Winter." },
+  { id: "grapefruit", img: "/img/plants/grapefruit.jpg", name: "Grapefruit", latin: "Citrus × paradisi", cat: "Citrus", art: "citrus", sizes: [{ pot: "Each", price: 0, qty: 0 }],
+    text: "Big, juicy and sweet-tart.", care: "Winter." },
+  { id: "tangerine", img: "/img/plants/tangerine.jpg", name: "Tangerine", latin: "Citrus reticulata", cat: "Citrus", art: "citrus", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["mandarin"],
+    text: "Easy to peel and sweet.", care: "Winter." },
+  { id: "lemon", img: "/img/produce/lemon.jpg", name: "Lemon", latin: "Citrus limon", cat: "Citrus", art: "citrus", sizes: [{ pot: "Each", price: 0, qty: 0 }],
+    text: "Island lemons for lemonade and cooking.", care: "All year." },
+
+  /* Bananas, coconuts & pineapples */
+  { id: "banana", img: "/img/produce/banana.jpg", name: "Banana", latin: "Musa acuminata", cat: "Bananas, coconuts & pineapples", art: "banana", sizes: [{ pot: "Each", price: 0, qty: 0 }, { pot: "Hand", price: 0, qty: 0 }], aliases: ["fig", "bananas"],
+    text: "Sweet yard bananas, one at a time or by the hand.", care: "All year." },
+  { id: "plantain", img: "/img/produce/plantain.jpg", name: "Plantain", latin: "Musa × paradisiaca", cat: "Bananas, coconuts & pineapples", art: "plantain", sizes: [{ pot: "Each", price: 0, qty: 0 }],
+    text: "Green for chips, yellow-black for sweet fried plantain.", care: "All year." },
+  { id: "coconut", img: "/img/produce/coconut.jpg", name: "Coconut", latin: "Cocos nucifera", cat: "Bananas, coconuts & pineapples", art: "coconut", sizes: [{ pot: "Jelly", price: 0, qty: 0 }, { pot: "Dry", price: 0, qty: 0 }], aliases: ["jelly coconut", "dry coconut", "green coconut"],
+    text: "Green jelly coconuts for the water and jelly, or dry coconuts for grating.", care: "All year." },
+  { id: "pineapple", featured: true, img: "/img/produce/pineapple.jpg", name: "Pineapple", latin: "Ananas comosus", cat: "Bananas, coconuts & pineapples", art: "pineapple", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["eleuthera pineapple", "sugarloaf"],
+    text: "Sweet Bahamian pineapple, the Eleuthera kind.", care: "Spring into summer." },
+
+  /* Wild & native fruit */
+  { id: "seagrape", img: "/img/plants/seagrape.jpg", name: "Seagrape", latin: "Coccoloba uvifera", cat: "Wild & native fruit", art: "seagrape", sizes: [{ pot: "Bunch", price: 0, qty: 0 }], aliases: ["sea grape"],
+    text: "Native beach grapes: purple, sweet and a little salty. Seagrape jelly and wine.", care: "Late summer into fall." },
+  { id: "cocoplum", img: "/img/plants/cocoplum.jpg", name: "Cocoplum", latin: "Chrysobalanus icaco", cat: "Wild & native fruit", art: "plum", sizes: [{ pot: "Bag", price: 0, qty: 0 }], aliases: ["coco plum"],
+    text: "Native little plums, white, pink or purple. Stewed cocoplums are a treat.", care: "Summer into fall." },
+  { id: "pigeonplum", img: "", name: "Pigeon plum", latin: "Coccoloba diversifolia", cat: "Wild & native fruit", art: "seagrape", sizes: [{ pot: "Bag", price: 0, qty: 0 }],
+    text: "Native coppice fruit: small, dark and sweet.", care: "Fall into winter." },
+
+  /* Peppers, peas & provisions */
+  { id: "goatpepper", img: "/img/produce/goatpepper.jpg", name: "Goat pepper", latin: "Capsicum chinense", cat: "Peppers, peas & provisions", art: "pepper", sizes: [{ pot: "Each", price: 0, qty: 0 }, { pot: "Bag", price: 0, qty: 0 }], aliases: ["scotch bonnet", "hot pepper"],
+    text: "The Bahamian hot pepper: fruity and fiery, for pepper sauce, souse and conch salad.", care: "All year." },
+  { id: "birdpepper", img: "/img/produce/birdpepper.jpg", name: "Bird pepper", latin: "Capsicum frutescens", cat: "Peppers, peas & provisions", art: "pepper", sizes: [{ pot: "Bag", price: 0, qty: 0 }], aliases: ["birds eye pepper"],
+    text: "Tiny and very hot, for pepper vinegar and sauce.", care: "All year." },
+  { id: "pigeonpeas", img: "/img/produce/pigeonpeas.jpg", name: "Pigeon peas", latin: "Cajanus cajan", cat: "Peppers, peas & provisions", art: "pod", sizes: [{ pot: "Bag", price: 0, qty: 0 }], aliases: ["peas", "gungo peas", "pigeon peas"],
+    text: "Fresh green pigeon peas in the pod, for peas 'n' rice and peas soup.", care: "November to March." },
+  { id: "sweetpotato", img: "/img/produce/sweetpotato.jpg", name: "Sweet potato", latin: "Ipomoea batatas", cat: "Peppers, peas & provisions", art: "root", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["potato"],
+    text: "Island sweet potatoes for potato bread, pie and roasting.", care: "All year." },
+  { id: "cassava", img: "", name: "Cassava", latin: "Manihot esculenta", cat: "Peppers, peas & provisions", art: "root", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["yuca", "manioc"],
+    text: "Fresh roots for cassava bread and boiling.", care: "All year." },
+  { id: "okra", img: "/img/produce/okra.jpg", name: "Okra", latin: "Abelmoschus esculentus", cat: "Peppers, peas & provisions", art: "okra", sizes: [{ pot: "Bag", price: 0, qty: 0 }], aliases: ["okro"],
+    text: "Tender pods for okra soup and okra 'n' rice.", care: "Summer." },
+  { id: "pumpkin", img: "", name: "Pumpkin", latin: "Cucurbita moschata", cat: "Peppers, peas & provisions", art: "pumpkin", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["calabaza", "squash"],
+    text: "Bahamian pumpkin for soup, pumpkin fritters and rice.", care: "Most of the year." },
+  { id: "sugarcane", img: "", name: "Sugar cane", latin: "Saccharum officinarum", cat: "Peppers, peas & provisions", art: "cane", sizes: [{ pot: "Stalk", price: 0, qty: 0 }], aliases: ["cane", "sugarcane"],
+    text: "Peel it and chew it: the old-time island sweet.", care: "Winter into spring." },
+  { id: "tomato", img: "/img/produce/tomato.jpg", name: "Tomato", latin: "Solanum lycopersicum", cat: "Peppers, peas & provisions", art: "tomato", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["tomatoes"],
+    text: "Vine-ripe island tomatoes.", care: "November to May." },
+];
+
+/* --------------------------------------------------------------------------
    EVENTS — special days only (the market itself is open Monday to Saturday).
    kind: "market" (green), "special" (mango), "holiday" (hibiscus), "fundraiser" (gold)
    -------------------------------------------------------------------------- */

@@ -82,13 +82,13 @@ section { padding: clamp(64px, 10vw, 128px) 0; position: relative; }
 .brand b { font: 800 1.02rem/1 var(--display); letter-spacing: .06em; text-transform: uppercase; }
 .brand small { display: block; font: 400 .64rem var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--mist); margin-top: .3rem; }
 .nav ul { display: flex; gap: .1rem; list-style: none; margin: 0; padding: 0; align-items: center; }
-.nav ul a { display: block; padding: .5em .65em; text-decoration: none; color: var(--mist); font-weight: 500; font-size: .94rem; position: relative; }
+.nav ul a { display: block; padding: .5em .65em; text-decoration: none; color: var(--mist); font-weight: 500; font-size: .94rem; position: relative; white-space: nowrap; }
 .nav ul a:hover, .nav ul a[aria-current="page"] { color: var(--cream); }
 .nav ul a[aria-current="page"]::after { content: ""; position: absolute; left: .65em; right: .65em; bottom: .1em; height: 2px; border-radius: 2px; background: var(--leaf); }
 .nav ul a.next { color: var(--mango); }
 .nav ul .btn { margin-left: .5rem; color: #241300; }
 .menu-btn { display: none; background: none; border: 1px solid var(--line); border-radius: 12px; width: 44px; height: 44px; color: var(--cream); cursor: pointer; place-items: center; }
-@media (max-width: 1100px) {
+@media (max-width: 1240px) {
   .menu-btn { display: grid; }
   .nav ul { position: absolute; left: 0; right: 0; top: 100%; flex-direction: column; align-items: stretch; background: var(--night); border-bottom: 1px solid var(--line); padding: .5rem 16px 1.1rem; display: none; }
   .nav ul.open { display: flex; }
@@ -860,3 +860,24 @@ header.nav .brand small { justify-content: center; }
   header.nav .brand { gap: .55rem; }
 }
 .live-pill { display: inline-block; margin-left: .4rem; padding: .15em .55em; border-radius: 999px; font: 500 .62rem var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--leaf); border: 1px solid #2c5a3f; }
+
+/* ================= HOME: Local Produce tile (same setup as the Native Nursery one, with a mango tree) ================= */
+.hero-produce { min-height: 0; border-top: 1px solid var(--line); }
+.hero-produce::before { background:
+  linear-gradient(180deg, var(--night) 0%, rgba(6,18,12,.72) 22%, rgba(6,18,12,.62) 45%, rgba(6,18,12,.9) 78%, var(--night) 100%), linear-gradient(90deg, rgba(6,18,12,.78), transparent 80%),
+  radial-gradient(70% 60% at 0% 100%, rgba(255,178,63,.18), transparent 60%); }
+.hero-produce > img { object-position: 50% 40%; }
+.hero-produce h2 { font-size: clamp(2rem, 4vw, 3.4rem); max-width: 17ch; margin: 1.3rem 0 1.2rem; }
+.hero-produce h2 em { font-style: normal; color: var(--mango); }
+.hero-produce h2 .lf { color: var(--leaf); }
+.grow-card .nc-photo img { object-position: 50% 60%; }
+@media (min-width: 961px) { .hero-produce .wrap.has-window { padding-top: 150px; padding-bottom: 64px; } }
+
+/* pickup fine print (24-hour hold) */
+.fine { font-size: .8rem; line-height: 1.45; color: var(--mist); text-align: left; margin: .2rem 0 0; }
+.fine b { color: var(--cream); font-weight: 600; }
+.fine sup { color: var(--mango); font-weight: 700; }
+.fine-star { display: block; margin-top: .35rem; font-size: .74rem; opacity: .9; }
+.conf .fine { justify-self: stretch; border: 1px dashed var(--line); border-radius: 14px; padding: .75rem .9rem; }
+.bform .fine { border-top: 1px dashed var(--line); padding-top: .7rem; }
+.how-fine { max-width: 900px; margin-top: .9rem; font-size: .84rem; }
