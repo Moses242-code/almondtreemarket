@@ -25,6 +25,17 @@ window.MARKET = {
     "Vendor registration now open",
   ],
 
+  /* Live plant stock from the Plant Collective register (pos.underthealmondtree.market).
+     The register shares its plant items (category "Plant"): name, pot size, price, count at the Shop and Nursery.
+     Name a register item like the plant here ("Sour orange") with the pot size in its Size field ("3 gal"),
+     or put the size in the name ("Sour orange 3 gal"). Matched plants show the register's sizes, prices and counts.
+     notInRegister: what to do with plants listed below that are NOT in the register yet:
+       "keep"    show them with the sizes, prices and counts typed in this file (for now)
+       "soldout" show them, but as sold out (Interested still works)
+       "hide"    leave them off the page
+     Set url to "" to switch the link off. The key is the register's public (publishable) key. */
+  posFeed: { url: "https://xevqwiubsfahyobtomwg.supabase.co", key: "sb_publishable_6hKsniWHTmCxoWw9SWc4QA_ww27czV-", notInRegister: "keep" },
+
   /* Plant shop pickup: the days the shop is open for QR pickups.
      0 = Sunday, 1 = Monday ... 6 = Saturday. hours: e.g. "8am to 5pm" (leave "" to hide). */
   nursery: { openDays: [1, 2, 3, 4, 5, 6], daysText: "Monday to Saturday", closedText: "closed Sunday", hours: "" },

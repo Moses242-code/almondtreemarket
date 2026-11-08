@@ -13,6 +13,77 @@ window.ATM_SHOP = function () {
     return Object.assign({}, p, { sizes: sizes });
   });
   var byId = {}; PLANTS.forEach(function (p) { byId[p.id] = p; });
+
+  /* ---------- live stock from the Plant Collective register (POS) ----------
+     The register shares a read-only list of its 'plant' items: name, pot size, price, how many are at the
+     Shop and Nursery. Each register item is matched to a plant here by name (e.g. "Sour orange" with size
+     "3 gal", or "Sour orange 3 gal"). Matched plants show the register's sizes, prices and counts instead of
+     the ones typed in data.js. Register plants that aren't listed here appear under "More plants".
+     If the register can't be reached, the page simply uses data.js. Settings: MARKET.posFeed in data.js. */
+  var F = M.posFeed || {}, LIVE = false;
+  var SIZE_RE = /(\d+(?:\.\d+)?)\s*-?\s*(?:gallons?|gal\.?|g)(?![a-z])/i;
+  function norm(s) { return String(s || "").toLowerCase().replace(/&/g, "and").replace(/[^a-z0-9]+/g, ""); }
+  function potLabel(r) {
+    var s = String(r.size || "").trim(), m = (s || String(r.name)).match(SIZE_RE);
+    if (m) return m[1] + " gal";
+    if (s) return s;
+    return r.unit === "pot" ? "Pot" : r.unit && r.unit !== "each" ? r.unit : "Each";
+  }
+  function baseName(r) { return String(r.name).replace(SIZE_RE, "").replace(/[\s,·\-–()]+$/, "").replace(/\(\s*\)/g, "").trim(); }
+  function gal(pot) { var m = /^(\d+(?:\.\d+)?) gal$/.exec(pot); return m ? +m[1] : Infinity; }
+  function mergeFeed(rows) {
+    if (!Array.isArray(rows)) return false;
+    var alias = {};
+    PLANTS.forEach(function (p) {
+      [p.id, p.name, p.name.replace(/\(.*?\)/g, ""), (p.name.match(/\((.*?)\)/) || [])[1], p.name.split(",")[0], p.latin].concat(p.aliases || [])
+        .forEach(function (a) { var k = norm(a); if (k && !alias[k]) alias[k] = p; });
+    });
+    var groups = {}, extras = {};
+    rows.forEach(function (r) {
+      if (!r || !r.name) return;
+      var key = norm(baseName(r)), p = alias[key];
+      var z = { pot: potLabel(r), price: Math.max(0, +r.price_cents || 0) / 100, qty: Math.max(0, parseInt(r.qty, 10) || 0) };
+      var bucket = p ? (groups[p.id] = groups[p.id] || []) : (extras[key] = extras[key] || { name: baseName(r), sizes: [] }).sizes;
+      var same = bucket.filter(function (x) { return x.pot === z.pot; })[0];
+      if (same) { same.qty += z.qty; if (!same.price) same.price = z.price; } else bucket.push(z);
+    });
+    var bySize = function (a, b) { return gal(a.pot) - gal(b.pot) || a.pot.localeCompare(b.pot); };
+    var mode = F.notInRegister || "keep";
+    PLANTS = PLANTS.filter(function (p) {
+      if (groups[p.id]) { p.sizes = groups[p.id].sort(bySize); p.live = true; return true; }
+      if (mode === "hide") return false;
+      if (mode === "soldout") p.sizes = p.sizes.map(function (z) { return { pot: z.pot, price: z.price, qty: 0 }; });
+      return true;
+    });
+    Object.keys(extras).forEach(function (k) {
+      var e = extras[k];
+      PLANTS.push({ id: "pos-" + k, name: e.name, latin: "", cat: "More plants", art: "pot", img: "", live: true, sizes: e.sizes.sort(bySize),
+        text: "At the nursery now. Tap Interested for a current photo or more about it.", care: "" });
+    });
+    if (Object.keys(extras).length && window.PLANT_CATS.indexOf("More plants") < 0) window.PLANT_CATS.push("More plants");
+    byId = {}; PLANTS.forEach(function (p) { byId[p.id] = p; });
+    LIVE = true;
+    return true;
+  }
+  var feed = Promise.resolve(false);
+  if (F.url && F.key && window.fetch) {
+    var CK = "atm-pos-feed";
+    try { var c = JSON.parse(localStorage.getItem(CK) || "null"); if (c && Date.now() - c.t < 10 * 60 * 1000) mergeFeed(c.rows); } catch (e) {}
+    feed = new Promise(function (done) {
+      var ctl = window.AbortController ? new AbortController() : null, timer = setTimeout(function () { if (ctl) ctl.abort(); }, 8000);
+      fetch(F.url.replace(/\/$/, "") + "/rest/v1/rpc/pos_web_plants", { method: "POST", headers: { "Content-Type": "application/json", apikey: F.key }, body: "{}", signal: ctl ? ctl.signal : undefined })
+        .then(function (r) { if (!r.ok) throw new Error("feed " + r.status); return r.json(); })
+        .then(function (rows) {
+          clearTimeout(timer);
+          if (!Array.isArray(rows)) return done(false);
+          try { localStorage.setItem(CK, JSON.stringify({ t: Date.now(), rows: rows })); } catch (e) {}
+          /* rebuild from data.js first, so repeated updates never stack on top of each other */
+          PLANTS = (window.PLANTS || []).map(function (p) { return Object.assign({}, p, { sizes: (p.sizes || []).map(function (s) { return { pot: String(s.pot), price: +s.price || 0, qty: Math.max(0, parseInt(s.qty, 10) || 0) }; }) }); });
+          done(mergeFeed(rows));
+        })
+        .catch(function () { clearTimeout(timer); done(false); });
+    });
+  }
   function avail(p) { return p.sizes.reduce(function (s, z) { return s + z.qty; }, 0); }
   function sizeOf(p, pot) { return p.sizes.filter(function (z) { return z.pot === pot; })[0]; }
   function money(n) { return "$" + (Math.round(n * 100) / 100).toFixed(n % 1 ? 2 : 0); }
@@ -51,10 +122,13 @@ window.ATM_SHOP = function () {
   var basket = {};
   try { basket = JSON.parse(localStorage.getItem("atm-basket") || "{}") || {}; } catch (e) { basket = {}; }
   function split(k) { var i = k.indexOf("|"); return i < 0 ? null : { p: byId[k.slice(0, i)], pot: k.slice(i + 1) }; }
-  Object.keys(basket).forEach(function (k) {
-    var s = split(k), z = s && s.p && sizeOf(s.p, s.pot);
-    if (!z || !z.qty) delete basket[k]; else basket[k] = Math.min(basket[k], z.qty);
-  });
+  function cleanBasket() {
+    Object.keys(basket).forEach(function (k) {
+      var s = split(k), z = s && s.p && sizeOf(s.p, s.pot);
+      if (!z || !z.qty) delete basket[k]; else basket[k] = Math.min(basket[k], z.qty);
+    });
+  }
+  cleanBasket();
   function save() { try { localStorage.setItem("atm-basket", JSON.stringify(basket)); } catch (e) {} }
   function count() { return Object.keys(basket).reduce(function (s, k) { return s + basket[k]; }, 0); }
   function total() { return Object.keys(basket).reduce(function (s, k) { var x = split(k); return s + basket[k] * sizeOf(x.p, x.pot).price; }, 0); }
@@ -68,9 +142,10 @@ window.ATM_SHOP = function () {
   }
 
   /* ---------- home page window ---------- */
-  Array.prototype.forEach.call(document.querySelectorAll("[data-plant-count]"), function (el) { el.textContent = PLANTS.length; });
   var win = $("#plant-window");
-  if (win) {
+  function drawWindow() {
+    Array.prototype.forEach.call(document.querySelectorAll("[data-plant-count]"), function (el) { el.textContent = PLANTS.length; });
+    if (!win) return;
     var feat = PLANTS.filter(function (p) { return p.featured; }).concat(PLANTS.filter(function (p) { return !p.featured; })).slice(0, 4);
     win.innerHTML = '<div class="pw-head"><span class="eyebrow">Native nursery · now online</span><span class="pw-count">' + PLANTS.length + ' plants</span></div>' +
       '<h3>Reserve a tree online. Pick it up any day, ' + esc(N.daysText) + '.</h3>' +
@@ -80,15 +155,20 @@ window.ATM_SHOP = function () {
       }).join("") + "</div>" +
       '<span class="pw-go">Shop the nursery <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>';
   }
+  drawWindow();
 
   /* ---------- shop page ---------- */
   var grid = $("#shop-grid");
-  if (!grid) return;
+  if (!grid) { feed.then(function (ok) { if (ok) drawWindow(); }); return; }
   var state = { cat: "", q: "", sort: "featured", instock: false };
-  var cats = window.PLANT_CATS.filter(function (c) { return PLANTS.some(function (p) { return p.cat === c; }); });
-  $("#shop-cats").innerHTML = '<button aria-pressed="true" data-cat="">All <small>' + PLANTS.length + "</small></button>" + cats.map(function (c) {
-    return '<button aria-pressed="false" data-cat="' + esc(c) + '">' + esc(c) + " <small>" + PLANTS.filter(function (p) { return p.cat === c; }).length + "</small></button>";
-  }).join("");
+  function drawCats() {
+    var cats = window.PLANT_CATS.filter(function (c) { return PLANTS.some(function (p) { return p.cat === c; }); });
+    if (state.cat && cats.indexOf(state.cat) < 0) state.cat = "";
+    $("#shop-cats").innerHTML = '<button aria-pressed="' + !state.cat + '" data-cat="">All <small>' + PLANTS.length + "</small></button>" + cats.map(function (c) {
+      return '<button aria-pressed="' + (state.cat === c) + '" data-cat="' + esc(c) + '">' + esc(c) + " <small>" + PLANTS.filter(function (p) { return p.cat === c; }).length + "</small></button>";
+    }).join("");
+  }
+  drawCats();
 
   function card(p) {
     var st = status(p), n = inBasket(p.id), out = !avail(p);
@@ -113,7 +193,7 @@ window.ATM_SHOP = function () {
   function draw() {
     var l = list();
     grid.innerHTML = l.map(card).join("") || '<p class="muted" style="grid-column:1/-1">No plants match that. Try another search, or tap Interested on a similar plant and ask us.</p>';
-    $("#shop-count").textContent = l.length + (l.length === 1 ? " plant" : " plants");
+    $("#shop-count").innerHTML = esc(l.length + (l.length === 1 ? " plant" : " plants")) + (LIVE ? ' <span class="live-pill" title="Sizes, prices and counts come straight from our register">● Live stock</span>' : "");
   }
   $("#shop-cats").addEventListener("click", function (e) {
     var b = e.target.closest("button"); if (!b) return; state.cat = b.getAttribute("data-cat");
@@ -308,6 +388,16 @@ window.ATM_SHOP = function () {
     if (drawer.classList.contains("open") && !$(".conf", drawer)) renderDrawer();
   }
   refresh();
+
+  /* when the register's live stock arrives, redraw everything with it */
+  feed.then(function (ok) {
+    if (!ok) return;
+    drawCats(); cleanBasket(); save(); refresh();
+    if (dlg.open && pick.id && byId[pick.id] && $(".dpick-wrap", dlg)) {
+      var p = byId[pick.id]; if (!sizeOf(p, pick.pot)) { var f = p.sizes.filter(function (z) { return z.qty > 0; })[0]; pick.pot = f ? f.pot : ""; pick.n = 1; }
+      redrawPick();
+    }
+  });
 
   /* open a plant straight from a link like nursery.html#plant-soursop */
   var m = /^#plant-([\w-]+)$/.exec(location.hash); if (m && byId[m[1]]) openPlant(m[1]);
