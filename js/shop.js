@@ -55,6 +55,10 @@ window.ATM_SHOP = function () {
       if (mode === "soldout") p.sizes = p.sizes.map(function (z) { return { pot: z.pot, price: z.price, qty: 0 }; });
       return true;
     });
+    /* register plants that aren't listed on the site only show up once there's some in stock (keeps test items and empty entries off) */
+    Object.keys(extras).forEach(function (k) {
+      if (!extras[k].sizes.some(function (z) { return z.qty > 0; })) delete extras[k];
+    });
     Object.keys(extras).forEach(function (k) {
       var e = extras[k];
       PLANTS.push({ id: "pos-" + k, name: e.name, latin: "", cat: "More plants", art: "pot", img: "", live: true, sizes: e.sizes.sort(bySize),
