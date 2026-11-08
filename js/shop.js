@@ -195,8 +195,8 @@ window.ATM_SHOP = function (cfg) {
     return '<article class="pcard' + (out && fade ? " is-out" : "") + '" data-id="' + p.id + '" id="' + cfg.hash + p.id + '">' +
       '<button class="pmedia" data-open="' + p.id + '" aria-label="More about ' + esc(p.name) + '">' + media(p) + '<span class="stock ' + st[0] + '">' + st[1] + "</span></button>" +
       '<div class="pbody"><span class="pcat">' + esc(p.cat) + '</span><button class="pname" data-open="' + p.id + '">' + esc(p.name) + '</button><span class="platin">' + esc(p.latin) + "</span>" +
-      '<p class="pdesc">' + esc(p.text) + '</p><div class="pfoot pfoot2"><span class="pprice' + (sortPrice(p) === Infinity ? " tba" : "") + '">' + esc(fromPrice(p)) + '</span><span class="pchips">' + p.sizes.map(function (z) { return '<i class="' + (z.qty ? "" : "none") + '">' + esc(z.pot) + "</i>"; }).join("") + "</span></div>" +
-      '<div class="pacts"><button class="btn small add" data-open="' + p.id + '"' + (out ? " disabled" : "") + ">" + (out ? W.out : n ? "In basket · " + n : p.pre ? "Pre-order" : "Reserve") + "</button>" +
+      '<p class="pdesc">' + esc(p.text) + '</p><div class="pfoot pfoot2"><span class="pprice' + (sortPrice(p) === Infinity ? " tba" : "") + '">' + esc(fromPrice(p)) + '</span><span class="pchips">' + p.sizes.map(function (z) { return '<i class="' + (z.qty ? "" : "none") + '">' + esc(z.pot) + " · " + z.qty + "</i>"; }).join("") + "</span></div>" +
+      '<div class="pacts"><button class="btn small add" data-open="' + p.id + '"' + (out ? " disabled" : "") + ">" + (out ? W.out : n ? "In basket · " + n : p.pre ? "Pre-order" : "Buy") + "</button>" +
       '<button class="btn small ghost int" data-interest="' + p.id + '">Interested</button></div></div></article>';
   }
   function list() {
@@ -241,7 +241,7 @@ window.ATM_SHOP = function (cfg) {
       (z ? '<div class="dqty"><span>How many</span><div class="stepper"><button type="button" data-n="-1" aria-label="Fewer">−</button><span>' + pick.n + '</span><button type="button" data-n="1" aria-label="More">+</button></div>' +
         "<small>" + (have ? have + " already in your basket · " : "") + z.qty + " " + esc(z.pot) + " available</small></div>" : "") +
       '<div class="dacts"><button class="btn primary" type="button" data-addpick' + (z && left > 0 ? "" : " disabled") + ">" +
-      (z && left <= 0 ? "All " + esc(z.pot) + " are in your basket" : !z ? esc(W.out) : (p.pre ? "Pre-order" : "Reserve") + " " + esc(z.pot) + (z.price ? " · " + money(z.price * pick.n) : "")) + "</button>" +
+      (z && left <= 0 ? "All " + esc(z.pot) + " are in your basket" : !z ? esc(W.out) : (p.pre ? "Pre-order" : "Buy") + " " + esc(z.pot) + (z.price ? " · " + money(z.price * pick.n) : "")) + "</button>" +
       '<button class="btn ghost" type="button" data-interest="' + p.id + '">Interested? Ask us</button></div></div>';
   }
   function openPlant(id) {
@@ -358,12 +358,12 @@ window.ATM_SHOP = function (cfg) {
       }).join("") + "</ul>" +
       '<div class="btotal"><span>Total · pay at pickup</span><b' + (anyTBA() ? ' class="tba"' : "") + ">" + esc(totalTxt()) + "</b></div>" +
       (anyTBA() ? '<p class="note" style="margin:-.4rem 0 .8rem">Some prices are not set yet. We\'ll confirm them when we reply to your reservation.</p>' : "") +
-      '<form class="bform" id="res-form" novalidate><div class="eyebrow">Reserve for pickup</div>' +
+      '<form class="bform" id="res-form" novalidate><div class="eyebrow">Buy for pickup</div>' +
       '<label>Your name<input name="name" autocomplete="name" required></label>' +
       '<label>Phone / WhatsApp<input name="phone" type="tel" autocomplete="tel" required></label>' +
       '<label>Pickup day <small>(open ' + esc(N.daysText) + ", " + esc(N.closedText) + ')</small><select name="day">' + dates.map(function (e) { return '<option value="' + e.date + '">' + esc(A.longDate(e.d)) + (N.hours ? " · " + esc(N.hours) : "") + "</option>"; }).join("") + "</select></label>" +
       '<label>Notes <small>(optional)</small><input name="notes" placeholder="' + esc(W.notesHint) + '"></label>' +
-      '<p class="err" id="res-err" role="alert"></p><button class="btn primary" type="submit">Reserve &amp; get my QR code</button>' +
+      '<p class="err" id="res-err" role="alert"></p><button class="btn primary" type="submit">Buy &amp; get my QR code</button>' +
       '<p class="note">No payment online. We hold your ' + esc(W.many) + " and you pay when you pick them up.</p>" + FINE + "</form>";
     $("#res-form").addEventListener("submit", reserve);
   }
@@ -440,10 +440,10 @@ window.ATM_SHOP.NURSERY = {
   page: "nursery", items: function () { return window.PLANTS; }, cats: function () { return window.PLANT_CATS; },
   rpc: "pos_web_plants", feedCache: "atm-pos-feed", basketKey: "atm-basket", lastResKey: "atm-last-res", codePrefix: "ATM", hash: "plant-",
   defaultSize: "Pot", moreCat: "More plants", moreArt: "pot", moreText: "At the nursery now. Tap Interested for a current photo or more about it.",
-  windowSel: "#plant-window", countAttr: "data-plant-count", winEyebrow: "Native nursery · now online", winHead: "Reserve a tree online. Pick it up any day,", winGo: "Shop the nursery",
+  windowSel: "#plant-window", countAttr: "data-plant-count", winEyebrow: "Native nursery · now online", winHead: "Buy a tree online. Pick it up any day,", winGo: "Shop the nursery",
   emptyArt: "pot",
-  words: { one: "plant", many: "plants", out: "Sold out", size: "Pot size", choose: "Choose a pot size", careLabel: "Care", basket: "Your plants", qr: "PLANT",
-    empty: "No plants yet. Tap <b>Reserve</b> on any plant, pick a pot size and add it.",
+  words: { one: "plant", many: "plants", out: "Out of stock", size: "Pot size", choose: "Choose a pot size", careLabel: "Care", basket: "Your plants", qr: "PLANT",
+    empty: "No plants yet. Tap <b>Buy</b> on any plant, pick a pot size and add it.",
     none: "No plants match that. Try another search, or tap Interested on a similar plant and ask us.",
     want: ["Send me a current photo", "Tell me the price", "Tell me when it's available", "I'd like a different size", "I have a question"],
     askHint: "e.g. Is it fruiting yet? Can you deliver to Hope Town?", notesHint: "e.g. I need help loading" }
@@ -452,10 +452,10 @@ window.ATM_SHOP.PRODUCE = {
   page: "produce", items: function () { return window.PRODUCE; }, cats: function () { return window.PRODUCE_CATS; },
   rpc: "pos_web_produce", feedCache: "atm-pos-produce", basketKey: "atm-basket-produce", lastResKey: "atm-last-res-produce", codePrefix: "ATF", hash: "fruit-",
   defaultSize: "Each", moreCat: "More produce", moreArt: "mango", moreText: "At the market now. Tap Interested for a current photo or more about it.",
-  windowSel: "#produce-window", countAttr: "data-produce-count", winEyebrow: "Local produce · now online", winHead: "Reserve island fruit online. Pick it up any day,", winGo: "Shop local produce",
+  windowSel: "#produce-window", countAttr: "data-produce-count", winEyebrow: "Local produce · now online", winHead: "Buy island fruit online. Pick it up any day,", winGo: "Shop local produce",
   emptyArt: "mango",
   words: { one: "item", many: "items", out: "Out of stock", size: "Sold by", choose: "How it's sold", careLabel: "Season", basket: "Your produce", qr: "PRODUCE",
-    empty: "No produce yet. Tap <b>Reserve</b> on any fruit and add how many you want.",
+    empty: "No produce yet. Tap <b>Buy</b> on any fruit and add how many you want.",
     none: "Nothing matches that. Try another search, or tap Interested on something similar and ask us.",
     want: ["Tell me when it's in", "Send me a current photo", "Tell me the price", "I'd like a bulk order", "I have a question"],
     askHint: "e.g. Can I get two dozen mangoes for Saturday?", notesHint: "e.g. Pick ripe ones for this weekend" }

@@ -845,7 +845,7 @@ header.nav .brand small { justify-content: center; }
 .pprice.tba { font: 600 .82rem var(--body); color: var(--mango); letter-spacing: 0; }
 .pchips { display: flex; flex-wrap: wrap; gap: .25rem; }
 .pchips i { font: 500 .62rem var(--mono); font-style: normal; letter-spacing: .04em; text-transform: uppercase; padding: .2em .5em; border-radius: 999px; border: 1px solid #2c5a3f; color: var(--leaf); }
-.pchips i.none { color: var(--mist); border-color: var(--line); text-decoration: line-through; }
+.pchips i.none { color: var(--mist); border-color: var(--line); }
 .dlg:not(.dlg-int) { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
 .dlg .dmedia { align-self: start; position: sticky; top: 0; }
 .dbody { min-width: 0; }
