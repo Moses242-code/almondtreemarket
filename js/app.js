@@ -305,6 +305,22 @@ var COMPASS = (function () {
 
   /* shared with js/shop.js */
   window.ATM = { ART: ART, art: art, esc: esc, wa: wa, upcoming: upcoming, longDate: longDate, MON: MON, t12: t12 };
+/* palm hover: a gust each time; the third gust drops a coconut on a passer-by, then it all starts over */
+(function () {
+  var tree = document.querySelector(".ns-tree");
+  if (!tree || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var count = 0, busy = false;
+  tree.addEventListener("mouseenter", function () {
+    if (busy) return;
+    busy = true; count++;
+    var drop = count >= 3;
+    if (drop) count = 0;
+    tree.classList.remove("gust", "drop"); void tree.getBoundingClientRect();
+    tree.classList.add("gust"); if (drop) tree.classList.add("drop");
+    setTimeout(function () { tree.classList.remove("gust"); if (!drop) busy = false; }, 1650);
+    if (drop) setTimeout(function () { tree.classList.remove("drop"); busy = false; }, 4250);
+  });
+})();
   if (window.ATM_SHOP) window.ATM_SHOP();
 
   /* ---------- reveal on scroll ---------- */
