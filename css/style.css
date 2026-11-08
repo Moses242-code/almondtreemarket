@@ -741,3 +741,18 @@ footer .base .bs-flag { width: 20px; height: 10px; margin: 0 .2em; }
   .hero-side .ns-arrow svg { width: 20px; height: 20px; }
 }
 @keyframes nudge-down { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+
+/* tablets: the nursery window and Hungry card sit side by side, so keep the sign inside the nursery column
+   and the down arrow right over the nursery window */
+@media (min-width: 600px) and (max-width: 960px) {
+  .hero-side .nursery-sign { grid-column: 1; grid-row: 1; width: 100%; justify-self: stretch; gap: .5rem; }
+  .hero-side .plant-window { grid-column: 1; grid-row: 2; }
+  .hero-side .next-card { grid-column: 2; grid-row: 2; }
+  .hero-side .ns-tree { width: clamp(88px, 13vw, 124px); margin-right: -1.2rem; }
+  .hero-side .ns-board { flex: 1 1 auto; padding: .75rem .9rem .85rem; }
+  .hero-side .ns-board b { font-size: clamp(1.1rem, 2.7vw, 1.6rem); }
+  .hero-side .ns-top { font-size: .6rem; letter-spacing: .12em; }
+  .hero-side .ns-sub { font-size: .76rem; }
+  .hero-side .ns-arrow { width: 44px; height: 44px; }
+  .hero-side .ns-arrow svg { width: 22px; height: 22px; }
+}
