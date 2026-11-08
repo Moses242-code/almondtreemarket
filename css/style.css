@@ -853,3 +853,9 @@ header.nav .brand small { justify-content: center; }
 @media (max-width: 640px) { .dlg:not(.dlg-int) { grid-template-columns: 1fr; } .dlg .dmedia { position: static; } }
 .dprice .pprice.tba { font: 600 1.05rem var(--body); }
 .btotal b.tba { font: 600 1rem var(--body); color: var(--mango); text-align: right; }
+/* keep the name on one line between phone and desktop widths now that there are two badges */
+@media (min-width: 481px) and (max-width: 760px) {
+  header.nav .brand b { font-size: .84rem; letter-spacing: .04em; white-space: nowrap; }
+  header.nav .brand small { font-size: .56rem; letter-spacing: .1em; }
+  header.nav .brand { gap: .55rem; }
+}
