@@ -19,7 +19,7 @@ window.MARKET = {
   /* Coming-soon stripe across the top. Set comingSoon: false to switch it to "next market" messages. */
   comingSoon: true,
   stripe: [
-    "Saturdays · 7am to noon",
+    "Open Monday to Saturday",
     "8 slots for Abaco growers and makers",
     "$25 a day · table & chair included",
     "Vendor registration now open",
@@ -31,16 +31,17 @@ window.MARKET = {
 
   price: 25,
   includes: ["A covered slot under the market roof", "One table", "One chair"],
+  /* The market is open all week, on the same days as the nursery pickups above (Monday to Saturday).
+     Vendors book any of those days on the Join form. */
   schedule: [
-    { time: "6:00", what: "Vendors arrive and set up" },
-    { time: "7:00", what: "Market opens" },
-    { time: "12:00", what: "Market closes" },
-    { time: "12:30", what: "Slots cleared and swept" },
+    { time: "01", what: "Before we open: arrive, set up your table and sign" },
+    { time: "02", what: "While we are open: sell under the market roof" },
+    { time: "03", what: "At closing: pack up and sweep your slot" },
+    { time: "04", what: "Can't make a booked day? Tell us the day before" },
   ],
-  /* Every Saturday is a market day, rolling forward forever. Put a date in skip to cancel one. */
-  /* onCalendar: true fills every Saturday into the calendar automatically. Off for now. */
-  weekly: { day: 6, onCalendar: false, start: "07:00", end: "12:00",
-            title: "Saturday Market", skip: [] },
+  /* Regular market days are not put on the calendar (the market is open all week).
+     The calendar only shows the special days in EVENTS below. */
+  weekly: { day: 6, onCalendar: false, start: "", end: "", title: "Market day", skip: [] },
 };
 
 /* --------------------------------------------------------------------------
@@ -59,10 +60,10 @@ window.SLOTS = [
   { n: 1, status: "held", name: "Plant Collective", what: "Native plants & fruit drinks",
     blurb: "Our own slot: young soursop, sugar apple and citrus trees, native plants, cold coconut water and mango coconut water.",
     tags: ["Fruit trees", "Coconut water", "Star fruit"], img: "img/2025-01-12_779B2A.jpg", art: "sugarapple",
-    days: "Saturdays", contact: "12428095667", instagram: "" },
+    days: "Mon–Sat", contact: "12428095667", instagram: "" },
   { n: 2, status: "coming", name: "Wally's Coconuts", what: "Fresh coconut water",
     blurb: "Ice-cold coconut water and green coconuts, cut to order. Straight from Abaco trees to your hand.",
-    tags: ["Coconut water", "Jelly coconut"], img: "", art: "coconut", days: "Saturdays", contact: "", instagram: "" },
+    tags: ["Coconut water", "Jelly coconut"], img: "", art: "coconut", days: "Mon–Sat", contact: "", instagram: "" },
   { n: 3, status: "open", hint: "Local produce", art: "citrus" },
   { n: 4, status: "open", hint: "Straw work & crafts", art: "strawbag" },
   { n: 5, status: "open", hint: "Sauces, jams & preserves", art: "jar" },
@@ -85,7 +86,7 @@ window.CATEGORIES = [
 
 /* --------------------------------------------------------------------------
    THE NURSERY SHOP — every plant for sale. People reserve online, get a QR
-   code, and pay when they pick up on a Saturday.
+   code, and pay when they pick up, any day we're open.
 
    price:  number, in dollars
    size:   pot size shown on the card
@@ -160,7 +161,7 @@ window.PLANTS = [
 ];
 
 /* --------------------------------------------------------------------------
-   EVENTS — every Saturday is added automatically (see weekly above).
+   EVENTS — special days only (the market itself is open Monday to Saturday).
    kind: "market" (green), "special" (mango), "holiday" (hibiscus), "fundraiser" (gold)
    -------------------------------------------------------------------------- */
 window.EVENTS = [
@@ -173,7 +174,7 @@ window.EVENTS = [
 /* PHOTOS for the gallery (img/ folder). Newest at the top. */
 window.PHOTOS = [
   ["img/2025-01-12_779B2A.jpg", "Potted plants under the almond tree"],
-  ["img/market-structure.jpg", "Saturday crowds under the market roof"],
+  ["img/market-structure.jpg", "Crowds under the market roof"],
   ["img/2025-09-07_52BEBB.jpg", "Mangoes and passion fruit"],
   ["img/IMG_3470.jpg", "Pineapples and tomatoes by the crate"],
   ["img/handmade.jpg", "Handmade, island colours"],
@@ -181,6 +182,6 @@ window.PHOTOS = [
   ["img/IMG_0168.jpg", "Stalls in the morning sun"],
   ["img/IMG_3418.jpg", "Pineapples, plants and produce"],
   ["img/IMG_0180.jpg", "Fresh greens and fruit"],
-  ["img/2026-02-14_51E475.jpg", "A busy Saturday"],
+  ["img/2026-02-14_51E475.jpg", "A busy market day"],
   ["img/IMG_2092.jpg", "Young entrepreneurs at the market"],
 ];

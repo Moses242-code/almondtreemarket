@@ -113,13 +113,13 @@ var COMPASS = (function () {
   }
   function nextMarketStripe() {
     var n = upcoming(1)[0];
-    var s = ["Every Saturday " + t12(M.weekly.start) + " to " + t12(M.weekly.end), "Slots $" + M.price + " a day, table & chair included"];
+    var s = ["Open Monday to Saturday", "Slots $" + M.price + " a day, table & chair included"];
     if (n) s.unshift("Next: " + n.title + " · " + longDate(n.d));
     return s;
   }
   function footer() {
     return '<div class="bs-band" aria-hidden="true"></div><div class="wrap"><div><a class="brand" href="index.html">' + BRAND + "<span><b>Almond Tree Market</b><small>" + esc(M.place) + "</small></span></a>" +
-      "<p>A native market for Abaco growers and makers. Fruit, plants, straw work, candles, sauces and sweets, every Saturday under the almond tree.</p></div>" +
+      "<p>A native market for Abaco growers and makers. Fruit, plants, straw work, candles, sauces and sweets, Monday to Saturday under the almond tree.</p></div>" +
       '<div><h4>Market</h4><ul><li><a href="slots.html">The Eight slots</a></li><li><a href="nursery.html">Native nursery</a></li><li><a href="events.html">Events calendar</a></li><li><a href="community.html">Fundraisers &amp; souse-outs</a></li><li><a href="join.html">Become a vendor</a></li><li><a href="' + M.nextDoor + '">Hungry? Food next door ↗</a></li></ul></div>' +
       '<div><h4>Contact</h4><ul><li><a href="' + wa("Hi! I have a question about Almond Tree Market.") + '" target="_blank" rel="noopener">WhatsApp ' + esc(M.phoneDisplay) + "</a></li>" +
       '<li><a href="mailto:' + M.email + '">' + esc(M.email) + '</a></li><li><a href="' + M.instagram + '" target="_blank" rel="noopener">Instagram</a> · <a href="' + M.facebook + '" target="_blank" rel="noopener">Facebook</a></li>' +
@@ -143,7 +143,7 @@ var COMPASS = (function () {
       '<div class="num"><small>Slot</small>' + pad(s.n) + '</div><span class="st chip ' + s.status + '">' + STATUS[s.status] + "</span></div>" +
       '<div class="body"><span class="what">' + esc(open ? "Ideal for: " + (s.hint || "Abaco-made goods") : s.what) + "</span>" +
       "<h3>" + esc(open ? "This could be your table" : s.name) + "</h3>" +
-      "<p>" + esc(open ? "A covered slot, a table and a chair for $" + M.price + " a Saturday. Bring what you grow, bake or make." : s.blurb) + "</p>" +
+      "<p>" + esc(open ? "A covered slot, a table and a chair for $" + M.price + " a day. Bring what you grow, bake or make." : s.blurb) + "</p>" +
       '<div class="acts">' + (open ? '<a class="btn primary small" href="join.html?slot=' + s.n + '#register">Take slot ' + s.n + "</a>" : '<a class="btn ghost small" href="slots.html#slot-' + s.n + '">Meet the vendor</a>') + "</div></div></article>";
   }
   function slotRow(s) {
@@ -223,8 +223,8 @@ var COMPASS = (function () {
     var e = allEvents().filter(function (x) { return x.date === p[0] && esc(x.title) === p[1]; })[0];
     if (e) ics(e);
   });
-  var evHome = $("#ev-home"); if (evHome) evHome.innerHTML = upcoming(4).map(evRow).join("") || '<div class="ev-empty"><b>Nothing on the calendar yet.</b><span>The market is open every Saturday, 7am to noon. Special days will show up here.</span></div>';
-  var evAll = $("#ev-all"); if (evAll) evAll.innerHTML = upcoming(40).map(evRow).join("") || '<div class="ev-empty"><b>Nothing on the calendar yet.</b><span>The market is open every Saturday, 7am to noon. Special days will show up here.</span></div>';
+  var evHome = $("#ev-home"); if (evHome) evHome.innerHTML = upcoming(4).map(evRow).join("") || '<div class="ev-empty"><b>Nothing on the calendar yet.</b><span>The market is open Monday to Saturday. Special days will show up here.</span></div>';
+  var evAll = $("#ev-all"); if (evAll) evAll.innerHTML = upcoming(40).map(evRow).join("") || '<div class="ev-empty"><b>Nothing on the calendar yet.</b><span>The market is open Monday to Saturday. Special days will show up here.</span></div>';
 
   var cal = $("#calendar");
   if (cal) {
@@ -241,7 +241,7 @@ var COMPASS = (function () {
         html += '<div class="day' + (d.getMonth() !== m ? " out" : "") + (k === iso(now) ? " today" : "") + '"><span class="n">' + d.getDate() + "</span>" +
           list.map(function (e) { return '<button class="' + e.kind + '" data-day="' + k + '" title="' + esc(e.title) + '">' + esc(e.title) + "</button>"; }).join("") + "</div>";
       }
-      cal.innerHTML = html + '</div><div class="cal-legend"><span><i style="background:var(--leaf)"></i>Saturday market</span><span><i style="background:var(--mango)"></i>Special market</span><span><i style="background:var(--hibiscus)"></i>Christmas & holiday</span><span><i style="background:var(--citrus)"></i>Fundraiser</span></div><div class="cal-detail" id="cal-detail"></div>';
+      cal.innerHTML = html + '</div><div class="cal-legend"><span><i style="background:var(--leaf)"></i>Market day</span><span><i style="background:var(--mango)"></i>Special market</span><span><i style="background:var(--hibiscus)"></i>Christmas & holiday</span><span><i style="background:var(--citrus)"></i>Fundraiser</span></div><div class="cal-detail" id="cal-detail"></div>';
     };
     cal.addEventListener("click", function (ev) {
       var b = ev.target.closest("[data-m]");
@@ -261,15 +261,16 @@ var COMPASS = (function () {
   var qs = new URLSearchParams(location.search);
   var reg = $("#reg-form");
   if (reg) {
-    /* the next 12 Saturdays, plus any special event days, for vendors to choose */
-    var dates = [], sat = today(); sat.setDate(sat.getDate() + ((M.weekly.day - sat.getDay() + 7) % 7));
-    for (var si = 0; si < 12; si++) { var sd = new Date(sat); sd.setDate(sat.getDate() + si * 7); if (M.weekly.skip.indexOf(iso(sd)) < 0) dates.push({ d: sd, date: iso(sd), title: M.weekly.title, start: M.weekly.start, end: M.weekly.end }); }
+    /* the next 18 open days (three weeks, Monday to Saturday), plus any special event days, for vendors to choose */
+    var openDays = (M.nursery && M.nursery.openDays) || [1, 2, 3, 4, 5, 6];
+    var dates = [], dd0 = today();
+    for (var si = 0; dates.length < 18 && si < 40; si++) { var sd = new Date(dd0); sd.setDate(dd0.getDate() + si); if (openDays.indexOf(sd.getDay()) > -1 && M.weekly.skip.indexOf(iso(sd)) < 0) dates.push({ d: sd, date: iso(sd), title: M.weekly.title }); }
     upcoming(30).forEach(function (e) { var f = dates.filter(function (x) { return x.date === e.date; })[0]; if (f) f.title = e.title; else dates.push(e); });
     dates.sort(function (x, y) { return x.d - y.d; });
     $("#reg-dates").innerHTML = dates.map(function (e) {
       return '<label><input type="checkbox" name="dates" value="' + esc(longDate(e.d) + " (" + e.title + ")") + '"' + (qs.get("date") === e.date ? " checked" : "") + "> " +
-        MON[e.d.getMonth()] + " " + e.d.getDate() + (e.title !== M.weekly.title ? " · " + esc(e.title) : "") + "</label>";
-    }).join("") + '<label><input type="checkbox" name="dates" value="Every Saturday (regular vendor)"> Every Saturday</label>';
+        DOW[e.d.getDay()] + " " + MON[e.d.getMonth()] + " " + e.d.getDate() + (e.title !== M.weekly.title ? " · " + esc(e.title) : "") + "</label>";
+    }).join("") + '<label><input type="checkbox" name="dates" value="Regular vendor: every day we are open"> Every day (regular)</label><label><input type="checkbox" name="dates" value="Regular vendor: same days each week (see notes)"> Same days each week</label>';
     $("#reg-slot").innerHTML = '<option value="Any open slot">Any open slot</option>' + window.SLOTS.filter(function (s) { return s.status === "open"; })
       .map(function (s) { return '<option value="Slot ' + s.n + '"' + (qs.get("slot") == s.n ? " selected" : "") + ">Slot " + s.n + (s.hint ? " · " + esc(s.hint) : "") + "</option>"; }).join("");
     $("#reg-cat").innerHTML = window.CATEGORIES.map(function (c) { return "<option" + (qs.get("sell") === c.name ? " selected" : "") + ">" + esc(c.name) + "</option>"; }).join("") + "<option>Something else</option>";

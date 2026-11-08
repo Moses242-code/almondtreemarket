@@ -6,7 +6,7 @@ A plain static website: HTML, CSS and a little JavaScript. No database, no build
 
 | File | What it is |
 | --- | --- |
-| `index.html` | Home: coming-soon stripe, countdown, **"Hungry? Check out next door."** (links to the food vendors on underthealmondtree.market), the 8 slots, what sells here, nursery, fundraisers, Christmas, next market days, the 10 × 7 Shop with a floor plan, photos, map |
+| `index.html` | Home: coming-soon stripe, nursery sign with the palm tree, **"Hungry? Check out next door."** (links to the food vendors on underthealmondtree.market), the 8 slots, what sells here, nursery, fundraisers, Christmas, special days, the 10 × 7 Shop with a floor plan, photos, map |
 | `slots.html` | **The Eight**: one big panel per slot with photo, story, tags and contact |
 | `nursery.html` | **Plant shop**: 28 plants in small cards (7 across), search, categories, sort. Customers tap Reserve, pick any open day (Monday to Saturday), get a pickup code + QR code, and send the reservation to you on WhatsApp. They pay at pickup. A preview window of 4 plants sits at the top of the home page |
 | `events.html` | Month calendar and list, "Add to calendar", "Book a slot" |
@@ -23,9 +23,9 @@ Or just tell Claude: "Slot 4 is taken by Ms. Rolle, straw bags, here's her photo
 ## Other changes (all in `js/data.js`)
 
 - **Plants for sale:** `window.PLANTS`. Each has `price`, `size`, `stock` (`"in"`, `"low"`, `"pre"` pre-order, `"out"` sold out), a short description and care notes. Add a square photo with `img`. `featured: true` puts it in the home-page window. **The prices and stock are starting guesses; set your real ones.**
-- **Pickup days and hours:** `nursery` in `js/data.js`. `openDays` sets which days customers can choose (Monday to Saturday now). Fill in `hours` (e.g. "8am to 5pm") to show them.
+- **Open days and hours:** `nursery` in `js/data.js`. `openDays` sets the days the market is open (Monday to Saturday now): the nursery pickup dates and the vendor booking dates on the Join form both use it. Fill in `hours` (e.g. "8am to 5pm") to show them.
 - **At pickup:** the customer shows a QR code. Scan it with your phone camera to see their code, name, plants and total. The same details arrive in your WhatsApp when they reserve.
-- **Events:** `window.EVENTS` is empty for now, so the calendar is blank. Add an event there (there is an example in the file) or tell Claude. To fill every Saturday into the calendar automatically, set `weekly.onCalendar: true`. The Join form always offers the next 12 Saturdays.
+- **Events:** `window.EVENTS` is empty for now, so the calendar is blank. Add an event there (there is an example in the file) or tell Claude. The market is open all week, so regular days are not put on the calendar; it only shows special days. The Join form offers the next 18 open days.
 - **Coming-soon stripe:** `stripe`. Set `comingSoon: false` to switch it to next-market messages.
 - **"Hungry?" link:** `nextDoor`.
 - **Price, schedule, includes:** `price`, `schedule`, `includes`.
