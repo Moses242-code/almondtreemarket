@@ -7,7 +7,7 @@ A plain static website: HTML, CSS and a little JavaScript. No database, no build
 | File | What it is |
 | --- | --- |
 | `index.html` | Home: coming-soon stripe, nursery sign with the palm tree, **"Hungry? Check out next door."** (links to the food vendors on underthealmondtree.market), what sells here, nursery, Christmas, the 10 × 7 Shop with a floor plan, photos, map |
-| `nursery.html` | **Plant shop**: 76 Bahamian plants in small cards (7 across), each with its pot sizes, search, categories, sort. Customers tap Reserve, pick any open day (Monday to Saturday), get a pickup code + QR code, and send the reservation to you on WhatsApp. They pay at pickup. A preview window of 4 plants sits at the top of the home page |
+| `nursery.html` | **Plant shop**: 77 Bahamian plants in small cards (7 across), each with its pot sizes, search, categories, sort. Customers tap Reserve, pick any open day (Monday to Saturday), get a pickup code + QR code, and send the reservation to you on WhatsApp. They pay at pickup. A preview window of 4 plants sits at the top of the home page |
 | `join.html` | How to join, price, schedule, rules, **registration form**, FAQ, questions |
 | `js/data.js` | **The only file you need to edit** |
 

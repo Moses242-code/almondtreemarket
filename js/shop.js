@@ -187,7 +187,7 @@ window.ATM_SHOP = function () {
     var q = state.q.trim().toLowerCase();
     var out = PLANTS.filter(function (p) {
       return (!state.cat || p.cat === state.cat) && (!state.instock || avail(p) > 0) &&
-        (!q || (p.name + " " + p.latin + " " + p.cat + " " + p.text + " " + p.sizes.map(function (z) { return z.pot; }).join(" ")).toLowerCase().indexOf(q) > -1);
+        (!q || (p.name + " " + p.latin + " " + (p.aliases || []).join(" ") + " " + p.cat + " " + p.text + " " + p.sizes.map(function (z) { return z.pot; }).join(" ")).toLowerCase().indexOf(q) > -1);
     });
     if (state.sort === "low") out.sort(function (a, b) { return sortPrice(a) - sortPrice(b); });
     if (state.sort === "high") out.sort(function (a, b) { var x = sortPrice(a), y = sortPrice(b); return (y === Infinity ? -1 : y) - (x === Infinity ? -1 : x); });

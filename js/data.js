@@ -111,7 +111,7 @@ pre:    true marks the plant as pre-order (growing on, ready soon)
    art:    the cartoon (also the mouse pointer over the photo): soursop · sugarapple · custard · citrus · mango · coconut ·
            pineapple · sapodilla · guava · pod · starfruit · banana · plantain · papaya · avocado · pomegranate · lychee ·
            longan · jackfruit · breadfruit · cherry · passionfruit · ackee · guinep · starapple · mamey · canistel · plum ·
-           redplum · goldplum · loquat · berry · cashew · noni · malayapple · roseapple · gooseberry · almond · natal · jujube ·
+           redplum · goldplum · loquat · berry · cashew · noni · malayapple · roseapple · gooseberry · almond · natal · jujube · neem ·
            tree · palm · seagrape · hibiscus · herb · aloe · pot
    featured: true shows it in the window on the home page (first 4 are used)
 
@@ -270,6 +270,8 @@ window.PLANTS = [
     text: "Glossy, salt-proof hedge with white flowers and red fruit.", care: "Full sun, salt spray, clip as a hedge." },
   { id: "moringa", img: "/img/plants/moringa.jpg", name: "Moringa", latin: "Moringa oleifera", cat: "Bush medicine & herbs", art: "herb", sizes: [{ pot: "3 gal", price: 0, qty: 1 }],
     text: "The 'miracle tree': leaves for tea, soups and powder.", care: "Full sun, drought-tough, grows fast." },
+  { id: "neem", img: "/img/plants/neem.jpg", name: "Neem", latin: "Azadirachta indica", cat: "Bush medicine & herbs", art: "neem", sizes: [{ pot: "3 gal", price: 0, qty: 1 }, { pot: "25 gal", price: 0, qty: 1 }], aliases: ["neem tree", "nim", "neam"],
+    text: "The bush medicine tree: bitter neem leaf tea, and a natural bug repellent for the garden. Fast, tough shade.", care: "Full sun, drought-tough once settled, grows fast." },
   { id: "bahamaberry", img: "/img/plants/bahamaberry.jpg", name: "Bahama berry (moujean tea)", latin: "Nashia inaguensis", cat: "Bush medicine & herbs", art: "herb", sizes: [{ pot: "3 gal", price: 0, qty: 1 }],
     text: "Inagua's sweet-smelling native tea bush.", care: "Full sun, rocky soil, low water." },
 ];
