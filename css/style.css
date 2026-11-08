@@ -756,3 +756,38 @@ footer .base .bs-flag { width: 20px; height: 10px; margin: 0 .2em; }
   .hero-side .ns-arrow { width: 44px; height: 44px; }
   .hero-side .ns-arrow svg { width: 22px; height: 22px; }
 }
+
+/* almond leaf: flutters down from the top of the hero on page load, then rests and sways.
+   app.js works out the start and landing spots (--x0/--y0 to --x1/--y1) for each screen size. */
+.hero { position: relative; }
+.atm-leaf { position: absolute; left: 0; top: 0; z-index: 3; width: var(--w, 140px); opacity: 0; pointer-events: none;
+  transform: translate(var(--x1, 0px), var(--y1, 0px)); }
+.atm-leaf img { display: block; width: 100%; height: auto; filter: drop-shadow(0 10px 12px rgba(0,0,0,.45)); transform-origin: 50% 50%; }
+.atm-leaf.ready { opacity: 1; pointer-events: auto; cursor: pointer; }
+.atm-leaf.fall { animation: leaf-fall 7s cubic-bezier(.4, .05, .6, .95) both; }
+.atm-leaf.ready img { animation: leaf-rest 4.5s ease-in-out infinite; }
+.atm-leaf.fall img { animation: leaf-flutter 7s ease-in-out both, leaf-rest 4.5s ease-in-out 7s infinite; }
+@keyframes leaf-fall {
+  0% { opacity: 0; transform: translate(var(--x0), var(--y0)); }
+  5% { opacity: 1; }
+  20% { transform: translate(calc(var(--x0) + (var(--x1) - var(--x0)) * .2 + var(--sw)), calc(var(--y0) + (var(--y1) - var(--y0)) * .14)); }
+  40% { transform: translate(calc(var(--x0) + (var(--x1) - var(--x0)) * .4 - var(--sw)), calc(var(--y0) + (var(--y1) - var(--y0)) * .36)); }
+  60% { transform: translate(calc(var(--x0) + (var(--x1) - var(--x0)) * .6 + var(--sw) * .8), calc(var(--y0) + (var(--y1) - var(--y0)) * .6)); }
+  80% { transform: translate(calc(var(--x0) + (var(--x1) - var(--x0)) * .82 - var(--sw) * .45), calc(var(--y0) + (var(--y1) - var(--y0)) * .84)); }
+  100% { opacity: 1; transform: translate(var(--x1), var(--y1)); }
+}
+@keyframes leaf-flutter {
+  0% { transform: rotate(-24deg); }
+  10% { transform: rotate(22deg) scaleY(.82); }
+  20% { transform: rotate(-18deg); }
+  30% { transform: rotate(26deg) scaleY(.85); }
+  40% { transform: rotate(-22deg); }
+  50% { transform: rotate(18deg) scaleY(.88); }
+  60% { transform: rotate(-16deg); }
+  70% { transform: rotate(14deg) scaleY(.92); }
+  80% { transform: rotate(-10deg); }
+  90% { transform: rotate(6deg); }
+  100% { transform: rotate(-4deg); }
+}
+@keyframes leaf-rest { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(5deg) translateY(-3px); } }
+@media (prefers-reduced-motion: reduce) { .atm-leaf, .atm-leaf img { animation: none !important; } }
