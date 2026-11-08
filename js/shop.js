@@ -53,8 +53,13 @@ window.ATM_SHOP = function (cfg) {
     var groups = {}, extras = {};
     rows.forEach(function (r) {
       if (!r || !r.name) return;
-      var key = norm(baseName(r)), p = alias[key];
-      var z = { pot: potLabel(r), price: Math.max(0, +r.price_cents || 0) / 100, qty: Math.max(0, parseInt(r.qty, 10) || 0) };
+      var key = norm(baseName(r)), p = alias[key], pot = potLabel(r);
+      /* "Star Fruit – Big": the part after a dash is the size when the part before it names an item here */
+      if (!p) {
+        var dm = /^(.*?)\s+[–—-]\s+(.+)$/.exec(String(r.name).trim());
+        if (dm && alias[norm(dm[1])]) { p = alias[norm(dm[1])]; if (!String(r.size || "").trim()) pot = dm[2].trim(); }
+      }
+      var z = { pot: pot, price: Math.max(0, +r.price_cents || 0) / 100, qty: Math.max(0, parseInt(r.qty, 10) || 0) };
       var bucket = p ? (groups[p.id] = groups[p.id] || []) : (extras[key] = extras[key] || { name: baseName(r), sizes: [] }).sizes;
       var same = bucket.filter(function (x) { return x.pot === z.pot; })[0];
       if (same) { same.qty += z.qty; if (!same.price) same.price = z.price; } else bucket.push(z);
