@@ -146,7 +146,15 @@ var COMPASS = (function () {
       '<ul id="navlist">' + NAV.map(function (n) {
         return '<li><a href="' + n[0] + '"' + (page === n[0].replace(".html", "") ? ' aria-current="page"' : "") + ">" + n[1] + "</a></li>";
       }).join("") + '<li><a class="next" href="' + M.nextDoor + '">Food next door ↗</a></li>' +
-      '<li><a class="btn primary small" href="join.html#register">Reserve a slot</a></li></ul></div></header><div class="grain" aria-hidden="true"></div>';
+      "</ul></div>" + quickBar() + '</header><div class="grain" aria-hidden="true"></div>';
+  }
+  /* the row of section buttons under the banner (sticks with the header on every page) */
+  var QUICK = [["index.html", "Market", "strawbag"], ["nursery.html", "Nursery", "pot"], ["produce.html", "Local Produce", "mango"], ["join.html", "Join", "heart"]];
+  function quickBar() {
+    return '<nav class="quick" aria-label="Sections"><div class="wrap"><div class="quick-row">' + QUICK.map(function (n) {
+      var on = page === n[0].replace(".html", "");
+      return '<a class="qb' + (on ? " on" : "") + '" href="' + n[0] + '"' + (on ? ' aria-current="page"' : "") + '><span class="qi" aria-hidden="true">' + (ART[n[2]] || "") + "</span>" + n[1] + "</a>";
+    }).join("") + '<a class="qb next" href="' + M.nextDoor + '"><span class="qi" aria-hidden="true">' + ART.cake + "</span>Food next door <span aria-hidden=\"true\">↗</span></a></div></div></nav>";
   }
   function nextMarketStripe() {
     var n = upcoming(1)[0];
@@ -170,6 +178,12 @@ var COMPASS = (function () {
   $$("[data-flag]").forEach(function (el) { el.innerHTML = FLAG; });
   $$("[data-compass]").forEach(function (el) { el.innerHTML = COMPASS; });
   $$("[data-next]").forEach(function (a) { a.href = M.nextDoor; });
+  /* on phones the section buttons scroll sideways: bring this page's button into view */
+  var qon = $(".qb.on");
+  if (qon) {
+    var qrow = qon.parentNode, qx = qon.getBoundingClientRect().left - qrow.getBoundingClientRect().left;
+    if (qx + qon.offsetWidth > qrow.clientWidth) qrow.scrollLeft = qx - 12;
+  }
 
   /* ---------- the eight slots ---------- */
   var STATUS = { open: "Open · $" + M.price + "/day", taken: "Taken", coming: "Coming soon", held: "Market slot" };
