@@ -50,7 +50,7 @@ window.ATM_SHOP = function (cfg) {
       [p.id, p.name, p.name.replace(/\(.*?\)/g, ""), (p.name.match(/\((.*?)\)/) || [])[1], p.name.split(",")[0], p.latin].concat(p.aliases || [])
         .forEach(function (a) { var k = norm(a); if (k && !alias[k]) alias[k] = p; });
     });
-    var groups = {}, extras = {};
+    var groups = {}, extras = {}, pics = {};
     rows.forEach(function (r) {
       if (!r || !r.name) return;
       var key = norm(baseName(r)), p = alias[key], pot = potLabel(r);
@@ -61,13 +61,16 @@ window.ATM_SHOP = function (cfg) {
       }
       var z = { pot: pot, price: Math.max(0, +r.price_cents || 0) / 100, qty: Math.max(0, parseInt(r.qty, 10) || 0) };
       var bucket = p ? (groups[p.id] = groups[p.id] || []) : (extras[key] = extras[key] || { name: baseName(r), sizes: [] }).sizes;
+      /* the item's photo in the inventory app, if it has one (first one found wins) */
+      var gk = p ? p.id : "pos-" + key;
+      if (r.photo_id && !pics[gk]) pics[gk] = { id: String(r.photo_id), at: r.photo_at || 0 };
       var same = bucket.filter(function (x) { return x.pot === z.pot; })[0];
       if (same) { same.qty += z.qty; if (!same.price) same.price = z.price; } else bucket.push(z);
     });
     var bySize = function (a, b) { return gal(a.pot) - gal(b.pot) || a.pot.localeCompare(b.pot); };
     var mode = F.notInRegister || "keep";
     PLANTS = PLANTS.filter(function (p) {
-      if (groups[p.id]) { p.sizes = groups[p.id].sort(bySize); p.live = true; return true; }
+      if (groups[p.id]) { p.sizes = groups[p.id].sort(bySize); p.live = true; if (pics[p.id] && !p.keepImg) p.posPhoto = pics[p.id]; return true; }
       if (mode === "hide") return false;
       if (mode === "soldout") p.sizes = p.sizes.map(function (z) { return { pot: z.pot, price: z.price, qty: 0 }; });
       return true;
@@ -78,7 +81,7 @@ window.ATM_SHOP = function (cfg) {
     });
     Object.keys(extras).forEach(function (k) {
       var e = extras[k];
-      PLANTS.push({ id: "pos-" + k, name: e.name, latin: "", cat: cfg.moreCat, art: cfg.moreArt, img: "", live: true, sizes: e.sizes.sort(bySize),
+      PLANTS.push({ id: "pos-" + k, name: e.name, latin: "", cat: cfg.moreCat, art: cfg.moreArt, img: "", posPhoto: pics["pos-" + k] || null, live: true, sizes: e.sizes.sort(bySize),
         text: cfg.moreText, care: "" });
     });
     if (Object.keys(extras).length && CATS.indexOf(cfg.moreCat) < 0) CATS.push(cfg.moreCat);
@@ -104,6 +107,30 @@ window.ATM_SHOP = function (cfg) {
         })
         .catch(function () { clearTimeout(timer); done(false); });
     });
+  }
+  /* ---------- photos from the inventory app ----------
+     When a register item has a photo (taken in the POS inventory app), the website shows that photo
+     instead of its own, so pictures taken out in the field go straight to the site. To keep the website's
+     own picture for an item, add keepImg: true to it in data.js. No photo in the app: nothing changes. */
+  var photoCache = {};
+  function applyPhotos() {
+    var need = [];
+    PLANTS.forEach(function (p) {
+      if (!p.posPhoto) return;
+      var k = p.posPhoto.id + "@" + p.posPhoto.at;
+      if (photoCache[k]) p.img = photoCache[k]; else need.push(k);
+    });
+    return need;
+  }
+  function loadPhotos() {
+    var need = applyPhotos().filter(function (k, i, a) { return a.indexOf(k) === i; });
+    if (!need.length) return Promise.resolve(false);
+    return Promise.all(need.map(function (k) {
+      return fetch(F.url.replace(/\/$/, "") + "/rest/v1/rpc/pos_web_photo", { method: "POST", headers: { "Content-Type": "application/json", apikey: F.key }, body: JSON.stringify({ p_id: k.split("@")[0] }) })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (u) { if (typeof u === "string" && /^data:image\/(jpeg|png|webp);base64,/.test(u)) photoCache[k] = u; })
+        .catch(function () {});
+    })).then(function () { applyPhotos(); return true; });
   }
   function avail(p) { return p.sizes.reduce(function (s, z) { return s + z.qty; }, 0); }
   function sizeOf(p, pot) { return p.sizes.filter(function (z) { return z.pot === pot; })[0]; }
@@ -179,7 +206,7 @@ window.ATM_SHOP = function (cfg) {
 
   /* ---------- shop page ---------- */
   var grid = $("#shop-grid");
-  if (!grid || document.body.getAttribute("data-page") !== cfg.page) { feed.then(function (ok) { if (ok) drawWindow(); }); return; }
+  if (!grid || document.body.getAttribute("data-page") !== cfg.page) { feed.then(function (ok) { if (!ok) return; drawWindow(); loadPhotos().then(function (got) { if (got) drawWindow(); }); }); return; }
   var state = { cat: "", q: "", sort: "featured", instock: false };
   function drawCats() {
     var cats = CATS.filter(function (c) { return PLANTS.some(function (p) { return p.cat === c; }); });
@@ -425,6 +452,11 @@ window.ATM_SHOP = function (cfg) {
   feed.then(function (ok) {
     if (!ok) return;
     drawCats(); cleanBasket(); save(); refresh();
+    loadPhotos().then(function (got) {
+      if (!got) return;
+      refresh();
+      var dm = $(".dmedia", dlg); if (dlg.open && dm && byId[pick.id]) dm.innerHTML = media(byId[pick.id]);
+    });
     if (dlg.open && pick.id && byId[pick.id] && $(".dpick-wrap", dlg)) {
       var p = byId[pick.id]; if (!sizeOf(p, pick.pot)) { var f = p.sizes.filter(function (z) { return z.qty > 0; })[0]; pick.pot = f ? f.pot : ""; pick.n = 1; }
       redrawPick();
