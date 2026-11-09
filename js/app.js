@@ -500,6 +500,21 @@ var COMPASS = (function () {
       cands = cands.concat(h1Spots(H.w - 12, w, lh));
       if (!cands.length) { start = [16, top0]; cands.push([H.w - w - 16, Math.max(top0 + 30, C.t - lh - 18)]); }
     }
+    /* land a little higher than the spot itself, then keep nudging up until the resting leaf
+       is clear of every line of text (the chips, the headline, the paragraph) on any screen */
+    var TR = [];
+    [document.querySelector(".hero .chips"), h1, document.querySelector(".hero-text .lead, .hero .lead")].forEach(function (el) {
+      if (!el) return; var rg = document.createRange(); rg.selectNodeContents(el);
+      [].forEach.call(rg.getClientRects(), function (r) { if (r.width > 2 && r.height > 2) TR.push(rel(r)); });
+    });
+    var hits = function (x, y) { for (var i = 0; i < TR.length; i++) { var r = TR[i]; if (x + w - 6 > r.l && x + 6 < r.r && y + lh - 4 > r.t && y + 4 < r.b) return true; } return false; };
+    var settle = function (c) {
+      var y = c[1] - (wide ? 14 : 12), k = 0;
+      while (hits(c[0], y) && k++ < 14) y -= 6;
+      if (hits(c[0], y)) y = c[1]; /* nowhere clear above: keep the original spot */
+      return [c[0], Math.max(top0 + 6, y)];
+    };
+    cands = cands.map(settle);
     if (cands.length < 2) cands.push(start); /* only one free spot: the second place is back up where it started */
     P = { start: start, a: cands[0], b: cands[1] };
     leaf.style.setProperty("--w", w + "px");
