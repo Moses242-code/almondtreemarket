@@ -1043,3 +1043,5 @@ header.nav .brand small { justify-content: center; }
 @media (max-width: 480px) { .nav .cart-btn, .nav .menu-btn { width: 46px; height: 46px; } .hb-l { font-size: .46rem; letter-spacing: .1em; } .hb-ico { width: 22px; height: 20px; } }
 @media (max-width: 480px) { .nav .wrap { gap: .45rem; } .nav .cart-btn, .nav .menu-btn { width: 44px; } .brand { flex: 1 1 auto; overflow: hidden; } .brand b { font-size: min(.7rem, 2.7vw); } }
 @media (max-width: 400px) { .brand b { display: block; font-size: .7rem; white-space: normal; line-height: 1.15; } }
+/* cart count: the usual little red number on the Cart button */
+.cart-btn .cart-n { background: #e5322d; color: #fff; top: -7px; right: -7px; box-shadow: 0 0 0 2px var(--night), 0 2px 6px rgba(0,0,0,.35); }

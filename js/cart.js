@@ -335,6 +335,8 @@ window.ATM_CART = (function () {
 
   /* shop engines call this when live stock arrives */
   function refresh() { clean(); paintBadge(); if (isOpen()) render(); if (page) renderPage(); }
+  /* another open tab changed the cart: keep this tab's count in step */
+  window.addEventListener("storage", function (e) { if (e.key === KEY || e.key === SAVED) { cart = read(KEY, {}); saved = read(SAVED, {}); refresh(); } });
 
   return { mount: mount, add: add, qtyFor: qtyFor, inCart: inCart, count: count, open: open, refresh: refresh, onChange: onChange, CASH: CASH };
 })();
