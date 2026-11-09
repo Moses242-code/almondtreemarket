@@ -143,7 +143,7 @@ window.ATM_CART = (function () {
 
   /* ---------- pickup days ---------- */
   function pickupDays() {
-    var out = [], sameDay = !hasPlants();
+    var out = [], sameDay = true; /* buy it and pick it up the same day (plants and produce) */
     for (var dd = new Date(), g = 0; out.length < 12 && g < 40; g++) {
       if (g > 0 || !sameDay) dd.setDate(dd.getDate() + 1);
       if (N.openDays.indexOf(dd.getDay()) < 0) continue;
@@ -154,9 +154,8 @@ window.ATM_CART = (function () {
   }
   function fine(plants) {
     var bh = N.daysText + (N.hours ? ", " + N.hours : "");
-    var ready = (plants == null ? hasPlants() : plants) ? "Plants need up to 24 hours<sup>*</sup> to get ready; produce is usually ready the same day, during business hours (" + esc(bh) + ")." : "Your order is usually ready the same day, during business hours (" + esc(bh) + ")<sup>*</sup>.";
-    return '<p class="fine"><b>How pickup works:</b> ' + ready + " We&#39;ll message you when it&#39;s ready. Then you have <b>24 hours</b> to collect it with your QR code, or it goes back into stock." +
-      '<span class="fine-star fine-xs"><sup>*</sup> If it will take longer, we will let you know.</span></p>';
+    return '<p class="fine"><b>How pickup works:</b> buy it, then come in and pick it up the same day, during business hours (' + esc(bh) + ")<sup>*</sup>. Bring your QR code. You have <b>24 hours</b> to collect it, or it goes back into stock." +
+      '<span class="fine-star fine-xs"><sup>*</sup> If it will take more than 24 hours, we will let you know.</span></p>';
   }
   function cashNote(cls) { return '<p class="cash-note' + (cls ? " " + cls : "") + '"><b>Cash only · pickup only.</b> ' + esc(CASH.replace(/^Cash only, /, "").replace(/^paid/, "Paid")) + "</p>"; }
 
@@ -194,7 +193,7 @@ window.ATM_CART = (function () {
     var n = count();
     return head + groups +
       '<div class="btotal"><span>Subtotal · ' + n + (n === 1 ? " item" : " items") + '</span><b' + (anyTBA() ? ' class="tba"' : "") + ">" + esc(totalTxt()) + "</b></div>" +
-      (anyTBA() ? '<p class="note" style="margin:-.4rem 0 .8rem">Some prices are not set yet. We&#39;ll confirm them when we message you.</p>' : "") +
+      (anyTBA() ? '<p class="note" style="margin:-.4rem 0 .8rem">Some prices are not set yet. We&#39;ll confirm them when you pick up.</p>' : "") +
       cashNote() +
       '<button class="btn primary bgo" type="button" data-view="checkout">Check out · get my QR code</button>' +
       '<div class="bfoot-links"><button type="button" class="link" data-clear>Empty cart</button>' + (full ? '<a class="link" href="/produce.html">Keep shopping</a>' : '<a class="link" href="/cart.html">Open the cart page</a><button type="button" class="link" data-close-cart>Keep shopping</button>') + "</div>" +
@@ -308,7 +307,7 @@ window.ATM_CART = (function () {
       '<div class="conf"><span class="eyebrow">Your pickup code</span><div class="ccode">' + esc(o.code) + '</div><div class="qr" data-qr aria-label="QR code for order ' + esc(o.code) + '"></div>' +
       '<p class="step1"><b>One QR code for your whole order.</b> Show it at the register at Almond Tree Market and we ring everything up together. Pickup: <b>' + esc(o.day) + "</b>. Total <b>" + esc(o.total) + "</b>, cash when you collect.</p>" +
       '<button class="btn ghost" type="button" data-saveqr>Save QR image</button>' +
-      (o.saved ? '<p class="step1">Your order is in our register. We&#39;ll message you when it&#39;s ready.</p><a class="btn wa" href="' + A.wa(o.msg) + '" target="_blank" rel="noopener">Also send it on WhatsApp (optional)</a>'
+      (o.saved ? '<p class="step1">Your order is in our register. Come pick it up on your pickup day.</p><a class="btn wa" href="' + A.wa(o.msg) + '" target="_blank" rel="noopener">Also send it on WhatsApp (optional)</a>'
         : '<p class="step1"><b>One more step:</b> send your order to us on WhatsApp so we can set it aside.</p><a class="btn wa" href="' + A.wa(o.msg) + '" target="_blank" rel="noopener">Send order on WhatsApp</a>') +
       cashNote() + fine(o.lines.some(function (x) { return x.shop === "nursery"; })) +
       '<ul class="clist">' + o.lines.map(function (x) { return "<li>" + x.qty + " × " + esc(x.name) + " (" + esc(x.size) + ")" + (x.price ? " · " + money(x.price * x.qty) : "") + "</li>"; }).join("") + "</ul>" +
@@ -329,7 +328,7 @@ window.ATM_CART = (function () {
     g.fillStyle = "#06120c"; g.textAlign = "center"; g.font = "bold 28px sans-serif"; g.fillText(o.code, 160, 300);
     g.font = "14px sans-serif"; g.fillText("Almond Tree Market · pickup " + o.day.replace(/^\w+, /, ""), 160, 326);
     g.fillText("Total " + o.total.replace(" + items priced on request", "+"), 160, 348);
-    g.font = "12px sans-serif"; g.fillStyle = "#4a5a50"; g.fillText("Cash only at pickup. No deliveries.", 160, 378); g.fillText("Collect within 24 hours of our ready message.", 160, 396);
+    g.font = "12px sans-serif"; g.fillStyle = "#4a5a50"; g.fillText("Cash only at pickup. No deliveries.", 160, 378); g.fillText("Pick up the same day. Collect within 24 hours.", 160, 396);
     var a = document.createElement("a"); a.href = out.toDataURL("image/png"); a.download = "almond-tree-market-" + o.code + ".png"; document.body.appendChild(a); a.click(); a.remove();
   }
 
