@@ -142,6 +142,12 @@ var COMPASS = (function () {
     '<path d="M22 8c3-5 9-6 13-4-2 4-7 6-11 6" fill="#6be59c"/><path d="M21 9c-1-4-5-7-10-7 1 4 4 7 9 8" fill="#2fbf6f"/>' +
     '<ellipse cx="20" cy="24" rx="12.5" ry="13" fill="#5f9e34"/><path d="M12 15c-3 4-3.5 12 0 17" stroke="#8cc65a" stroke-width="2.2" fill="none" stroke-linecap="round"/>' +
     '<ellipse cx="20" cy="11.8" rx="4.2" ry="2.2" fill="#7a4a22"/><circle cx="18.4" cy="11.6" r=".9" fill="#3a220e"/><circle cx="21.6" cy="11.6" r=".9" fill="#3a220e"/></svg>';
+  /* farmer sign: a gold $ coin, drawn like the coconut */
+  var DOLLAR_ICON = '<svg class="cc-ico" viewBox="0 0 40 40" width="30" height="30" aria-hidden="true">' +
+    '<circle cx="20" cy="21" r="15" fill="#c9922a"/><circle cx="20" cy="19.5" r="15" fill="#ffc94a"/><circle cx="20" cy="19.5" r="11.5" fill="none" stroke="#e0a630" stroke-width="1.6"/>' +
+    '<path d="M24.2 14.6c-.9-1.3-2.4-2-4.3-2-2.6 0-4.4 1.4-4.4 3.4 0 4.6 8.9 2.6 8.9 7.2 0 2.1-1.9 3.6-4.6 3.6-2 0-3.7-.8-4.6-2.2M20 10v19" stroke="#2c5a1e" stroke-width="2.4" fill="none" stroke-linecap="round"/>' +
+    '<path d="M11 13c1.5-2.6 4-4.3 7-4.8" stroke="#fff3c4" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".8"/></svg>';
+  var FARMER_CTA = '<a class="farmer-cta farmer-ico" href="join.html#sell">' + DOLLAR_ICON + '<span class="cc-txt"><span class="fc-top"><i class="ns-dot" aria-hidden="true"></i>Farmer? Gardener? Yard fruit?</span><b>Sell your product!</b></span></a>';
   var COCO_CTA = '<a class="farmer-cta coco-cta" href="join.html?sell=Coconuts#sell">' + COCO_ICON + '<span class="cc-txt"><span class="fc-top"><i class="ns-dot" aria-hidden="true"></i>We buy</span><b>Coconuts!</b></span></a>';
   function header() {
     var items = M.comingSoon ? M.stripe : nextMarketStripe();
@@ -152,7 +158,7 @@ var COMPASS = (function () {
       '<a class="skip" href="#main">Skip to content</a>' +
       '<header class="nav"><div class="wrap"><a class="brand" href="index.html" aria-label="Almond Tree Market home">' + BRAND + "<span><b>Almond Tree Market</b><small>" + FLAG + "Marsh Harbour · Abaco · The Bahamas</small></span>" + HOMEMADE + "</a>" +
       /* flashing call-out for growers, centred in the gap between the shop name and the Cart button */
-      '<div class="hdr-ctas">' + '<a class="farmer-cta" href="join.html#sell"><span class="fc-top"><i class="ns-dot" aria-hidden="true"></i>Farmer? Gardener? Yard fruit?</span><b>Sell your product!</b></a>' + COCO_CTA + '</div>' +
+      '<div class="hdr-ctas">' + FARMER_CTA + COCO_CTA + '</div>' +
       '<button class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="navlist">' + '<svg class="hb-ico" viewBox="0 0 28 28" width="24" height="24" aria-hidden="true">' +
         '<path d="M14 5.5C11 3.6 7.5 3.2 3.5 3.8v19.4c4-.6 7.5-.2 10.5 1.7Z" fill="#2fbf6f"/>' +
         '<path d="M14 5.5c3-1.9 6.5-2.3 10.5-1.7v19.4c-4-.6-7.5-.2-10.5 1.7Z" fill="#f5ecd7"/>' +
@@ -164,7 +170,7 @@ var COMPASS = (function () {
       }).join("") + '<li><a class="next" href="' + M.nextDoor + '">Food next door ↗</a></li>' +
       "</ul></div>" + quickBar() + '</header>' +
       /* phones and tablets: the farmer call-out sits just under the header (scrolls away) */
-      '<div class="farmer-m">' + '<a class="farmer-cta" href="join.html#sell"><span class="fc-top"><i class="ns-dot" aria-hidden="true"></i>Farmer? Gardener? Yard fruit?</span><b>Sell your product!</b></a>' + COCO_CTA + '</div>' +
+      '<div class="farmer-m">' + FARMER_CTA + COCO_CTA + '</div>' +
       '<div class="grain" aria-hidden="true"></div>';
   }
   /* the row of section buttons under the banner (sticks with the header on every page) */

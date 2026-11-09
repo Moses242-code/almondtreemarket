@@ -1126,3 +1126,9 @@ header.nav .brand small { justify-content: center; }
 .contact-mail:hover { border-color: var(--leaf); }
 @media (prefers-reduced-motion: reduce) { .sell-start .btn { animation: none; } }
 .sell-form[hidden], .sell-done[hidden], .sell-start[hidden] { display: none; }
+/* farmer sign with its $ coin, laid out like the coconut sign */
+.farmer-cta.farmer-ico { display: flex; flex-wrap: nowrap; align-items: center; justify-content: center; gap: .55rem; text-align: left; }
+.farmer-ico .cc-ico { flex: none; filter: drop-shadow(0 0 6px rgba(255,201,74,.4)); transition: transform .2s; }
+.farmer-ico .cc-txt { display: grid; gap: .2rem; justify-items: start; min-width: 0; }
+.farmer-ico:hover .cc-ico { transform: rotate(-10deg); }
+@media (max-width: 480px) { .farmer-m .farmer-ico .cc-ico { width: 26px; height: 26px; } }
