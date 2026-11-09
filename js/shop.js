@@ -155,6 +155,8 @@ window.ATM_SHOP = function (cfg) {
     var s = p.seasonMonths;
     return '<span class="season-band" aria-label="Seasonal: ' + MONTHS[s[0] - 1] + " through " + MONTHS[s[1] - 1] + '"><b>' + MONTHS[s[0] - 1] + " – " + MONTHS[s[1] - 1] + "</b><i>Seasonal</i></span>";
   }
+  /* rare: true on an item = flashing "Rare" tag at the bottom middle of its picture */
+  function rareTag(p) { return p.rare ? '<span class="rare-tag">Rare</span>' : ""; }
   function status(p) {
     var n = avail(p);
     if (!n) return ["out", outOfSeason(p) ? "Out of season" : W.out];
@@ -172,9 +174,9 @@ window.ATM_SHOP = function (cfg) {
   }
   function media(p) {
     /* same cartoon-fruit hover pointer whether the item has a photo yet or still shows its drawing */
-    if (!p.img) return A.art(p.art).replace("<div ", '<div style="cursor:' + esc(cursor(p.art)) + '" ') + seasonBand(p);
+    if (!p.img) return A.art(p.art).replace("<div ", '<div style="cursor:' + esc(cursor(p.art)) + '" ') + seasonBand(p) + rareTag(p);
     return '<img src="' + esc(p.img) + '" alt="' + esc(p.name) + '" loading="lazy" style="cursor:' + esc(cursor(p.art)) + '">' +
-      '<span class="fruit-badge" aria-hidden="true">' + (A.ART[p.art] || "") + "</span>" + seasonBand(p);
+      '<span class="fruit-badge" aria-hidden="true">' + (A.ART[p.art] || "") + "</span>" + seasonBand(p) + rareTag(p);
   }
 
   /* ---------- cart: ONE cart for the whole site (plants + produce), kept in js/cart.js ---------- */

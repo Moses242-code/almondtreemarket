@@ -120,7 +120,7 @@ pre:    true marks the plant as pre-order (growing on, ready soon)
 window.PLANT_CATS = ["Fruit trees", "Citrus", "Fruit plants & vines", "Native trees", "Palms", "Hedges & shrubs", "Flowering", "Bush medicine & herbs"];
 
 window.PLANTS = [
-  { id: "soursop", img: "/img/plants/soursop.jpg", name: "Soursop", latin: "Annona muricata", cat: "Fruit trees", art: "soursop", sizes: [{ pot: "3 gal", price: 0, qty: 0 }, { pot: "25 gal", price: 0, qty: 0 }], featured: true,
+  { id: "soursop", img: "/img/plants/soursop.jpg", name: "Soursop", latin: "Annona muricata", cat: "Fruit trees", art: "soursop", rare: true, sizes: [{ pot: "3 gal", price: 0, qty: 0 }, { pot: "25 gal", price: 0, qty: 0 }], featured: true,
     text: "The big spiky green fruit for juice, ice cream and soursop leaf tea.", care: "Full sun, well-drained soil. Fruits in 3 to 4 years." },
   { id: "sugarapple", img: "/img/plants/sugarapple.jpg", name: "Sugar apple", latin: "Annona squamosa", cat: "Fruit trees", art: "sugarapple", sizes: [{ pot: "3 gal", price: 0, qty: 0 }, { pot: "25 gal", price: 0, qty: 0 }], featured: true,
     text: "Sweet and custardy, a yard favourite across the islands.", care: "Full sun, handles rocky soil. Fruits in 2 to 3 years." },
