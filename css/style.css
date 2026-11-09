@@ -1136,3 +1136,5 @@ body[data-page="join"] .page-hero { min-height: 380px; }
 body[data-page="join"] #contact { padding-top: clamp(28px, 5vw, 56px); }
 .lead-mail { color: var(--leaf); text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
 body[data-page="vendor"] #register { scroll-margin-top: 260px; }
+.mail-btn { max-width: 100%; overflow-wrap: anywhere; text-align: center; }
+.mail-btn svg { flex: none; }
