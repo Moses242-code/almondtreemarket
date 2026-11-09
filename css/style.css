@@ -1134,3 +1134,4 @@ header.nav .brand small { justify-content: center; }
 @media (max-width: 480px) { .farmer-m .farmer-ico .cc-ico { width: 26px; height: 26px; } }
 body[data-page="join"] .page-hero { min-height: 380px; }
 body[data-page="join"] #contact { padding-top: clamp(28px, 5vw, 56px); }
+.lead-mail { color: var(--leaf); text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
