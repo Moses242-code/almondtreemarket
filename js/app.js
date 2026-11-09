@@ -82,6 +82,7 @@ var COMPASS = (function () {
     cornucopia: '<svg viewBox="0 0 120 120"><path d="M14 30c3-9 13-9 15 1 5 27 24 46 55 58l-2-50C58 42 38 38 29 28" fill="#d79a4e"/><path d="M14 30c3-9 13-9 15 1 5 27 24 46 55 58" fill="none" stroke="#a8692c" stroke-width="3"/><path d="M33 44c4-3 6-6 6-9M44 60c5-4 8-9 8-14M58 73c5-5 8-11 8-17M71 82c4-6 6-13 6-20" stroke="#a8692c" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="83" cy="64" rx="9" ry="25" fill="#7a4a1f"/><circle cx="95" cy="50" r="12" fill="#ffb23f"/><path d="M95 38c2-6 7-8 12-7-2 5-6 8-12 7Z" fill="#6be59c"/><circle cx="100" cy="76" r="10" fill="#ff5f7e"/><circle cx="84" cy="94" r="8" fill="#b9dc4a"/><circle cx="104" cy="96" r="5" fill="#9b5de5"/><circle cx="96" cy="100" r="5" fill="#9b5de5"/><circle cx="101" cy="104" r="5" fill="#8a4fd6"/></svg>',
     pitchfork: '<svg viewBox="0 0 120 120"><g transform="rotate(-32 60 62)"><rect x="55" y="52" width="10" height="62" rx="5" fill="#c98a3e"/><path d="M58 60v52" stroke="#a8692c" stroke-width="2"/><rect x="50" y="46" width="20" height="9" rx="3" fill="#9aa7a0"/><path d="M40 14v24c0 8 8 12 20 12s20-4 20-12V14M60 10v38" stroke="#dfe7e2" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M40 14v24c0 8 8 12 20 12s20-4 20-12V14" stroke="#9aa7a0" stroke-width="2" fill="none" transform="translate(2 2)" opacity=".5"/></g><path d="M74 96c6-8 14-10 22-8M78 102c8-4 16-4 22 0M72 106c10 0 18 2 24 6" stroke="#e6c35a" stroke-width="3.5" stroke-linecap="round" fill="none"/></svg>',
     fish: '<svg viewBox="0 0 120 120"><path d="M14 60c14-22 46-28 68-13l20-15v56l-20-15C60 88 28 82 14 60Z" fill="#ff7a59"/><path d="M18 64c16 14 44 18 62 8-20 2-44-1-62-8Z" fill="#ffd1b8"/><path d="M48 40c6-8 16-12 26-10-4 6-10 10-18 12Z" fill="#ff5f7e"/><path d="M46 80c4 6 10 8 16 8-2-4-6-6-10-8Z" fill="#ff5f7e"/><path d="M44 48c4 7 4 17 0 24" stroke="#d9573a" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="30" cy="56" r="6" fill="#fff"/><circle cx="31" cy="56" r="3" fill="#1f2a20"/><path d="M60 52l8 4-8 4M70 54l6 3-6 3" stroke="#ffb23f" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    stall: '<svg viewBox="0 0 120 120"><path d="M24 50h72v52H24Z" fill="#e8c27a"/><path d="M30 62h60v34H30Z" fill="#c98a3e"/><path d="M30 62h60v8H30Z" fill="#a8692c"/><path d="M26 102h68" stroke="#7a4a1f" stroke-width="5" stroke-linecap="round"/><path d="M18 50 30 22h60l12 28Z" fill="#ff5f7e"/><path d="M42 22 38 50M60 22v28M78 22l4 28" stroke="#fff3f0" stroke-width="7"/><path d="M18 50c4 8 14 8 18 0 4 8 14 8 18 0 4 8 14 8 18 0 4 8 14 8 18 0 4 8 14 8 18 0" fill="#ff5f7e"/><path d="M36 50c4 8 14 8 18 0 4 8 14 8 18 0" fill="#fff3f0" opacity=".9"/><circle cx="44" cy="58" r="6" fill="#ffb23f"/><circle cx="58" cy="57" r="6" fill="#6be59c"/><circle cx="72" cy="58" r="6" fill="#ffb23f"/></svg>',
     heart: '<svg viewBox="0 0 120 120"><path d="M60 102S18 76 18 46c0-14 10-24 23-24 9 0 16 5 19 12 3-7 10-12 19-12 13 0 23 10 23 24 0 30-42 56-42 56Z" fill="#ff5f7e"/><path d="M42 56h10l6-10 8 20 6-10h10" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>',
     sapodilla: '<svg viewBox="0 0 120 120"><ellipse cx="60" cy="70" rx="32" ry="30" fill="#a9733f"/><ellipse cx="50" cy="60" rx="9" ry="6" fill="#c9955e" opacity=".7"/><path d="M60 40c0-8 2-14 6-18" stroke="#6b4423" stroke-width="4" stroke-linecap="round"/><path d="M64 24c10-8 24-6 30-2-6 10-20 12-30 2Z" fill="#6be59c"/><path d="M60 100v-4" stroke="#6b4423" stroke-width="3"/></svg>',
     guava: '<svg viewBox="0 0 120 120"><circle cx="56" cy="68" r="32" fill="#b9e15a"/><path d="M80 78a32 32 0 0 1-48 6" stroke="#9ccc3f" stroke-width="6" fill="none"/><circle cx="86" cy="62" r="20" fill="#ff8199"/><circle cx="86" cy="62" r="13" fill="#ffb3c1"/>' + [[82,58],[90,58],[86,66],[80,66],[92,66]].map(function (p) { return '<circle cx="' + p[0] + '" cy="' + p[1] + '" r="1.8" fill="#f4f0e2"/>'; }).join("") + '<path d="M56 36c2-8 8-14 16-14-2 9-8 14-16 14Z" fill="#6be59c"/></svg>',
@@ -136,7 +137,7 @@ var COMPASS = (function () {
   function art(key) { return '<div class="art-bg ' + (TONE[key] || "") + '">' + (ART[key] || ART.sugarapple) + "</div>"; }
 
   /* ---------- shared header + footer ---------- */
-  var NAV = [["index.html", "Market"], ["nursery.html", "Nursery"], ["produce.html", "Local Produce"], ["join.html", "Farmer?"]];
+  var NAV = [["index.html", "Market"], ["nursery.html", "Nursery"], ["produce.html", "Local Produce"], ["join.html", "Farmer?"], ["vendor.html", "Become a vendor"]];
   /* "We buy coconuts" sign: same flashing neon box as the farmer sign, links to the Farmers page sell form */
   var COCO_ICON = '<svg class="cc-ico" viewBox="0 0 40 40" width="30" height="30" aria-hidden="true">' +
     '<path d="M22 8c3-5 9-6 13-4-2 4-7 6-11 6" fill="#6be59c"/><path d="M21 9c-1-4-5-7-10-7 1 4 4 7 9 8" fill="#2fbf6f"/>' +
@@ -152,9 +153,11 @@ var COMPASS = (function () {
   function header() {
     var items = M.comingSoon ? M.stripe : nextMarketStripe();
     var run = items.map(function (s) { return "<span>" + esc(s) + "</span>"; }).join("");
-    return '<div class="stripe" role="region" aria-label="Announcement"><div class="inner"><span class="badge">' + (M.comingSoon ? "Coming soon" : "This week") + "</span>" +
+    /* the scrolling announcement banner ("Coming soon ...") is switched off; set showStripe: true in data.js to bring it back */
+    var stripe = M.showStripe ? '<div class="stripe" role="region" aria-label="Announcement"><div class="inner"><span class="badge">' + (M.comingSoon ? "Coming soon" : "This week") + "</span>" +
       '<div class="track"><div class="marquee" aria-hidden="true">' + run + run + '</div><span class="sr">' + esc(items.join(". ")) + "</span></div>" +
-      '<a class="go" href="join.html#register">Reserve a slot →</a></div></div>' +
+      '<a class="go" href="vendor.html#register">Reserve a slot →</a></div></div>' : "";
+    return stripe +
       '<a class="skip" href="#main">Skip to content</a>' +
       '<header class="nav"><div class="wrap"><a class="brand" href="index.html" aria-label="Almond Tree Market home">' + BRAND + "<span><b>Almond Tree Market</b><small>" + FLAG + "Marsh Harbour · Abaco · The Bahamas</small></span>" + HOMEMADE + "</a>" +
       /* flashing call-out for growers, centred in the gap between the shop name and the Cart button */
@@ -174,7 +177,7 @@ var COMPASS = (function () {
       '<div class="grain" aria-hidden="true"></div>';
   }
   /* the row of section buttons under the banner (sticks with the header on every page) */
-  var QUICK = [["index.html", "Market", "cornucopia"], ["nursery.html", "Nursery", "pot"], ["produce.html", "Local Produce", "mango"], ["join.html", "Farmer?", "pitchfork"]];
+  var QUICK = [["index.html", "Market", "cornucopia"], ["nursery.html", "Nursery", "pot"], ["produce.html", "Local Produce", "mango"], ["join.html", "Farmer?", "pitchfork"], ["vendor.html", "Become a vendor", "stall"]];
   function quickBar() {
     return '<nav class="quick" aria-label="Sections"><div class="wrap"><div class="quick-row">' + QUICK.map(function (n) {
       var on = page === n[0].replace(".html", "");
@@ -191,7 +194,7 @@ var COMPASS = (function () {
     return '<div class="bs-band" aria-hidden="true"></div><div class="wrap"><div><a class="brand" href="index.html">' + BRAND + "<span><b>Almond Tree Market</b><small>" + esc(M.place) + "</small></span></a>" +
       "<p>A native market for Abaco growers and makers. Fruit, plants, straw work, candles, sauces and sweets, Monday to Saturday under the almond tree.</p>" +
       '<p class="foot-cash"><b>Cash only · pickup only.</b> Order online, pay cash when you collect at Almond Tree Market. No deliveries.</p></div>' +
-      '<div><h4>Market</h4><ul><li><a href="nursery.html">Native nursery</a></li><li><a href="produce.html">Local produce</a></li><li><a href="cart.html">Your cart &amp; orders</a></li><li><a href="join.html#sell">Farmer? Sell to us</a></li><li><a href="' + M.nextDoor + '">Hungry? Food next door ↗</a></li></ul></div>' +
+      '<div><h4>Market</h4><ul><li><a href="nursery.html">Native nursery</a></li><li><a href="produce.html">Local produce</a></li><li><a href="cart.html">Your cart &amp; orders</a></li><li><a href="join.html#sell">Farmer? Sell to us</a></li><li><a href="vendor.html">Become a vendor</a></li><li><a href="' + M.nextDoor + '">Hungry? Food next door ↗</a></li></ul></div>' +
       '<div><h4>Contact</h4><ul><li><a href="' + wa("Hi! I have a question about Almond Tree Market.") + '" target="_blank" rel="noopener">WhatsApp ' + esc(M.phoneDisplay) + "</a></li>" +
       '<li><a href="mailto:' + M.email + '">' + esc(M.email) + '</a></li><li><a href="' + M.instagram + '" target="_blank" rel="noopener">Instagram</a> · <a href="' + M.facebook + '" target="_blank" rel="noopener">Facebook</a></li>' +
       '<li><a href="' + M.mapsLink + '" target="_blank" rel="noopener">Directions · GWPQ+WQ</a></li></ul></div>' +
@@ -221,14 +224,14 @@ var COMPASS = (function () {
       '<div class="body"><span class="what">' + esc(open ? "Ideal for: " + (s.hint || "Abaco-made goods") : s.what) + "</span>" +
       "<h3>" + esc(open ? "This could be your table" : s.name) + "</h3>" +
       "<p>" + esc(open ? "A covered slot, a table and a chair for $" + M.price + " a day. Bring what you grow, bake or make." : s.blurb) + "</p>" +
-      '<div class="acts">' + (open ? '<a class="btn primary small" href="join.html?slot=' + s.n + '#register">Take slot ' + s.n + "</a>" : '<a class="btn ghost small" href="slots.html#slot-' + s.n + '">Meet the vendor</a>') + "</div></div></article>";
+      '<div class="acts">' + (open ? '<a class="btn primary small" href="vendor.html?slot=' + s.n + '#register">Take slot ' + s.n + "</a>" : '<a class="btn ghost small" href="slots.html#slot-' + s.n + '">Meet the vendor</a>') + "</div></div></article>";
   }
   function slotRow(s) {
     var open = s.status === "open", links = "";
     if (!open) {
       if (s.contact) links += '<a class="btn wa small" href="https://wa.me/' + esc(s.contact) + '" target="_blank" rel="noopener">' + ICON.wa + " Message</a>";
       if (s.instagram) links += '<a class="btn ghost small" href="' + esc(s.instagram) + '" target="_blank" rel="noopener">' + ICON.ig + " Instagram</a>";
-    } else links = '<a class="btn primary small" href="join.html?slot=' + s.n + '#register">Take slot ' + s.n + "</a>";
+    } else links = '<a class="btn primary small" href="vendor.html?slot=' + s.n + '#register">Take slot ' + s.n + "</a>";
     return '<article class="slot-row ' + s.status + ' reveal" id="slot-' + s.n + '"><div class="media">' + slotMedia(s) + "</div>" +
       '<div class="body"><div class="top"><span class="big">' + pad(s.n) + '</span><span class="chip ' + s.status + '">' + STATUS[s.status] + "</span></div>" +
       '<span class="eyebrow' + (open ? " m" : "") + '">' + esc(open ? "Ideal for: " + (s.hint || "Abaco-made goods") : s.what) + "</span>" +
@@ -246,7 +249,7 @@ var COMPASS = (function () {
   var plan = $("#plan");
   if (plan) {
     var sq = function (s) { var l = s.status === "open" ? "Open" : s.status === "coming" ? "Soon" : "Taken";
-      return '<a class="sq ' + s.status + '" href="join.html?slot=' + s.n + '#register" aria-label="Slot ' + s.n + ": " + l + '"><span><b>' + s.n + "</b><small>" + l + "</small></span></a>"; };
+      return '<a class="sq ' + s.status + '" href="vendor.html?slot=' + s.n + '#register" aria-label="Slot ' + s.n + ": " + l + '"><span><b>' + s.n + "</b><small>" + l + "</small></span></a>"; };
     plan.innerHTML = '<div class="lbl">Under the market roof</div><div class="grid">' + window.SLOTS.slice(0, 4).map(sq).join("") +
       '<div class="walk">Walkway</div>' + window.SLOTS.slice(4, 8).map(sq).join("") + '</div><div class="shop">The 10 × 7 Shop · opening 2027</div>' +
       '<div class="legend"><span><i style="background:var(--leaf)"></i>Open (' + openCount + ')</span><span><i style="background:var(--mango)"></i>Taken</span><span><i style="background:var(--hibiscus)"></i>Shop</span></div>';
@@ -292,7 +295,7 @@ var COMPASS = (function () {
       '<div><span class="time">' + t12(e.start) + " – " + t12(e.end) + "</span>" + (e.tentative ? '<span class="time tbc">To be confirmed</span>' : "") +
       "<h3>" + esc(e.title) + "</h3><p>" + esc(e.text || "") + "</p></div>" +
       '<div class="acts"><button class="btn ghost small" data-ics="' + e.date + "|" + esc(e.title) + '">' + ICON.cal + " Add</button>" +
-      '<a class="btn primary small" href="join.html?date=' + e.date + '#register">Book a slot</a></div></article>';
+      '<a class="btn primary small" href="vendor.html?date=' + e.date + '#register">Book a slot</a></div></article>';
   }
   document.addEventListener("click", function (ev) {
     var b = ev.target.closest("[data-ics]"); if (!b) return;
@@ -360,8 +363,18 @@ var COMPASS = (function () {
         "Made in Abaco: " + (f.get("local") ? "Yes" : "Not stated"), "", "Dates: " + ds.join("; "), "Slot: " + f.get("slot"), "How many: " + f.get("count"),
         "Own tent: " + (f.get("tent") ? "Yes" : "No"), "Need power: " + (f.get("power") ? "Yes" : "No"), "Notes: " + (f.get("notes") || "-")].join("\n");
     };
-    reg.addEventListener("submit", function (ev) { ev.preventDefault(); var t = build(); if (t) window.open(wa(t), "_blank", "noopener"); });
-    $("#reg-mail").addEventListener("click", function () { var t = build(); if (t) location.href = "mailto:" + M.email + "?subject=" + encodeURIComponent("Vendor registration: Almond Tree Market") + "&body=" + encodeURIComponent(t.replace(/\*/g, "")); });
+    /* like the Farmers page: a button opens the application, a thank-you shows after sending */
+    var regStart = $("#reg-start"), regDone = $("#reg-done");
+    var openReg = function (focus) {
+      reg.hidden = false; if (regStart) regStart.hidden = true; if (regDone) regDone.hidden = true;
+      if (focus) setTimeout(function () { reg.scrollIntoView({ block: "start", behavior: "smooth" }); var n = reg.querySelector('[name="name"]'); if (!n.value) n.focus({ preventScroll: true }); }, 30);
+    };
+    $$("[data-open-reg]").forEach(function (b) { b.addEventListener("click", function (ev) { ev.preventDefault(); openReg(true); history.replaceState(null, "", location.search + "#register"); }); });
+    if (location.hash === "#register" || qs.get("slot") || qs.get("date") || qs.get("sell")) openReg(false);
+    var doneReg = function () { reg.hidden = true; if (regDone) { regDone.hidden = false; regDone.scrollIntoView({ block: "center", behavior: "smooth" }); } };
+    reg.addEventListener("submit", function (ev) { ev.preventDefault(); var t = build(); if (t) { window.open(wa(t), "_blank", "noopener"); doneReg(); } });
+    $("#reg-mail").addEventListener("click", function () { var t = build(); if (t) { location.href = "mailto:" + M.email + "?subject=" + encodeURIComponent("Vendor registration: Almond Tree Market") + "&body=" + encodeURIComponent(t.replace(/\*/g, "")); doneReg(); } });
+    var regAgain = $("#reg-again"); if (regAgain) regAgain.addEventListener("click", function () { openReg(true); });
   }
   /* Farmers page: short "sell to us" request. Sends to our WhatsApp (or email), which is what alerts us. */
   var sellF = $("#sell-form");
