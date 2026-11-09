@@ -130,7 +130,7 @@ window.PLANTS = [
     text: "For conch salad, souse and pie. Happy in a big pot.", care: "Full sun, water weekly while young." },
   { id: "lignum", img: "/img/plants/lignum.jpg", name: "Lignum vitae", latin: "Guaiacum sanctum", cat: "Native trees", art: "tree", sizes: [{ pot: "3 gal", price: 0, qty: 0 }, { pot: "25 gal", price: 0, qty: 0 }], featured: true,
     text: "National tree of The Bahamas. Blue flowers, slow-growing, nearly indestructible.", care: "Full sun, drought-tough once settled." },
-  { id: "sourorange", img: "/img/plants/sourorange.jpg", name: "Sour orange", latin: "Citrus aurantium", cat: "Citrus", art: "citrus", sizes: [{ pot: "3 gal", price: 0, qty: 0 }, { pot: "25 gal", price: 0, qty: 0 }],
+  { id: "sourorange", img: "/img/plants/sourorange.jpg", name: "Sour orange", latin: "Citrus aurantium", cat: "Citrus", art: "citrus", sizes: [{ pot: "3 gal", price: 0, qty: 0 }, { pot: "25 gal", price: 180, qty: 1 }], aliases: ["Sour orange tree", "Seville orange", "Bitter orange"],
     text: "The Bahamian seasoning orange for fish, chicken and souse.", care: "Full sun, hardy and productive." },
   { id: "sapodilla", img: "/img/plants/sapodilla.jpg", name: "Sapodilla (dilly)", latin: "Manilkara zapota", cat: "Fruit trees", art: "sapodilla", sizes: [{ pot: "3 gal", price: 0, qty: 0 }, { pot: "25 gal", price: 0, qty: 0 }],
     text: "Brown-sugar sweet dillies. Wind-firm and salt-tolerant.", care: "Full sun, any soil. Very hurricane-tough." },
