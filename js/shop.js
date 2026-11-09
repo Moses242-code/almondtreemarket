@@ -135,10 +135,12 @@ window.ATM_SHOP = function (cfg) {
   function avail(p) { return p.sizes.reduce(function (s, z) { return s + z.qty; }, 0); }
   function sizeOf(p, pot) { return p.sizes.filter(function (z) { return z.pot === pot; })[0]; }
   function money(n) { return "$" + (Math.round(n * 100) / 100).toFixed(n % 1 ? 2 : 0); }
-  function priceTxt(n) { return n > 0 ? money(n) : "Price on request"; }
+  /* no price set: the nursery says "Price on request"; local produce shows nothing (no price means none in yet) */
+  var NO_PRICE = cfg.noPrice != null ? cfg.noPrice : "Price on request";
+  function priceTxt(n) { return n > 0 ? money(n) : NO_PRICE; }
   function fromPrice(p) {
     var ps = p.sizes.map(function (z) { return z.price; }).filter(function (x) { return x > 0; });
-    if (!ps.length) return "Price on request";
+    if (!ps.length) return NO_PRICE;
     var lo = Math.min.apply(null, ps);
     return (p.sizes.length > 1 ? "From " : "") + money(lo);
   }
@@ -196,7 +198,7 @@ window.ATM_SHOP = function (cfg) {
       "<h3>" + esc(cfg.winHead) + " " + esc(N.daysText) + ".</h3>" +
       '<div class="pw-grid">' + feat.map(function (p) {
         var sz = p.sizes.length > 1 ? p.sizes.length + " sizes" : p.sizes[0].pot, pr = fromPrice(p);
-        return '<div class="pw-card"><div class="media">' + media(p) + "</div><b>" + esc(p.name) + "</b><span>" + esc(sz) + (pr === "Price on request" ? "" : " · <em>" + esc(pr) + "</em>") + "</span></div>";
+        return '<div class="pw-card"><div class="media">' + media(p) + "</div><b>" + esc(p.name) + "</b><span>" + esc(sz) + (!pr || pr === "Price on request" ? "" : " · <em>" + esc(pr) + "</em>") + "</span></div>";
       }).join("") + "</div>" +
       '<span class="pw-go">' + esc(cfg.winGo) + ' <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>';
   }
@@ -381,7 +383,7 @@ window.ATM_SHOP.NURSERY = {
     askHint: "e.g. Is it fruiting yet? Can you deliver to Hope Town?", notesHint: "e.g. I need help loading" }
 };
 window.ATM_SHOP.PRODUCE = {
-  page: "produce", sameDay: true, items: function () { return window.PRODUCE; }, cats: function () { return window.PRODUCE_CATS; },
+  page: "produce", sameDay: true, noPrice: "", items: function () { return window.PRODUCE; }, cats: function () { return window.PRODUCE_CATS; },
   rpc: "pos_web_produce", feedCache: "atm-pos-produce", basketKey: "atm-basket-produce", lastResKey: "atm-last-res-produce", codePrefix: "ATF", hash: "fruit-",
   defaultSize: "Each", moreCat: "More produce", moreArt: "mango", moreText: "At the market now. Tap Interested for a current photo or more about it.",
   windowSel: "#produce-window", countAttr: "data-produce-count", winEyebrow: "Local produce · now online", winHead: "Buy island fruit online. Pick it up any day,", winGo: "Shop local produce",
