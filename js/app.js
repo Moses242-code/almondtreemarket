@@ -142,7 +142,12 @@ var COMPASS = (function () {
       '<a class="go" href="join.html#register">Reserve a slot →</a></div></div>' +
       '<a class="skip" href="#main">Skip to content</a>' +
       '<header class="nav"><div class="wrap"><a class="brand" href="index.html" aria-label="Almond Tree Market home">' + BRAND + "<span><b>Almond Tree Market</b><small>" + FLAG + "Marsh Harbour · Abaco · The Bahamas</small></span>" + HOMEMADE + "</a>" +
-      '<button class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="navlist">' + ICON.menu + "</button>" +
+      '<button class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="navlist">' + '<svg class="hb-ico" viewBox="0 0 28 28" width="24" height="24" aria-hidden="true">' +
+        '<path d="M14 5.5C11 3.6 7.5 3.2 3.5 3.8v19.4c4-.6 7.5-.2 10.5 1.7Z" fill="#2fbf6f"/>' +
+        '<path d="M14 5.5c3-1.9 6.5-2.3 10.5-1.7v19.4c-4-.6-7.5-.2-10.5 1.7Z" fill="#f5ecd7"/>' +
+        '<path d="M8.7 8.5v10M6.9 8.5v3.3a1.8 1.8 0 0 0 3.6 0V8.5" stroke="#0d2a1a" stroke-width="1.3" fill="none" stroke-linecap="round"/>' +
+        '<path d="M16.8 9h5.2M16.8 12.3h5.2M16.8 15.6h5.2M16.8 18.9h3.4" stroke="#e08a1e" stroke-width="1.4" stroke-linecap="round"/></svg>' +
+        '<span class="hb-l">Menu</span>' + "</button>" +
       '<ul id="navlist">' + NAV.map(function (n) {
         return '<li><a href="' + n[0] + '"' + (page === n[0].replace(".html", "") ? ' aria-current="page"' : "") + ">" + n[1] + "</a></li>";
       }).join("") + '<li><a class="next" href="' + M.nextDoor + '">Food next door ↗</a></li>' +

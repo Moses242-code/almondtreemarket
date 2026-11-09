@@ -81,13 +81,21 @@ window.ATM_CART = (function () {
   /* ---------- header button, floating button, drawer ---------- */
   var drawer, panel, fab, view = "cart", page = null;
   var BAG = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 9h14l-1.4 11H6.4Z"/><path d="M9 9V7a3 3 0 0 1 6 0v2"/></svg>';
+  /* header cart button: a basket of island fruit, labelled "Cart" */
+  var BASKET = '<svg class="hb-ico" viewBox="0 0 32 28" width="26" height="23" aria-hidden="true">' +
+    '<path d="M7 14C7 4 25 4 25 14" fill="none" stroke="#c98a4b" stroke-width="2.2" stroke-linecap="round"/>' +
+    '<circle cx="11.5" cy="10.5" r="4.6" fill="#ffb23f"/><circle cx="20.5" cy="10" r="4.2" fill="#ff5f7e"/>' +
+    '<circle cx="16" cy="12.2" r="3.4" fill="#e6f05a"/><path d="M20.5 6c1.5-2.6 4-3 5.3-2.4-.7 1.9-2.8 3.2-5.3 2.4Z" fill="#6be59c"/>' +
+    '<path d="M3.5 15h25l-2.8 10.2a1.5 1.5 0 0 1-1.4 1.1H7.7a1.5 1.5 0 0 1-1.4-1.1Z" fill="#c98a4b"/>' +
+    '<path d="M5 18.5h22M6 22h20M11 15.5l1 10.5M16 15.5v10.5M21 15.5l-1 10.5" stroke="#8a5a2b" stroke-width="1.1" fill="none"/>' +
+    '<rect x="2" y="12.8" width="28" height="3.2" rx="1.6" fill="#e0a86a"/></svg>';
   function mount() {
     A = window.ATM;
     var navWrap = document.querySelector("header.nav .wrap"), mb = navWrap && navWrap.querySelector(".menu-btn");
     if (navWrap && !$("#cart-btn")) {
       var b = document.createElement("button");
       b.id = "cart-btn"; b.className = "cart-btn"; b.type = "button"; b.setAttribute("aria-label", "Open your cart");
-      b.innerHTML = BAG + '<span class="cart-n" id="cart-n" hidden>0</span>';
+      b.innerHTML = BASKET + '<span class="hb-l">Cart</span><span class="cart-n" id="cart-n" hidden>0</span>';
       if (mb) navWrap.insertBefore(b, mb); else navWrap.appendChild(b);
       b.addEventListener("click", function () { open("cart"); });
     }

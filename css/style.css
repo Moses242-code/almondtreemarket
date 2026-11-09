@@ -1029,3 +1029,17 @@ header.nav .brand small { justify-content: center; }
   0%, 100% { opacity: 1; box-shadow: 0 0 8px 2px rgba(255,207,74,.9); }
   50% { opacity: .6; box-shadow: 0 0 0 0 rgba(255,207,74,0); } }
 .pw-card .season-band b { font-size: clamp(.36rem, 5.6cqi, .6rem); letter-spacing: 0; }
+
+/* header Cart (fruit basket) and Menu (menu card) buttons, each with a label underneath */
+.nav .cart-btn, .nav .menu-btn { width: 52px; height: 50px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 0;
+  background: linear-gradient(180deg, rgba(107,229,156,.1), rgba(255,178,63,.08)); border-color: rgba(107,229,156,.32); }
+.nav .menu-btn { background: linear-gradient(180deg, rgba(255,178,63,.12), rgba(255,95,126,.07)); border-color: rgba(255,178,63,.38); }
+.nav .cart-btn:hover { border-color: var(--leaf); background: rgba(47,191,111,.18); }
+.nav .menu-btn:hover, .nav .menu-btn[aria-expanded="true"] { border-color: var(--mango); background: rgba(255,178,63,.18); }
+.hb-ico { display: block; flex: none; transition: transform .2s; }
+.nav .cart-btn:hover .hb-ico, .nav .menu-btn:hover .hb-ico { transform: translateY(-1px) rotate(-4deg); }
+.hb-l { font: 700 .5rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--leaf); }
+.nav .menu-btn .hb-l { color: var(--mango); }
+@media (max-width: 480px) { .nav .cart-btn, .nav .menu-btn { width: 46px; height: 46px; } .hb-l { font-size: .46rem; letter-spacing: .1em; } .hb-ico { width: 22px; height: 20px; } }
+@media (max-width: 480px) { .nav .wrap { gap: .45rem; } .nav .cart-btn, .nav .menu-btn { width: 44px; } .brand { flex: 1 1 auto; overflow: hidden; } .brand b { font-size: min(.7rem, 2.7vw); } }
+@media (max-width: 400px) { .brand b { display: block; font-size: .7rem; white-space: normal; line-height: 1.15; } }
