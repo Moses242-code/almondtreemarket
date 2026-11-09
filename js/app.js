@@ -137,7 +137,7 @@ var COMPASS = (function () {
   function art(key) { return '<div class="art-bg ' + (TONE[key] || "") + '">' + (ART[key] || ART.sugarapple) + "</div>"; }
 
   /* ---------- shared header + footer ---------- */
-  var NAV = [["index.html", "Market"], ["nursery.html", "Nursery"], ["produce.html", "Local Produce"], ["join.html", "Farmer?"], ["vendor.html", "Become a vendor"]];
+  var NAV = [["index.html", "The Market"], ["nursery.html", "Nursery"], ["produce.html", "Local Produce"], ["join.html", "Farmer?"], ["vendor.html", "Become a vendor"]];
   /* "We buy coconuts" sign: same flashing neon box as the farmer sign, links to the Farmers page sell form */
   var COCO_ICON = '<svg class="cc-ico" viewBox="0 0 40 40" width="30" height="30" aria-hidden="true">' +
     '<path d="M22 8c3-5 9-6 13-4-2 4-7 6-11 6" fill="#6be59c"/><path d="M21 9c-1-4-5-7-10-7 1 4 4 7 9 8" fill="#2fbf6f"/>' +
@@ -177,7 +177,7 @@ var COMPASS = (function () {
       '<div class="grain" aria-hidden="true"></div>';
   }
   /* the row of section buttons under the banner (sticks with the header on every page) */
-  var QUICK = [["index.html", "Market", "cornucopia"], ["nursery.html", "Nursery", "pot"], ["produce.html", "Local Produce", "mango"], ["join.html", "Farmer?", "pitchfork"], ["vendor.html", "Become a vendor", "stall"]];
+  var QUICK = [["index.html", "The Market", "cornucopia"], ["nursery.html", "Nursery", "pot"], ["produce.html", "Local Produce", "mango"], ["join.html", "Farmer?", "pitchfork"], ["vendor.html", "Become a vendor", "stall"]];
   function quickBar() {
     return '<nav class="quick" aria-label="Sections"><div class="wrap"><div class="quick-row">' + QUICK.map(function (n) {
       var on = page === n[0].replace(".html", "");
