@@ -153,7 +153,10 @@ var COMPASS = (function () {
       '<ul id="navlist">' + NAV.map(function (n) {
         return '<li><a href="' + n[0] + '"' + (page === n[0].replace(".html", "") ? ' aria-current="page"' : "") + ">" + n[1] + "</a></li>";
       }).join("") + '<li><a class="next" href="' + M.nextDoor + '">Food next door ↗</a></li>' +
-      "</ul></div>" + quickBar() + '</header><div class="grain" aria-hidden="true"></div>';
+      "</ul></div>" + quickBar() + '</header>' +
+      /* phones and tablets: the farmer call-out sits just under the header (scrolls away) */
+      '<div class="farmer-m"><a class="farmer-cta" href="join.html"><span class="fc-top"><i class="ns-dot" aria-hidden="true"></i>Are you a farmer?</span><b>Sell your product!</b></a></div>' +
+      '<div class="grain" aria-hidden="true"></div>';
   }
   /* the row of section buttons under the banner (sticks with the header on every page) */
   var QUICK = [["index.html", "Market", "strawbag"], ["nursery.html", "Nursery", "pot"], ["produce.html", "Local Produce", "mango"], ["join.html", "Join", "heart"]];
