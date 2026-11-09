@@ -1097,3 +1097,14 @@ header.nav .brand small { justify-content: center; }
   .farmer-m .coco-cta b { font-size: .9rem; }
   .farmer-m .coco-cta .cc-ico { width: 24px; height: 24px; }
 }
+/* the two signs are the same width, side by side */
+.hdr-ctas { display: grid; grid-template-columns: 1fr 1fr; }
+.hdr-ctas .coco-cta { justify-content: center; }
+@media (min-width: 481px) and (max-width: 1240px) {
+  .farmer-m .farmer-cta, .farmer-m .coco-cta { flex: 1 1 0; }
+  .farmer-m .coco-cta { justify-content: center; }
+}
+/* homemade-goods badge (basket, bottles, jam) beside the shop name: hidden for now, kept for later */
+.brand .brand-home { display: none; }
+@media (max-width: 1240px) { .hdr-ctas { display: none !important; } }
+@media (min-width: 481px) and (max-width: 1240px) { .farmer-m .farmer-cta, .farmer-m .coco-cta { padding: .55rem .9rem; } }

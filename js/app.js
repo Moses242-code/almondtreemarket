@@ -139,7 +139,7 @@ var COMPASS = (function () {
     '<path d="M22 8c3-5 9-6 13-4-2 4-7 6-11 6" fill="#6be59c"/><path d="M21 9c-1-4-5-7-10-7 1 4 4 7 9 8" fill="#2fbf6f"/>' +
     '<ellipse cx="20" cy="24" rx="12.5" ry="13" fill="#5f9e34"/><path d="M12 15c-3 4-3.5 12 0 17" stroke="#8cc65a" stroke-width="2.2" fill="none" stroke-linecap="round"/>' +
     '<ellipse cx="20" cy="11.8" rx="4.2" ry="2.2" fill="#7a4a22"/><circle cx="18.4" cy="11.6" r=".9" fill="#3a220e"/><circle cx="21.6" cy="11.6" r=".9" fill="#3a220e"/></svg>';
-  var COCO_CTA = '<a class="farmer-cta coco-cta" href="join.html">' + COCO_ICON + '<span class="cc-txt"><span class="fc-top">We buy</span><b>Coconuts!</b></span></a>';
+  var COCO_CTA = '<a class="farmer-cta coco-cta" href="join.html">' + COCO_ICON + '<span class="cc-txt"><span class="fc-top"><i class="ns-dot" aria-hidden="true"></i>We buy</span><b>Coconuts!</b></span></a>';
   function header() {
     var items = M.comingSoon ? M.stripe : nextMarketStripe();
     var run = items.map(function (s) { return "<span>" + esc(s) + "</span>"; }).join("");
