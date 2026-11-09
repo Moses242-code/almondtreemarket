@@ -989,3 +989,13 @@ header.nav .brand small { justify-content: center; }
 .dmedia .season-band b { font-size: 1.05rem; }
 .pmedia .season-band b { font-size: .54rem; letter-spacing: -.01em; }
 .pmedia .season-band i { font-size: .48rem; }
+/* a bit thicker band and heavier letters */
+.season-band { padding: .32rem 0 .36rem; gap: .08rem; }
+.season-band b { -webkit-text-stroke: .35px var(--season-red); }
+.season-band i { -webkit-text-stroke: .2px var(--season-red); }
+.pmedia .season-band b { font-size: .6rem; }
+.pmedia .season-band i { font-size: .52rem; }
+.dmedia .season-band { padding: .5rem 0 .55rem; }
+.dmedia .season-band b { font-size: 1.15rem; }
+.pw-card .season-band { padding: .18rem 0 .2rem; }
+.pmedia .season-band b { font-size: .57rem; }
