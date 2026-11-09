@@ -375,9 +375,22 @@ var COMPASS = (function () {
         "Name: " + f.get("name"), "Phone/WhatsApp: " + f.get("phone"), "Date: " + (nice(f.get("date")) || "-"),
         "Can meet: " + (meet || "Any time, let me know"), "Notes: " + (f.get("notes") || "-")].join("\n");
     };
+    /* backup: every request is also saved in the Plant Collective register (pos_sell_request_create),
+       so it shows there even if the farmer never presses send in WhatsApp */
+    var saveSell = function (via) {
+      var F = M.posFeed || {}, f = new FormData(sellF);
+      if (!F.url || !F.key || !window.fetch) return;
+      var notes = (f.get("notes") || "") + (via === "email" ? " [sent by email]" : "");
+      try {
+        fetch(F.url.replace(/\/$/, "") + "/rest/v1/rpc/pos_sell_request_create", { method: "POST", keepalive: true,
+          headers: { "Content-Type": "application/json", apikey: F.key },
+          body: JSON.stringify({ p_req: { what: f.get("what"), qty: f.get("qty"), name: f.get("name"), phone: f.get("phone"),
+            date: f.get("date"), meet_day: f.get("meetDay"), meet_time: f.get("meetTime"), notes: notes.trim() } }) }).catch(function () {});
+      } catch (e) { /* offline: the WhatsApp message still carries it */ }
+    };
     var doneSell = function () { sellF.hidden = true; if (sellDone) { sellDone.hidden = false; sellDone.scrollIntoView({ block: "center", behavior: "smooth" }); } };
-    sellF.addEventListener("submit", function (ev) { ev.preventDefault(); var t = buildSell(); if (!t) return; window.open(wa(t), "_blank", "noopener"); doneSell(); });
-    $("#sell-mail").addEventListener("click", function () { var t = buildSell(); if (!t) return; location.href = "mailto:" + M.email + "?subject=" + encodeURIComponent("Sell request: Almond Tree Market") + "&body=" + encodeURIComponent(t.replace(/\*/g, "")); doneSell(); });
+    sellF.addEventListener("submit", function (ev) { ev.preventDefault(); var t = buildSell(); if (!t) return; window.open(wa(t), "_blank", "noopener"); saveSell("whatsapp"); doneSell(); });
+    $("#sell-mail").addEventListener("click", function () { var t = buildSell(); if (!t) return; location.href = "mailto:" + M.email + "?subject=" + encodeURIComponent("Sell request: Almond Tree Market") + "&body=" + encodeURIComponent(t.replace(/\*/g, "")); saveSell("email"); doneSell(); });
     var again = $("#sell-again"); if (again) again.addEventListener("click", function () { sellF.reset(); sellF.querySelector('[name="date"]').value = iso(today()); openSell(true); });
   }
   $$("[data-phone]").forEach(function (el) { el.textContent = M.phoneDisplay; });
