@@ -1139,3 +1139,7 @@ body[data-page="vendor"] #register { scroll-margin-top: 260px; }
 .mail-btn { max-width: 100%; overflow-wrap: anywhere; text-align: center; }
 .mail-btn svg { flex: none; }
 body[data-page="join"] #sell, body[data-page="join"] #register { display: block; position: relative; top: -220px; height: 0; }
+/* Farmers page is now just the heading and the WhatsApp/email section: no extra gaps */
+body[data-page="join"] .page-hero { min-height: 0; }
+body[data-page="join"] .page-hero .wrap { padding-bottom: clamp(20px, 3vw, 36px); }
+body[data-page="join"] #contact { padding-block: clamp(20px, 3vw, 40px) clamp(40px, 6vw, 72px); }
