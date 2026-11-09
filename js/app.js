@@ -416,6 +416,8 @@ var COMPASS = (function () {
     var again = $("#sell-again"); if (again) again.addEventListener("click", function () { sellF.reset(); sellF.querySelector('[name="date"]').value = iso(today()); openSell(true); });
   }
   $$("[data-phone]").forEach(function (el) { el.textContent = M.phoneDisplay; });
+  /* any WhatsApp button with data-wa opens a chat to us with that message already typed */
+  $$("[data-wa]").forEach(function (el) { el.href = wa(el.getAttribute("data-wa")); });
   $$("[data-email]").forEach(function (el) { el.textContent = M.email; });
   var wd = $("#wa-direct"); if (wd) wd.href = wa("Hi Almond Tree Market, I have something to sell you: ");
   var md = $("#mail-direct"); if (md) md.href = "mailto:" + M.email + "?subject=" + encodeURIComponent("Selling to Almond Tree Market");
