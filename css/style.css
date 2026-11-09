@@ -1065,3 +1065,35 @@ header.nav .brand small { justify-content: center; }
   .farmer-m .farmer-cta { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; column-gap: .7rem; row-gap: .15rem; margin: 0; padding: .55rem .9rem; }
   .farmer-m .farmer-cta b { font-size: .95rem; }
 }
+
+/* header signs: farmer + "We buy coconuts" side by side, centred between the shop name and Cart */
+.hdr-ctas { margin-inline: auto; flex: none; display: flex; align-items: stretch; gap: .6rem; }
+.hdr-ctas .farmer-cta { margin: 0; }
+.hdr-ctas ~ .cart-btn { margin-left: 0; }
+.coco-cta { display: flex; align-items: center; gap: .5rem; padding: .4rem .85rem .4rem .6rem; text-align: left; }
+.coco-cta .cc-ico { flex: none; filter: drop-shadow(0 0 6px rgba(107,229,156,.35)); }
+.coco-cta .cc-txt { display: grid; gap: .2rem; justify-items: start; }
+.coco-cta b { color: var(--leaf); text-shadow: 0 0 14px rgba(107,229,156,.45); }
+.coco-cta .fc-top { color: var(--cream); }
+.coco-cta:hover .cc-ico { transform: rotate(-10deg); transition: transform .2s; }
+@media (max-width: 1240px) { .hdr-ctas { display: none; } .hdr-ctas ~ .cart-btn { margin-left: auto; } }
+@media (min-width: 1041px) and (max-width: 1240px) { .farmer-m { display: block; position: relative; z-index: 5; padding: .6rem max(16px, env(safe-area-inset-right, 0px)) .2rem max(16px, env(safe-area-inset-left, 0px)); }
+  .farmer-m .farmer-cta { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; column-gap: .7rem; row-gap: .15rem; margin: 0; padding: .55rem .9rem; } }
+/* under-header row: farmer sign stretches, coconut sign sits beside it */
+.farmer-m { display: none; }
+@media (max-width: 1240px) {
+  .farmer-m { display: flex !important; gap: .5rem; align-items: stretch; }
+  .farmer-m .farmer-cta { flex: 1 1 auto; min-width: 0; }
+  .farmer-m .coco-cta { flex: 0 0 auto; flex-wrap: nowrap; justify-content: flex-start; padding: .45rem .7rem .45rem .5rem; }
+  .farmer-m .coco-cta b { font-size: .9rem; }
+}
+@media (max-width: 400px) { .farmer-m .coco-cta .cc-ico { width: 24px; height: 24px; } .farmer-m .farmer-cta b { font-size: .85rem; } .farmer-m .coco-cta b { font-size: .8rem; } .farmer-m .farmer-cta .fc-top { font-size: .52rem; letter-spacing: .1em; } }
+@media (max-width: 480px) {
+  .farmer-m { flex-direction: column; gap: .45rem; }
+  .farmer-m .farmer-cta .fc-top { font-size: .55rem; letter-spacing: .12em; }
+  .farmer-m .farmer-cta b { font-size: .9rem; }
+  .farmer-m .coco-cta { justify-content: center; padding: .4rem .8rem; }
+  .farmer-m .coco-cta .cc-txt { display: flex; align-items: baseline; gap: .55rem; }
+  .farmer-m .coco-cta b { font-size: .9rem; }
+  .farmer-m .coco-cta .cc-ico { width: 24px; height: 24px; }
+}
