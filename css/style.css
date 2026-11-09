@@ -1143,3 +1143,12 @@ body[data-page="join"] #sell, body[data-page="join"] #register { display: block;
 body[data-page="join"] .page-hero { min-height: 0; }
 body[data-page="join"] .page-hero .wrap { padding-bottom: clamp(20px, 3vw, 36px); }
 body[data-page="join"] #contact { padding-block: clamp(20px, 3vw, 40px) clamp(40px, 6vw, 72px); }
+/* privacy page */
+.privacy { padding-block: clamp(150px, 18vw, 210px) clamp(48px, 7vw, 88px); }
+.privacy .wrap { max-width: 720px; }
+.privacy h1 { margin: .9rem 0 .8rem; text-wrap: balance; }
+.privacy h2 { font-size: clamp(1.15rem, 2.4vw, 1.45rem); margin: 2rem 0 .5rem; }
+.privacy p { max-width: 65ch; }
+.privacy a { text-decoration: underline; text-underline-offset: 3px; }
+#site-foot .base a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width: 1240px) { .privacy { padding-top: 56px; } }

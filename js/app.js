@@ -198,7 +198,7 @@ var COMPASS = (function () {
       '<div><h4>Contact</h4><ul><li><a href="' + wa("Hi! I have a question about Almond Tree Market.") + '" target="_blank" rel="noopener">WhatsApp ' + esc(M.phoneDisplay) + "</a></li>" +
       '<li><a href="mailto:' + M.email + '">' + esc(M.email) + '</a></li><li><a href="' + M.instagram + '" target="_blank" rel="noopener">Instagram</a> · <a href="' + M.facebook + '" target="_blank" rel="noopener">Facebook</a></li>' +
       '<li><a href="' + M.mapsLink + '" target="_blank" rel="noopener">Directions · GWPQ+WQ</a></li></ul></div>' +
-      '<div class="base"><span class="base-geo">' + COMPASS + '26°32′14″ N · 77°03′38″ W</span><span>© ' + new Date().getFullYear() + ' Almond Tree Market · Marsh Harbour, Abaco · ' + FLAG + ' Proudly Bahamian</span></div></div>';
+      '<div class="base"><span class="base-geo">' + COMPASS + '26°32′14″ N · 77°03′38″ W</span><span>© ' + new Date().getFullYear() + ' Almond Tree Market · Marsh Harbour, Abaco · ' + FLAG + ' Proudly Bahamian · <a href="privacy.html">Privacy</a></span></div></div>';
   }
   var top = $("#site-top"); if (top) top.outerHTML = header();
   var foot = $("#site-foot"); if (foot) foot.innerHTML = footer();
