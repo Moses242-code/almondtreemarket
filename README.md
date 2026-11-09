@@ -7,7 +7,7 @@ A plain static website: HTML, CSS and a little JavaScript. No database, no build
 | File | What it is |
 | --- | --- |
 | `index.html` | Home: coming-soon stripe, nursery sign with the palm tree, **"Hungry? Check out next door."** (links to the food vendors on underthealmondtree.market), what sells here, nursery, Christmas, the 10 × 7 Shop with a floor plan, photos, map |
-| `nursery.html` | **Plant shop**: 77 Bahamian plants in small cards (7 across), each with its pot sizes, search, categories, sort. Customers tap Reserve, pick any open day (Monday to Saturday), get a pickup code + QR code, and send the reservation to you on WhatsApp. They pay at pickup. A preview window of 4 plants sits at the top of the home page |
+| `nursery.html` | **Plant shop**: 81 Bahamian plants in small cards (7 across), each with its pot sizes, search, categories, sort. Customers tap Reserve, pick any open day (Monday to Saturday), get a pickup code + QR code, and send the reservation to you on WhatsApp. They pay at pickup. A preview window of 4 plants sits at the top of the home page |
 | `produce.html` | **Local Produce shop**: works exactly like the nursery. 59 local fruits and vegetables (5 kinds of mango) sold by the piece (or by the hand, bunch or bag), with Reserve, Interested and the QR pickup code. Live counts from the register items of kind Produce. A Local Produce tile with a mango tree sits on the home page under the nursery one |
 | `join.html` | How to join, price, schedule, rules, **registration form**, FAQ, questions |
 | `js/data.js` | **The only file you need to edit** |
