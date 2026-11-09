@@ -1108,3 +1108,21 @@ header.nav .brand small { justify-content: center; }
 .brand .brand-home { display: none; }
 @media (max-width: 1240px) { .hdr-ctas { display: none !important; } }
 @media (min-width: 481px) and (max-width: 1240px) { .farmer-m .farmer-cta, .farmer-m .coco-cta { padding: .55rem .9rem; } }
+
+/* Farmers page: sell request */
+.btn.big { font-size: 1.05rem; padding: 1em 1.5em; }
+.btn.wa svg { width: 1.1em; height: 1.1em; flex: none; }
+.sell-start { display: flex; justify-content: center; padding: 1.2rem 0 .4rem; }
+.sell-start .btn { box-shadow: 0 0 0 0 rgba(37,211,102,.55); animation: ring-wa 1.8s ease-out infinite; }
+@keyframes ring-wa { 0% { box-shadow: 0 0 0 0 rgba(37,211,102,.5); } 100% { box-shadow: 0 0 0 18px rgba(37,211,102,0); } }
+.sell-form { max-width: 760px; margin-inline: auto; }
+.sell-done { max-width: 760px; margin-inline: auto; display: grid; gap: .6rem; justify-items: start; padding: 1.4rem 1.5rem; border-radius: 20px; border: 2px solid var(--leaf); background: rgba(107,229,156,.08); }
+.sell-done b { font: 800 1.25rem/1.2 var(--display); color: var(--leaf); }
+.sell-done p { color: var(--mist); }
+.contact-card { display: grid; gap: .9rem; }
+.contact-card .btn.wa { justify-content: center; }
+.contact-mail { display: grid; gap: .35rem; padding: 1rem 1.2rem; border: 1px solid var(--line); border-radius: 16px; background: var(--deep); color: var(--cream); text-decoration: none; min-width: 0; }
+.contact-mail b { font-weight: 600; overflow-wrap: anywhere; }
+.contact-mail:hover { border-color: var(--leaf); }
+@media (prefers-reduced-motion: reduce) { .sell-start .btn { animation: none; } }
+.sell-form[hidden], .sell-done[hidden], .sell-start[hidden] { display: none; }

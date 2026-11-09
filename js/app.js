@@ -133,13 +133,13 @@ var COMPASS = (function () {
   function art(key) { return '<div class="art-bg ' + (TONE[key] || "") + '">' + (ART[key] || ART.sugarapple) + "</div>"; }
 
   /* ---------- shared header + footer ---------- */
-  var NAV = [["index.html", "Market"], ["nursery.html", "Nursery"], ["produce.html", "Local Produce"], ["join.html", "Join"]];
-  /* "We buy coconuts" sign: same flashing neon box as the farmer sign, links to Join */
+  var NAV = [["index.html", "Market"], ["nursery.html", "Nursery"], ["produce.html", "Local Produce"], ["join.html", "Farmers"]];
+  /* "We buy coconuts" sign: same flashing neon box as the farmer sign, links to the Farmers page sell form */
   var COCO_ICON = '<svg class="cc-ico" viewBox="0 0 40 40" width="30" height="30" aria-hidden="true">' +
     '<path d="M22 8c3-5 9-6 13-4-2 4-7 6-11 6" fill="#6be59c"/><path d="M21 9c-1-4-5-7-10-7 1 4 4 7 9 8" fill="#2fbf6f"/>' +
     '<ellipse cx="20" cy="24" rx="12.5" ry="13" fill="#5f9e34"/><path d="M12 15c-3 4-3.5 12 0 17" stroke="#8cc65a" stroke-width="2.2" fill="none" stroke-linecap="round"/>' +
     '<ellipse cx="20" cy="11.8" rx="4.2" ry="2.2" fill="#7a4a22"/><circle cx="18.4" cy="11.6" r=".9" fill="#3a220e"/><circle cx="21.6" cy="11.6" r=".9" fill="#3a220e"/></svg>';
-  var COCO_CTA = '<a class="farmer-cta coco-cta" href="join.html">' + COCO_ICON + '<span class="cc-txt"><span class="fc-top"><i class="ns-dot" aria-hidden="true"></i>We buy</span><b>Coconuts!</b></span></a>';
+  var COCO_CTA = '<a class="farmer-cta coco-cta" href="join.html?sell=Coconuts#sell">' + COCO_ICON + '<span class="cc-txt"><span class="fc-top"><i class="ns-dot" aria-hidden="true"></i>We buy</span><b>Coconuts!</b></span></a>';
   function header() {
     var items = M.comingSoon ? M.stripe : nextMarketStripe();
     var run = items.map(function (s) { return "<span>" + esc(s) + "</span>"; }).join("");
@@ -149,7 +149,7 @@ var COMPASS = (function () {
       '<a class="skip" href="#main">Skip to content</a>' +
       '<header class="nav"><div class="wrap"><a class="brand" href="index.html" aria-label="Almond Tree Market home">' + BRAND + "<span><b>Almond Tree Market</b><small>" + FLAG + "Marsh Harbour · Abaco · The Bahamas</small></span>" + HOMEMADE + "</a>" +
       /* flashing call-out for growers, centred in the gap between the shop name and the Cart button */
-      '<div class="hdr-ctas">' + '<a class="farmer-cta" href="join.html"><span class="fc-top"><i class="ns-dot" aria-hidden="true"></i>Farmer? Gardener? Yard fruit?</span><b>Sell your product!</b></a>' + COCO_CTA + '</div>' +
+      '<div class="hdr-ctas">' + '<a class="farmer-cta" href="join.html#sell"><span class="fc-top"><i class="ns-dot" aria-hidden="true"></i>Farmer? Gardener? Yard fruit?</span><b>Sell your product!</b></a>' + COCO_CTA + '</div>' +
       '<button class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="navlist">' + '<svg class="hb-ico" viewBox="0 0 28 28" width="24" height="24" aria-hidden="true">' +
         '<path d="M14 5.5C11 3.6 7.5 3.2 3.5 3.8v19.4c4-.6 7.5-.2 10.5 1.7Z" fill="#2fbf6f"/>' +
         '<path d="M14 5.5c3-1.9 6.5-2.3 10.5-1.7v19.4c-4-.6-7.5-.2-10.5 1.7Z" fill="#f5ecd7"/>' +
@@ -161,11 +161,11 @@ var COMPASS = (function () {
       }).join("") + '<li><a class="next" href="' + M.nextDoor + '">Food next door ↗</a></li>' +
       "</ul></div>" + quickBar() + '</header>' +
       /* phones and tablets: the farmer call-out sits just under the header (scrolls away) */
-      '<div class="farmer-m">' + '<a class="farmer-cta" href="join.html"><span class="fc-top"><i class="ns-dot" aria-hidden="true"></i>Farmer? Gardener? Yard fruit?</span><b>Sell your product!</b></a>' + COCO_CTA + '</div>' +
+      '<div class="farmer-m">' + '<a class="farmer-cta" href="join.html#sell"><span class="fc-top"><i class="ns-dot" aria-hidden="true"></i>Farmer? Gardener? Yard fruit?</span><b>Sell your product!</b></a>' + COCO_CTA + '</div>' +
       '<div class="grain" aria-hidden="true"></div>';
   }
   /* the row of section buttons under the banner (sticks with the header on every page) */
-  var QUICK = [["index.html", "Market", "strawbag"], ["nursery.html", "Nursery", "pot"], ["produce.html", "Local Produce", "mango"], ["join.html", "Join", "heart"]];
+  var QUICK = [["index.html", "Market", "strawbag"], ["nursery.html", "Nursery", "pot"], ["produce.html", "Local Produce", "mango"], ["join.html", "Farmers", "heart"]];
   function quickBar() {
     return '<nav class="quick" aria-label="Sections"><div class="wrap"><div class="quick-row">' + QUICK.map(function (n) {
       var on = page === n[0].replace(".html", "");
@@ -182,7 +182,7 @@ var COMPASS = (function () {
     return '<div class="bs-band" aria-hidden="true"></div><div class="wrap"><div><a class="brand" href="index.html">' + BRAND + "<span><b>Almond Tree Market</b><small>" + esc(M.place) + "</small></span></a>" +
       "<p>A native market for Abaco growers and makers. Fruit, plants, straw work, candles, sauces and sweets, Monday to Saturday under the almond tree.</p>" +
       '<p class="foot-cash"><b>Cash only · pickup only.</b> Order online, pay cash when you collect at Almond Tree Market. No deliveries.</p></div>' +
-      '<div><h4>Market</h4><ul><li><a href="nursery.html">Native nursery</a></li><li><a href="produce.html">Local produce</a></li><li><a href="cart.html">Your cart &amp; orders</a></li><li><a href="join.html">Become a vendor</a></li><li><a href="' + M.nextDoor + '">Hungry? Food next door ↗</a></li></ul></div>' +
+      '<div><h4>Market</h4><ul><li><a href="nursery.html">Native nursery</a></li><li><a href="produce.html">Local produce</a></li><li><a href="cart.html">Your cart &amp; orders</a></li><li><a href="join.html#sell">Farmers: sell to us</a></li><li><a href="' + M.nextDoor + '">Hungry? Food next door ↗</a></li></ul></div>' +
       '<div><h4>Contact</h4><ul><li><a href="' + wa("Hi! I have a question about Almond Tree Market.") + '" target="_blank" rel="noopener">WhatsApp ' + esc(M.phoneDisplay) + "</a></li>" +
       '<li><a href="mailto:' + M.email + '">' + esc(M.email) + '</a></li><li><a href="' + M.instagram + '" target="_blank" rel="noopener">Instagram</a> · <a href="' + M.facebook + '" target="_blank" rel="noopener">Facebook</a></li>' +
       '<li><a href="' + M.mapsLink + '" target="_blank" rel="noopener">Directions · GWPQ+WQ</a></li></ul></div>' +
@@ -354,6 +354,36 @@ var COMPASS = (function () {
     reg.addEventListener("submit", function (ev) { ev.preventDefault(); var t = build(); if (t) window.open(wa(t), "_blank", "noopener"); });
     $("#reg-mail").addEventListener("click", function () { var t = build(); if (t) location.href = "mailto:" + M.email + "?subject=" + encodeURIComponent("Vendor registration: Almond Tree Market") + "&body=" + encodeURIComponent(t.replace(/\*/g, "")); });
   }
+  /* Farmers page: short "sell to us" request. Sends to our WhatsApp (or email), which is what alerts us. */
+  var sellF = $("#sell-form");
+  if (sellF) {
+    var sellStart = $("#sell-start"), sellDone = $("#sell-done");
+    var openSell = function (focus) {
+      sellF.hidden = false; if (sellStart) sellStart.hidden = true; if (sellDone) sellDone.hidden = true;
+      if (focus) { var w = sellF.querySelector('[name="what"]'); setTimeout(function () { sellF.scrollIntoView({ block: "start", behavior: "smooth" }); if (!w.value) w.focus({ preventScroll: true }); }, 30); }
+    };
+    $$("[data-open-sell]").forEach(function (b) { b.addEventListener("click", function (ev) { ev.preventDefault(); openSell(true); history.replaceState(null, "", "#sell"); }); });
+    sellF.querySelector('[name="date"]').value = iso(today());
+    var pre = qs.get("sell"); if (pre) sellF.querySelector('[name="what"]').value = pre.slice(0, 60);
+    if (/^#(sell|register)$/.test(location.hash) || pre) openSell(false);
+    var nice = function (v) { if (!v) return ""; var d = new Date(v + "T12:00:00"); return isNaN(d) ? v : longDate(d); };
+    var buildSell = function () {
+      var f = new FormData(sellF), err = $("#sell-err"); err.textContent = "";
+      if (!f.get("what") || !f.get("qty") || !f.get("name") || !f.get("phone")) { err.textContent = "Please add what you're selling, how many, your name and your phone number."; return null; }
+      var meet = [nice(f.get("meetDay")), f.get("meetTime")].filter(Boolean).join(", ");
+      return ["*Almond Tree Market: sell request*", "", "Selling: " + f.get("what"), "How many: " + f.get("qty"), "",
+        "Name: " + f.get("name"), "Phone/WhatsApp: " + f.get("phone"), "Date: " + (nice(f.get("date")) || "-"),
+        "Can meet: " + (meet || "Any time, let me know"), "Notes: " + (f.get("notes") || "-")].join("\n");
+    };
+    var doneSell = function () { sellF.hidden = true; if (sellDone) { sellDone.hidden = false; sellDone.scrollIntoView({ block: "center", behavior: "smooth" }); } };
+    sellF.addEventListener("submit", function (ev) { ev.preventDefault(); var t = buildSell(); if (!t) return; window.open(wa(t), "_blank", "noopener"); doneSell(); });
+    $("#sell-mail").addEventListener("click", function () { var t = buildSell(); if (!t) return; location.href = "mailto:" + M.email + "?subject=" + encodeURIComponent("Sell request: Almond Tree Market") + "&body=" + encodeURIComponent(t.replace(/\*/g, "")); doneSell(); });
+    var again = $("#sell-again"); if (again) again.addEventListener("click", function () { sellF.reset(); sellF.querySelector('[name="date"]').value = iso(today()); openSell(true); });
+  }
+  $$("[data-phone]").forEach(function (el) { el.textContent = M.phoneDisplay; });
+  $$("[data-email]").forEach(function (el) { el.textContent = M.email; });
+  var wd = $("#wa-direct"); if (wd) wd.href = wa("Hi Almond Tree Market, I have something to sell you: ");
+  var md = $("#mail-direct"); if (md) md.href = "mailto:" + M.email + "?subject=" + encodeURIComponent("Selling to Almond Tree Market");
   var fr = $("#fund-form");
   if (fr) fr.addEventListener("submit", function (ev) {
     ev.preventDefault(); var f = new FormData(fr), err = $("#fund-err"); err.textContent = "";
