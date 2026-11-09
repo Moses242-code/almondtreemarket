@@ -383,9 +383,9 @@ footer .base { grid-column: 1 / -1; border-top: 1px solid var(--line); padding-t
 .pw-card .media { aspect-ratio: 4 / 3; margin-bottom: .45rem; }
 .pw-card .media img { width: 100%; height: 100%; object-fit: cover; }
 .pw-card .art-bg svg { width: 46%; }
-.pw-card b { font: 800 .8rem/1.15 var(--display); padding: 0 .6rem; }
-.pw-card span { font: 400 .64rem var(--mono); letter-spacing: .06em; color: var(--mist); padding: .15rem .6rem 0; }
-.pw-card em { font-style: normal; color: var(--mango); font-weight: 500; }
+.pw-card > b { font: 800 .8rem/1.15 var(--display); padding: 0 .6rem; }
+.pw-card > span { font: 400 .64rem var(--mono); letter-spacing: .06em; color: var(--mist); padding: .15rem .6rem 0; }
+.pw-card > span em { font-style: normal; color: var(--mango); font-weight: 500; }
 .pw-go { display: flex; justify-content: center; align-items: center; gap: .5em; background: var(--mango); color: #241300; font-weight: 600; font-size: .92rem; padding: .7em 1em; border-radius: 999px; }
 @media (max-width: 960px) { .hero .wrap.has-window { grid-template-columns: 1fr; } .plant-window { max-width: 460px; } }
 
@@ -1012,3 +1012,20 @@ header.nav .brand small { justify-content: center; }
 .pw-card .rare-tag { font-size: .48rem; }
 .bthumb .rare-tag { display: none; }
 @media (prefers-reduced-motion: reduce) { .rare-tag { animation: none; } }
+/* home-page preview cards: Rare tag and seasonal band big enough to read */
+.pw-card .rare-tag { font-size: .6rem; letter-spacing: .16em; }
+.pw-card .season-band { width: 170%; padding: .22rem 0 .26rem; background: rgba(255,255,255,.22); }
+.pw-card .season-band b { font-size: .62rem; -webkit-text-stroke: .3px var(--season-red); }
+.pw-card .season-band i { font-size: .5rem; }
+.pw-card .season-band { transform: translate(-50%, -50%) rotate(-17deg); }
+.pw-card .season-band b { font-size: .58rem; }
+/* text on the preview-card picture follows the picture's width (phone cards are bigger than desktop ones) */
+.pw-card .media { container-type: inline-size; }
+.pw-card .season-band b { font-size: clamp(.4rem, 6cqi, .6rem); }
+.pw-card .season-band i { font-size: clamp(.34rem, 5cqi, .5rem); }
+.pw-card .rare-tag { font-size: clamp(.45rem, 6cqi, .6rem); }
+.pw-card .rare-tag { animation-name: rare-flash-sm; }
+@keyframes rare-flash-sm {
+  0%, 100% { opacity: 1; box-shadow: 0 0 8px 2px rgba(255,207,74,.9); }
+  50% { opacity: .6; box-shadow: 0 0 0 0 rgba(255,207,74,0); } }
+.pw-card .season-band b { font-size: clamp(.36rem, 5.6cqi, .6rem); letter-spacing: 0; }
