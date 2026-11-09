@@ -1056,11 +1056,11 @@ header.nav .brand small { justify-content: center; }
 .farmer-cta:hover, .farmer-cta:focus-visible { border-color: var(--mango); transform: translateY(-1px); }
 @keyframes fc-flash { 0%, 100% { border-color: var(--leaf); } 50% { border-color: rgba(107,229,156,.35); } }
 .farmer-cta ~ .cart-btn { margin-left: 0; }
-@media (max-width: 900px) { .farmer-cta { display: none; } .farmer-cta ~ .cart-btn { margin-left: auto; } }
+@media (max-width: 1040px) { .farmer-cta { display: none; } .farmer-cta ~ .cart-btn { margin-left: auto; } }
 @media (prefers-reduced-motion: reduce) { .farmer-cta, .farmer-cta .ns-dot { animation: none; } }
 /* phone/tablet copy of the farmer call-out: one line, full width, under the header */
 .farmer-m { display: none; }
-@media (max-width: 900px) {
+@media (max-width: 1040px) {
   .farmer-m { display: block; position: relative; z-index: 5; padding: .6rem max(16px, env(safe-area-inset-right, 0px)) .2rem max(16px, env(safe-area-inset-left, 0px)); }
   .farmer-m .farmer-cta { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; column-gap: .7rem; row-gap: .15rem; margin: 0; padding: .55rem .9rem; }
   .farmer-m .farmer-cta b { font-size: .95rem; }

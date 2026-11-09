@@ -143,7 +143,7 @@ var COMPASS = (function () {
       '<a class="skip" href="#main">Skip to content</a>' +
       '<header class="nav"><div class="wrap"><a class="brand" href="index.html" aria-label="Almond Tree Market home">' + BRAND + "<span><b>Almond Tree Market</b><small>" + FLAG + "Marsh Harbour · Abaco · The Bahamas</small></span>" + HOMEMADE + "</a>" +
       /* flashing call-out for growers, centred in the gap between the shop name and the Cart button */
-      '<a class="farmer-cta" href="join.html"><span class="fc-top"><i class="ns-dot" aria-hidden="true"></i>Are you a farmer?</span><b>Sell your product!</b></a>' +
+      '<a class="farmer-cta" href="join.html"><span class="fc-top"><i class="ns-dot" aria-hidden="true"></i>Farmer? Gardener? Yard fruit?</span><b>Sell your product!</b></a>' +
       '<button class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="navlist">' + '<svg class="hb-ico" viewBox="0 0 28 28" width="24" height="24" aria-hidden="true">' +
         '<path d="M14 5.5C11 3.6 7.5 3.2 3.5 3.8v19.4c4-.6 7.5-.2 10.5 1.7Z" fill="#2fbf6f"/>' +
         '<path d="M14 5.5c3-1.9 6.5-2.3 10.5-1.7v19.4c-4-.6-7.5-.2-10.5 1.7Z" fill="#f5ecd7"/>' +
@@ -155,7 +155,7 @@ var COMPASS = (function () {
       }).join("") + '<li><a class="next" href="' + M.nextDoor + '">Food next door ↗</a></li>' +
       "</ul></div>" + quickBar() + '</header>' +
       /* phones and tablets: the farmer call-out sits just under the header (scrolls away) */
-      '<div class="farmer-m"><a class="farmer-cta" href="join.html"><span class="fc-top"><i class="ns-dot" aria-hidden="true"></i>Are you a farmer?</span><b>Sell your product!</b></a></div>' +
+      '<div class="farmer-m"><a class="farmer-cta" href="join.html"><span class="fc-top"><i class="ns-dot" aria-hidden="true"></i>Farmer? Gardener? Yard fruit?</span><b>Sell your product!</b></a></div>' +
       '<div class="grain" aria-hidden="true"></div>';
   }
   /* the row of section buttons under the banner (sticks with the header on every page) */
