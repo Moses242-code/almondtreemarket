@@ -419,7 +419,8 @@ var COMPASS = (function () {
   /* any WhatsApp button with data-wa opens a chat to us with that message already typed */
   $$("[data-wa]").forEach(function (el) { el.href = wa(el.getAttribute("data-wa")); });
   $$("[data-email]").forEach(function (el) { el.textContent = M.email; });
-  var wd = $("#wa-direct"); if (wd) wd.href = wa("Hi Almond Tree Market, I have something to sell you: ");
+  /* WhatsApp button on the Farmers page; the coconut sign passes ?sell=Coconuts so the message names it */
+  var wd = $("#wa-direct"); if (wd) { var sellWhat = (qs.get("sell") || "").slice(0, 40); wd.href = wa("Hi Almond Tree Market, I have something to sell you: " + (sellWhat ? sellWhat + ". " : "")); }
   var md = $("#mail-direct"); if (md) md.href = "mailto:" + M.email + "?subject=" + encodeURIComponent("Selling to Almond Tree Market");
   var fr = $("#fund-form");
   if (fr) fr.addEventListener("submit", function (ev) {
