@@ -3,7 +3,7 @@
    - Checkout: name, phone, pickup day -> one order with ONE QR code for every item.
    - The order is saved in the Plant Collective register (pos_web_order_create). At the shop the register scans
      the QR code (or types the code) and rings it up as a cash sale.
-   - Cash only, paid on site. No deliveries.
+   - Cash only, pick up on site, pay when you collect. No deliveries.
    Item data (names, sizes, prices, stock, photos) comes from the shop engine in js/shop.js (window.ATM_SHOPS). */
 window.ATM_CART = (function () {
   "use strict";
@@ -15,7 +15,7 @@ window.ATM_CART = (function () {
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var KEY = "atm-cart", SAVED = "atm-cart-saved", ORDERS = "atm-orders";
   var SHOP_NAME = { nursery: "Plants · Native Nursery", produce: "Local produce" };
-  var CASH = "Cash only, paid on site when you collect. No deliveries. Collect your order at Almond Tree Market, Under the Almond Tree, Marsh Harbour.";
+  var CASH = "Cash only. Pick up on site. Pay when you collect. No deliveries. Collect your order at Under the Almond Tree, Marsh Harbour.";
 
   function read(k, d) { try { var v = JSON.parse(localStorage.getItem(k) || "null"); return v == null ? d : v; } catch (e) { return d; } }
   function write(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
@@ -157,7 +157,7 @@ window.ATM_CART = (function () {
     return '<p class="fine"><b>How pickup works:</b> buy it, then come in and pick it up the same day, during business hours (' + esc(bh) + ")<sup>*</sup>. Bring your QR code. You have <b>24 hours</b> to collect it, or it goes back into stock." +
       '<span class="fine-star fine-xs"><sup>*</sup> If it will take more than 24 hours, we will let you know.</span></p>';
   }
-  function cashNote(cls) { return '<p class="cash-note' + (cls ? " " + cls : "") + '"><b>Cash only · pickup only.</b> ' + esc(CASH.replace(/^Cash only, /, "").replace(/^paid/, "Paid")) + "</p>"; }
+  function cashNote(cls) { return '<p class="cash-note' + (cls ? " " + cls : "") + '"><b>Cash only · pick up on site.</b> ' + esc(CASH.replace(/^Cash only\. Pick up on site\. /, "")) + "</p>"; }
 
   /* ---------- rendering ---------- */
   function lineHTML(l) {
