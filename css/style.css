@@ -981,3 +981,11 @@ header.nav .brand small { justify-content: center; }
 /* even more see-through: barely-there band, fruit clearly visible */
 .season-band { background: rgba(255,255,255,.14); backdrop-filter: none; -webkit-backdrop-filter: none; border-block: 1px solid rgba(212,42,42,.7); }
 .season-band b, .season-band i { text-shadow: 0 0 4px rgba(255,255,255,.9), 0 0 1px rgba(255,255,255,1); }
+/* "June – September" on one line, "Seasonal" underneath */
+.season-band b { white-space: nowrap; }
+.season-band b span { display: inline; }
+.pmedia .season-band b { font-size: .64rem; letter-spacing: 0; }
+.pw-card .season-band b { font-size: .5rem; }
+.dmedia .season-band b { font-size: 1.05rem; }
+.pmedia .season-band b { font-size: .54rem; letter-spacing: -.01em; }
+.pmedia .season-band i { font-size: .48rem; }

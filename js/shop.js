@@ -153,7 +153,7 @@ window.ATM_SHOP = function (cfg) {
   function seasonBand(p) {
     if (!outOfSeason(p) || avail(p)) return "";
     var s = p.seasonMonths;
-    return '<span class="season-band" aria-label="Seasonal: ' + MONTHS[s[0] - 1] + " through " + MONTHS[s[1] - 1] + '"><b>' + MONTHS[s[0] - 1] + " through <span>" + MONTHS[s[1] - 1] + "</span></b><i>Seasonal</i></span>";
+    return '<span class="season-band" aria-label="Seasonal: ' + MONTHS[s[0] - 1] + " through " + MONTHS[s[1] - 1] + '"><b>' + MONTHS[s[0] - 1] + " – " + MONTHS[s[1] - 1] + "</b><i>Seasonal</i></span>";
   }
   function status(p) {
     var n = avail(p);
