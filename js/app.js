@@ -342,7 +342,7 @@ var COMPASS = (function () {
   var reg = $("#reg-form");
   if (reg) {
     /* the next 18 open days (three weeks, Monday to Saturday), plus any special event days, for vendors to choose */
-    var openDays = (M.nursery && M.nursery.openDays) || [1, 2, 3, 4, 5, 6];
+    var openDays = [0, 1, 2, 3, 4, 5, 6]; /* vendors can book any day, Monday through Sunday */
     var dates = [], dd0 = today();
     for (var si = 0; dates.length < 18 && si < 40; si++) { var sd = new Date(dd0); sd.setDate(dd0.getDate() + si); if (openDays.indexOf(sd.getDay()) > -1 && M.weekly.skip.indexOf(iso(sd)) < 0) dates.push({ d: sd, date: iso(sd), title: M.weekly.title }); }
     upcoming(30).forEach(function (e) { var f = dates.filter(function (x) { return x.date === e.date; })[0]; if (f) f.title = e.title; else dates.push(e); });
@@ -350,7 +350,7 @@ var COMPASS = (function () {
     $("#reg-dates").innerHTML = dates.map(function (e) {
       return '<label><input type="checkbox" name="dates" value="' + esc(longDate(e.d) + " (" + e.title + ")") + '"' + (qs.get("date") === e.date ? " checked" : "") + "> " +
         DOW[e.d.getDay()] + " " + MON[e.d.getMonth()] + " " + e.d.getDate() + (e.title !== M.weekly.title ? " · " + esc(e.title) : "") + "</label>";
-    }).join("") + '<label><input type="checkbox" name="dates" value="Regular vendor: every day we are open"> Every day (regular)</label><label><input type="checkbox" name="dates" value="Regular vendor: same days each week (see notes)"> Same days each week</label>';
+    }).join("") + '<label><input type="checkbox" name="dates" value="Regular vendor: every day (Monday to Sunday)"> Every day (regular)</label><label><input type="checkbox" name="dates" value="Regular vendor: same days each week (see notes)"> Same days each week</label>';
     $("#reg-slot").innerHTML = '<option value="Any open slot">Any open slot</option>' + window.SLOTS.filter(function (s) { return s.status === "open"; })
       .map(function (s) { return '<option value="Slot ' + s.n + '"' + (qs.get("slot") == s.n ? " selected" : "") + ">Slot " + s.n + (s.hint ? " · " + esc(s.hint) : "") + "</option>"; }).join("");
     $("#reg-cat").innerHTML = window.CATEGORIES.map(function (c) { return "<option" + (qs.get("sell") === c.name ? " selected" : "") + ">" + esc(c.name) + "</option>"; }).join("") + "<option>Something else</option>";
