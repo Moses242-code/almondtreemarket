@@ -124,7 +124,7 @@ window.PLANTS = [
     text: "The big spiky green fruit for juice, ice cream and soursop leaf tea.", care: "Full sun, well-drained soil. Fruits in 3 to 4 years." },
   { id: "sugarapple", img: "/img/plants/sugarapple.jpg", name: "Sugar apple", latin: "Annona squamosa", cat: "Fruit trees", art: "sugarapple", sizes: [{ pot: "3 gal", price: 0, qty: 0 }, { pot: "25 gal", price: 0, qty: 0 }], featured: true,
     text: "Sweet and custardy, a yard favourite across the islands.", care: "Full sun, handles rocky soil. Fruits in 2 to 3 years." },
-  { id: "blackberryjam", img: "/img/plants/blackberryjam.jpg", name: "Blackberry jam fruit tree", latin: "Randia formosa", cat: "Exotics", art: "tree", sizes: [{ pot: "25 gal", price: 0, qty: 1 }], aliases: ["Blackberry jam fruit", "Blackberry jam tree", "Rosenbergiodendron formosum"],
+  { id: "blackberryjam", img: "/img/plants/blackberryjam.jpg", name: "Blackberry jam fruit tree", latin: "Randia formosa", cat: "Exotics", art: "tree", sizes: [{ pot: "25 gal", price: 250, qty: 1 }], aliases: ["Blackberry jam fruit", "Blackberry jam tree", "Rosenbergiodendron formosum"],
     text: "A rare small tree whose ripe yellow fruit has a dark, sweet pulp that tastes like blackberry jam. Fragrant white flowers too.", care: "Sun to part shade, well-drained soil. Happy in a big pot." },
   { id: "keylime", img: "/img/plants/keylime.jpg", name: "Key lime", latin: "Citrus aurantiifolia", cat: "Citrus", art: "citrus", sizes: [{ pot: "3 gal", price: 0, qty: 0 }, { pot: "25 gal", price: 0, qty: 0 }], featured: true,
     text: "For conch salad, souse and pie. Happy in a big pot.", care: "Full sun, water weekly while young." },
