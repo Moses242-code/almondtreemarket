@@ -951,3 +951,23 @@ header.nav .brand small { justify-content: center; }
 /* phones: make room for the cart button; the toast sits above the floating Checkout button */
 @media (max-width: 480px) { header.nav .brand .brand-home { display: none; } }
 .cart-toast { bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
+
+/* out of season and out of stock: red band across the picture ("June through September · Seasonal") */
+:root { --season-red: #d42a2a; }
+.season-band { position: absolute; z-index: 2; left: 50%; top: 50%; width: 160%; transform: translate(-50%, -50%) rotate(-28deg); display: grid; justify-items: center; gap: .05rem;
+  padding: .35rem 0 .4rem; background: var(--season-red); color: #fff; text-align: center; pointer-events: none; box-shadow: 0 4px 14px rgba(0,0,0,.35); border-block: 2px solid rgba(255,255,255,.75); }
+.season-band b { font: 800 .82rem/1.1 var(--display); letter-spacing: .02em; text-transform: uppercase; }
+.season-band i { font: 500 .58rem/1 var(--mono); font-style: normal; letter-spacing: .22em; text-transform: uppercase; opacity: .95; }
+.pmedia, .dmedia, .pw-card .media { overflow: hidden; }
+.dmedia .season-band { padding: .6rem 0 .7rem; } .dmedia .season-band b { font-size: 1.25rem; } .dmedia .season-band i { font-size: .74rem; }
+.pw-card .season-band { width: 180%; padding: .2rem 0 .25rem; } .pw-card .season-band b { font-size: .6rem; } .pw-card .season-band i { font-size: .45rem; }
+.bthumb .season-band { display: none; }
+.pcard.is-out .season-band, .pcard .season-band { opacity: 1; }
+.pmedia .season-band b { font-size: .62rem; letter-spacing: 0; white-space: nowrap; }
+.pmedia .season-band i { font-size: .5rem; letter-spacing: .18em; }
+.pmedia .season-band { transform: translate(-50%, -50%) rotate(-24deg); }
+.pmedia .season-band b, .pw-card .season-band b { font-size: .7rem; line-height: 1.05; white-space: normal; }
+.pmedia .season-band b span, .pw-card .season-band b span { display: block; }
+.pw-card .season-band b { font-size: .55rem; }
+.dmedia .season-band b { font-size: 1.15rem; line-height: 1.05; white-space: normal; }
+.dmedia .season-band b span { display: block; }

@@ -287,6 +287,8 @@ window.PLANTS = [
            price  Bahamian dollars. 0 shows "Price on request"
            qty    how many are ready. 0 shows "Out of stock"
    care:   shown as "Season" in the details
+   seasonMonths: [first, last] month it is in season (6 = June). Out of season AND out of stock shows a red
+           "June through September · Seasonal" band across the picture.
    art:    the cartoon (also the mouse pointer over the photo), same set as the nursery
    aliases: other names people search for (and the names your register might use)
 
@@ -298,16 +300,16 @@ window.PRODUCE_CATS = ["Mangoes", "Island fruit", "Citrus", "Bananas, coconuts &
 
 window.PRODUCE = [
   /* Mangoes: one card per variety */
-  { id: "mango-haden", featured: true, img: "/img/produce/mango-haden.jpg", name: "Haden mango", latin: "Mangifera indica 'Haden'", cat: "Mangoes", art: "mango", sizes: [{ pot: "Each", price: 0, qty: 0 }, { pot: "Case", price: 0, qty: 0 }], aliases: ["haden", "hayden", "hayden mango", "mango"],
-    text: "The classic Bahamian yard mango: red blush over yellow, sweet and juicy with a little fibre.", care: "May to July." },
-  { id: "mango-kent", img: "/img/produce/mango-kent.jpg", name: "Kent mango", latin: "Mangifera indica 'Kent'", cat: "Mangoes", art: "mango", sizes: [{ pot: "Each", price: 0, qty: 0 }, { pot: "Case", price: 0, qty: 0 }], aliases: ["kent"],
-    text: "Big, green with a red blush, rich and sweet with almost no strings. Great for slicing.", care: "July to September." },
-  { id: "mango-keitt", img: "/img/produce/mango-keitt.jpg", name: "Keitt mango", latin: "Mangifera indica 'Keitt'", cat: "Mangoes", art: "mango", sizes: [{ pot: "Each", price: 0, qty: 0 }, { pot: "Case", price: 0, qty: 0 }], aliases: ["keitt", "keith mango"],
-    text: "Stays green even when it's ripe. Huge, firm and sweet: the last mango of the summer.", care: "August to October." },
-  { id: "mango-julie", img: "/img/produce/mango-julie.jpg", name: "Julie mango", latin: "Mangifera indica 'Julie'", cat: "Mangoes", art: "mango", sizes: [{ pot: "Each", price: 0, qty: 0 }, { pot: "Case", price: 0, qty: 0 }], aliases: ["julie", "st julian"],
-    text: "Small, flat and fragrant: the old Caribbean favourite, spicy-sweet with a little tang.", care: "June to August." },
-  { id: "mango-number11", img: "/img/produce/mango-number11.jpg", name: "Number 11 mango", latin: "Mangifera indica", cat: "Mangoes", art: "mango", sizes: [{ pot: "Each", price: 0, qty: 0 }, { pot: "Case", price: 0, qty: 0 }], aliases: ["number eleven", "no 11", "no. 11", "turpentine mango", "yard mango"],
-    text: "The old island mango: small, stringy and full of flavour. Squeeze it soft and suck it off the seed.", care: "May to August." },
+  { id: "mango-haden", featured: true, seasonMonths: [6, 9], img: "/img/produce/mango-haden.jpg", name: "Haden mango", latin: "Mangifera indica 'Haden'", cat: "Mangoes", art: "mango", sizes: [{ pot: "Each", price: 0, qty: 0 }, { pot: "Case", price: 0, qty: 0 }], aliases: ["haden", "hayden", "hayden mango", "mango"],
+    text: "The classic Bahamian yard mango: red blush over yellow, sweet and juicy with a little fibre.", care: "June to September." },
+  { id: "mango-kent", seasonMonths: [6, 9], img: "/img/produce/mango-kent.jpg", name: "Kent mango", latin: "Mangifera indica 'Kent'", cat: "Mangoes", art: "mango", sizes: [{ pot: "Each", price: 0, qty: 0 }, { pot: "Case", price: 0, qty: 0 }], aliases: ["kent"],
+    text: "Big, green with a red blush, rich and sweet with almost no strings. Great for slicing.", care: "June to September." },
+  { id: "mango-keitt", seasonMonths: [6, 9], img: "/img/produce/mango-keitt.jpg", name: "Keitt mango", latin: "Mangifera indica 'Keitt'", cat: "Mangoes", art: "mango", sizes: [{ pot: "Each", price: 0, qty: 0 }, { pot: "Case", price: 0, qty: 0 }], aliases: ["keitt", "keith mango"],
+    text: "Stays green even when it's ripe. Huge, firm and sweet: the last mango of the summer.", care: "June to September." },
+  { id: "mango-julie", seasonMonths: [6, 9], img: "/img/produce/mango-julie.jpg", name: "Julie mango", latin: "Mangifera indica 'Julie'", cat: "Mangoes", art: "mango", sizes: [{ pot: "Each", price: 0, qty: 0 }, { pot: "Case", price: 0, qty: 0 }], aliases: ["julie", "st julian"],
+    text: "Small, flat and fragrant: the old Caribbean favourite, spicy-sweet with a little tang.", care: "June to September." },
+  { id: "mango-number11", seasonMonths: [6, 9], img: "/img/produce/mango-number11.jpg", name: "Number 11 mango", latin: "Mangifera indica", cat: "Mangoes", art: "mango", sizes: [{ pot: "Each", price: 0, qty: 0 }, { pot: "Case", price: 0, qty: 0 }], aliases: ["number eleven", "no 11", "no. 11", "turpentine mango", "yard mango"],
+    text: "The old island mango: small, stringy and full of flavour. Squeeze it soft and suck it off the seed.", care: "June to September." },
 
   /* Island fruit */
   { id: "soursop", featured: true, img: "/img/produce/soursop.jpg", name: "Soursop", latin: "Annona muricata", cat: "Island fruit", art: "soursop", sizes: [{ pot: "Each", price: 0, qty: 0 }, { pot: "Case", price: 0, qty: 0 }], aliases: ["guanabana", "graviola"],

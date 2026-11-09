@@ -143,9 +143,21 @@ window.ATM_SHOP = function (cfg) {
     return (p.sizes.length > 1 ? "From " : "") + money(lo);
   }
   function sortPrice(p) { var ps = p.sizes.map(function (z) { return z.price; }).filter(function (x) { return x > 0; }); return ps.length ? Math.min.apply(null, ps) : Infinity; }
+  /* seasonal items (seasonMonths: [first, last], e.g. [6, 9] = June to September) */
+  var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  function outOfSeason(p) {
+    var s = p.seasonMonths; if (!s || s.length < 2) return false;
+    var m = new Date().getMonth() + 1;
+    return s[0] <= s[1] ? (m < s[0] || m > s[1]) : (m < s[0] && m > s[1]);
+  }
+  function seasonBand(p) {
+    if (!outOfSeason(p) || avail(p)) return "";
+    var s = p.seasonMonths;
+    return '<span class="season-band" aria-label="Seasonal: ' + MONTHS[s[0] - 1] + " through " + MONTHS[s[1] - 1] + '"><b>' + MONTHS[s[0] - 1] + " through <span>" + MONTHS[s[1] - 1] + "</span></b><i>Seasonal</i></span>";
+  }
   function status(p) {
     var n = avail(p);
-    if (!n) return ["out", W.out];
+    if (!n) return ["out", outOfSeason(p) ? "Out of season" : W.out];
     if (p.pre) return ["pre", "Pre-order"];
     return [n <= 2 ? "low" : "in", n + " available"];
   }
@@ -160,9 +172,9 @@ window.ATM_SHOP = function (cfg) {
   }
   function media(p) {
     /* same cartoon-fruit hover pointer whether the item has a photo yet or still shows its drawing */
-    if (!p.img) return A.art(p.art).replace("<div ", '<div style="cursor:' + esc(cursor(p.art)) + '" ');
+    if (!p.img) return A.art(p.art).replace("<div ", '<div style="cursor:' + esc(cursor(p.art)) + '" ') + seasonBand(p);
     return '<img src="' + esc(p.img) + '" alt="' + esc(p.name) + '" loading="lazy" style="cursor:' + esc(cursor(p.art)) + '">' +
-      '<span class="fruit-badge" aria-hidden="true">' + (A.ART[p.art] || "") + "</span>";
+      '<span class="fruit-badge" aria-hidden="true">' + (A.ART[p.art] || "") + "</span>" + seasonBand(p);
   }
 
   /* ---------- cart: ONE cart for the whole site (plants + produce), kept in js/cart.js ---------- */
