@@ -1,4 +1,4 @@
-/* Almond Tree Market — online shop: grid, sizes, basket, reserve with QR, "Interested" messages, home window.
+/* Almond Tree Market — online shop: grid, sizes, add to cart / buy now, "Interested" messages, home window. Cart + checkout: js/cart.js.
    One engine runs both shops:
      Native Nursery  (nursery.html, js/data.js window.PLANTS,  register items of kind "Plant")
      Local Produce   (produce.html, js/data.js window.PRODUCE, register items of kind "Produce")
@@ -59,13 +59,13 @@ window.ATM_SHOP = function (cfg) {
         var dm = /^(.*?)\s+[–—-]\s+(.+)$/.exec(String(r.name).trim());
         if (dm && alias[norm(dm[1])]) { p = alias[norm(dm[1])]; if (!String(r.size || "").trim()) pot = dm[2].trim(); }
       }
-      var z = { pot: pot, price: Math.max(0, +r.price_cents || 0) / 100, qty: Math.max(0, parseInt(r.qty, 10) || 0) };
+      var z = { pot: pot, price: Math.max(0, +r.price_cents || 0) / 100, qty: Math.max(0, parseInt(r.qty, 10) || 0), pid: r.id || null };
       var bucket = p ? (groups[p.id] = groups[p.id] || []) : (extras[key] = extras[key] || { name: baseName(r), sizes: [] }).sizes;
       /* the item's photo in the inventory app, if it has one (first one found wins) */
       var gk = p ? p.id : "pos-" + key;
       if (r.photo_id && !pics[gk]) pics[gk] = { id: String(r.photo_id), at: r.photo_at || 0 };
       var same = bucket.filter(function (x) { return x.pot === z.pot; })[0];
-      if (same) { same.qty += z.qty; if (!same.price) same.price = z.price; } else bucket.push(z);
+      if (same) { same.qty += z.qty; if (!same.price) same.price = z.price; if (!same.pid) same.pid = z.pid; } else bucket.push(z);
     });
     var bySize = function (a, b) { return gal(a.pot) - gal(b.pot) || a.pot.localeCompare(b.pot); };
     var mode = F.notInRegister || "keep";
@@ -165,28 +165,12 @@ window.ATM_SHOP = function (cfg) {
       '<span class="fruit-badge" aria-hidden="true">' + (A.ART[p.art] || "") + "</span>";
   }
 
-  /* ---------- basket (kept on this phone only): { "itemId|size": qty } ---------- */
-  var basket = {};
-  try { basket = JSON.parse(localStorage.getItem(cfg.basketKey) || "{}") || {}; } catch (e) { basket = {}; }
-  function split(k) { var i = k.indexOf("|"); return i < 0 ? null : { p: byId[k.slice(0, i)], pot: k.slice(i + 1) }; }
-  function cleanBasket() {
-    Object.keys(basket).forEach(function (k) {
-      var s = split(k), z = s && s.p && sizeOf(s.p, s.pot);
-      if (!z || !z.qty) delete basket[k]; else basket[k] = Math.min(basket[k], z.qty);
-    });
-  }
-  cleanBasket();
-  function save() { try { localStorage.setItem(cfg.basketKey, JSON.stringify(basket)); } catch (e) {} }
-  function count() { return Object.keys(basket).reduce(function (s, k) { return s + basket[k]; }, 0); }
-  function total() { return Object.keys(basket).reduce(function (s, k) { var x = split(k); return s + basket[k] * sizeOf(x.p, x.pot).price; }, 0); }
-  function anyTBA() { return Object.keys(basket).some(function (k) { var x = split(k); return !sizeOf(x.p, x.pot).price; }); }
-  function totalTxt() { var t = total(); return anyTBA() ? (t > 0 ? money(t) + " + items priced on request" : "Price on request") : money(t); }
-  function inBasket(id) { return Object.keys(basket).reduce(function (s, k) { return k.indexOf(id + "|") === 0 ? s + basket[k] : s; }, 0); }
-  function setQty(key, q) {
-    var x = split(key), z = x && x.p && sizeOf(x.p, x.pot); if (!z) return;
-    if (q <= 0) delete basket[key]; else basket[key] = Math.min(q, z.qty);
-    save(); refresh();
-  }
+  /* ---------- cart: ONE cart for the whole site (plants + produce), kept in js/cart.js ---------- */
+  var C = function () { return window.ATM_CART; };
+  function inBasket(id) { return C() ? C().qtyFor(cfg.page, id) : 0; }
+  function inCartSize(id, pot) { return C() ? C().inCart(cfg.page, id, pot) : 0; }
+  window.ATM_SHOPS = window.ATM_SHOPS || {};
+  window.ATM_SHOPS[cfg.page] = { cfg: cfg, byId: function (id) { return byId[id]; }, sizeOf: function (p, pot) { return sizeOf(p, pot); }, media: function (p) { return media(p); } };
 
   /* ---------- home page window ---------- */
   var win = $(cfg.windowSel);
@@ -206,7 +190,7 @@ window.ATM_SHOP = function (cfg) {
 
   /* ---------- shop page ---------- */
   var grid = $("#shop-grid");
-  if (!grid || document.body.getAttribute("data-page") !== cfg.page) { feed.then(function (ok) { if (!ok) return; drawWindow(); loadPhotos().then(function (got) { if (got) drawWindow(); }); }); return; }
+  if (!grid || document.body.getAttribute("data-page") !== cfg.page) { feed.then(function (ok) { if (!ok) return; drawWindow(); if (C()) C().refresh(); loadPhotos().then(function (got) { if (got) { drawWindow(); if (C()) C().refresh(); } }); }); return; }
   var state = { cat: "", q: "", sort: "featured", instock: false };
   function drawCats() {
     var cats = CATS.filter(function (c) { return PLANTS.some(function (p) { return p.cat === c; }); });
@@ -223,7 +207,7 @@ window.ATM_SHOP = function (cfg) {
       '<button class="pmedia" data-open="' + p.id + '" aria-label="More about ' + esc(p.name) + '">' + media(p) + '<span class="stock ' + st[0] + '">' + st[1] + "</span></button>" +
       '<div class="pbody"><span class="pcat">' + esc(p.cat) + '</span><button class="pname" data-open="' + p.id + '">' + esc(p.name) + '</button><span class="platin">' + esc(p.latin) + "</span>" +
       '<p class="pdesc">' + esc(p.text) + '</p><div class="pfoot pfoot2"><span class="pprice' + (sortPrice(p) === Infinity ? " tba" : "") + '">' + esc(fromPrice(p)) + '</span><span class="pchips">' + p.sizes.map(function (z) { return '<i class="' + (z.qty ? "" : "none") + '">' + esc(z.pot) + " · " + z.qty + "</i>"; }).join("") + "</span></div>" +
-      '<div class="pacts"><button class="btn small add" data-open="' + p.id + '"' + (out ? " disabled" : "") + ">" + (out ? W.out : n ? "In basket · " + n : p.pre ? "Pre-order" : "Buy") + "</button>" +
+      '<div class="pacts"><button class="btn small add" data-open="' + p.id + '"' + (out ? " disabled" : "") + ">" + (out ? W.out : n ? "In cart · " + n : p.pre ? "Pre-order" : "Buy") + "</button>" +
       '<button class="btn small ghost int" data-interest="' + p.id + '">Interested</button></div></div></article>';
   }
   function list() {
@@ -262,13 +246,14 @@ window.ATM_SHOP = function (cfg) {
     }).join("") + "</div>";
   }
   function pickPanel(p) {
-    var z = sizeOf(p, pick.pot), have = z ? basket[p.id + "|" + z.pot] || 0 : 0, left = z ? z.qty - have : 0;
+    var z = sizeOf(p, pick.pot), have = z ? inCartSize(p.id, z.pot) : 0, left = z ? z.qty - have : 0;
     if (pick.n > Math.max(1, left)) pick.n = Math.max(1, left);
     return '<div class="dpick"><span class="eyebrow">' + esc(W.choose) + "</span>" + sizeBtns(p) +
       (z ? '<div class="dqty"><span>How many</span><div class="stepper"><button type="button" data-n="-1" aria-label="Fewer">−</button><span>' + pick.n + '</span><button type="button" data-n="1" aria-label="More">+</button></div>' +
-        "<small>" + (have ? have + " already in your basket · " : "") + z.qty + " " + esc(z.pot) + " available</small></div>" : "") +
+        "<small>" + (have ? have + " already in your cart · " : "") + z.qty + " " + esc(z.pot) + " available</small></div>" : "") +
       '<div class="dacts"><button class="btn primary" type="button" data-addpick' + (z && left > 0 ? "" : " disabled") + ">" +
-      (z && left <= 0 ? "All " + esc(z.pot) + " are in your basket" : !z ? esc(W.out) : (p.pre ? "Pre-order" : "Buy") + " " + esc(z.pot) + (z.price ? " · " + money(z.price * pick.n) : "")) + "</button>" +
+      (z && left <= 0 ? "All " + esc(z.pot) + " are in your cart" : !z ? esc(W.out) : "Add to cart · " + esc(z.pot) + (z.price ? " · " + money(z.price * pick.n) : "")) + "</button>" +
+      (z && left > 0 ? '<button class="btn buynow" type="button" data-buynow>Buy now</button>' : "") +
       '<button class="btn ghost" type="button" data-interest="' + p.id + '">Interested? Ask us</button></div></div>';
   }
   function openPlant(id) {
@@ -291,7 +276,11 @@ window.ATM_SHOP = function (cfg) {
     var pb = e.target.closest("[data-pot]"); if (pb && !pb.disabled) { pick.pot = pb.getAttribute("data-pot"); pick.n = 1; redrawPick(); return; }
     var nb = e.target.closest("[data-n]"); if (nb) { pick.n = Math.max(1, pick.n + +nb.getAttribute("data-n")); redrawPick(); return; }
     if (e.target.closest("[data-addpick]")) {
-      var key = pick.id + "|" + pick.pot; setQty(key, (basket[key] || 0) + pick.n); pulse(); closeDlg(); openDrawer();
+      if (C() && C().add(cfg.page, pick.id, pick.pot, pick.n)) closeDlg();
+      return;
+    }
+    if (e.target.closest("[data-buynow]")) {
+      if (C() && C().add(cfg.page, pick.id, pick.pot, pick.n)) { closeDlg(); C().open("checkout"); }
     }
   });
 
@@ -340,129 +329,18 @@ window.ATM_SHOP = function (cfg) {
     var o = e.target.closest("[data-open]"); if (o && !o.disabled) { openPlant(o.getAttribute("data-open")); return; }
   });
 
-  /* ---------- basket drawer ---------- */
-  /* pickup days: the next 12 days the shop is open (Monday to Saturday by default). The nursery starts tomorrow,
-     since it needs up to 24 hours to get an order ready; produce is ready during business hours, so it can start today */
-  var fab = $("#basket-fab"), drawer = $("#basket"), dates = [];
-  for (var dd = new Date(), guard = 0; dates.length < 12 && guard < 40; guard++) {
-    if (guard > 0 || !cfg.sameDay) dd.setDate(dd.getDate() + 1);
-    if (N.openDays.indexOf(dd.getDay()) < 0) continue;
-    var dc = new Date(dd.getFullYear(), dd.getMonth(), dd.getDate());
-    dates.push({ d: dc, date: dc.getFullYear() + "-" + (dc.getMonth() + 1) + "-" + dc.getDate(), today: cfg.sameDay && guard === 0 });
-  }
-  /* the pickup fine print: shown in the basket, on the QR confirmation, and in the message we receive */
-  var BH = N.daysText + (N.hours ? ", " + N.hours : "");
-  var FINE = cfg.sameDay
-    ? '<p class="fine"><b>How pickup works:</b> your order is usually ready the same day, during business hours (' + esc(BH) + ')<sup>*</sup>, and we&#39;ll message you when it is. ' +
-      "Then you have <b>24 hours</b> to collect it with your QR code, or it goes back into stock." +
-      '<span class="fine-star fine-xs"><sup>*</sup> If it will take more than 24 hours, we will let you know.</span></p>'
-    : '<p class="fine"><b>How pickup works:</b> we need up to 24 hours<sup>*</sup> to get your order ready, and we&#39;ll message you when it is. ' +
-      "Then you have <b>24 hours</b> to collect it with your QR code, or it goes back into stock." +
-      '<span class="fine-star"><sup>*</sup> Sometimes it can take more than 24 hours, depending on where your item is. We will let you know.</span></p>';
-  var FINE_TXT = cfg.sameDay
-    ? ["Ready during business hours (" + BH + ")* (we'll message you). Collect within 24 hours of that message or it goes back into stock.",
-      "*If it will take more than 24 hours, we will let you know."]
-    : ["Ready within 24 hours* (we'll message you). Collect within 24 hours of that message or it goes back into stock.",
-      "*Sometimes more than 24 hours, depending on where the item is. We will let you know."];
-  function pulse() { fab.classList.remove("pulse"); void fab.offsetWidth; fab.classList.add("pulse"); }
-  function openDrawer() { drawer.classList.add("open"); drawer.setAttribute("aria-hidden", "false"); document.body.classList.add("lock"); renderDrawer(); refresh(); }
-  function closeDrawer() { drawer.classList.remove("open"); drawer.setAttribute("aria-hidden", "true"); document.body.classList.remove("lock"); refresh(); }
-  fab.addEventListener("click", openDrawer);
-  drawer.addEventListener("click", function (e) {
-    if (e.target === drawer || e.target.closest("[data-close-basket]")) { closeDrawer(); return; }
-    var r = e.target.closest("[data-remove]"); if (r) { setQty(r.getAttribute("data-remove"), 0); return; }
-    var s = e.target.closest("[data-step]");
-    if (s) { var k = s.closest("[data-key]").getAttribute("data-key"); setQty(k, (basket[k] || 0) + +s.getAttribute("data-step")); }
-  });
-  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && drawer.classList.contains("open")) closeDrawer(); });
-
-  function renderDrawer() {
-    var panel = $(".bpanel", drawer), keys = Object.keys(basket);
-    var head = '<div class="bhead"><h3>' + esc(W.basket) + '</h3><button class="x" data-close-basket aria-label="Close">×</button></div>';
-    if (!keys.length) {
-      panel.innerHTML = head + '<div class="bempty">' + (A.ART[cfg.emptyArt] || A.ART.pot) + "<p>" + W.empty + "</p></div>";
-      return;
-    }
-    panel.innerHTML = head +
-      '<ul class="blist">' + keys.map(function (k) {
-        var x = split(k), p = x.p, z = sizeOf(p, x.pot), atMax = basket[k] >= z.qty;
-        return '<li><div class="bthumb">' + media(p) + '</div><div class="binfo"><b>' + esc(p.name) + "</b><span>" + esc(z.pot) + " · " + esc(priceTxt(z.price)) + (p.pre ? " · pre-order" : "") + "</span>" +
-          '<div class="stepper" data-key="' + esc(k) + '"><button data-step="-1" aria-label="One fewer">−</button><span>' + basket[k] + '</span><button data-step="1" aria-label="One more"' + (atMax ? " disabled" : "") + ">+</button></div>" +
-          (atMax ? '<small class="bmax">That\'s all the ' + esc(z.pot) + " we have</small>" : "") + "</div>" +
-          '<div class="bline"><b>' + esc(z.price ? money(z.price * basket[k]) : "TBA") + '</b><button class="link" data-remove="' + esc(k) + '">Remove</button></div></li>';
-      }).join("") + "</ul>" +
-      '<div class="btotal"><span>Total · pay at pickup</span><b' + (anyTBA() ? ' class="tba"' : "") + ">" + esc(totalTxt()) + "</b></div>" +
-      (anyTBA() ? '<p class="note" style="margin:-.4rem 0 .8rem">Some prices are not set yet. We\'ll confirm them when we reply to your reservation.</p>' : "") +
-      '<form class="bform" id="res-form" novalidate><div class="eyebrow">Buy for pickup</div>' +
-      '<label>Your name<input name="name" autocomplete="name" required></label>' +
-      '<label>Phone / WhatsApp<input name="phone" type="tel" autocomplete="tel" required></label>' +
-      '<label>Pickup day <small>(open ' + esc(N.daysText) + ", " + esc(N.closedText) + ')</small><select name="day">' + dates.map(function (e) { return '<option value="' + e.date + '">' + (e.today ? "Today, " : "") + esc(A.longDate(e.d)) + (N.hours ? " · " + esc(N.hours) : "") + "</option>"; }).join("") + "</select></label>" +
-      '<label>Notes <small>(optional)</small><input name="notes" placeholder="' + esc(W.notesHint) + '"></label>' +
-      '<p class="err" id="res-err" role="alert"></p><button class="btn primary" type="submit">Buy &amp; get my QR code</button>' +
-      '<p class="note">No payment online. We hold your ' + esc(W.many) + " and you pay when you pick them up.</p>" + FINE + "</form>";
-    $("#res-form").addEventListener("submit", reserve);
-  }
-
-  function code() { var c = "ACDEFGHJKMNPQRTUVWXY34679", s = ""; for (var i = 0; i < 4; i++) s += c[Math.floor(Math.random() * c.length)]; return cfg.codePrefix + "-" + s; }
-  function ascii(s) { return String(s || "").replace(/[‘’]/g, "'").replace(/[^\x20-\x7E]/g, ""); }
-  function reserve(e) {
-    e.preventDefault();
-    var f = new FormData(e.target), err = $("#res-err");
-    if (!f.get("name") || !f.get("phone")) { err.textContent = "Please add your name and phone number."; return; }
-    var day = dates.filter(function (d) { return d.date === f.get("day"); })[0], c = code(), keys = Object.keys(basket);
-    var lines = keys.map(function (k) { var x = split(k), z = sizeOf(x.p, x.pot); return basket[k] + " x " + x.p.name + " (" + z.pot + ") " + (z.price ? money(z.price * basket[k]) : "price on request") + (x.p.pre ? " [pre-order]" : ""); });
-    var dayTxt = day ? A.longDate(day.d) : f.get("day");
-    var qrText = ascii(["ALMOND TREE MARKET - " + W.qr + " PICKUP", "Code: " + c, "Name: " + f.get("name"), "Phone: " + f.get("phone"), "Pickup: " + dayTxt].concat(lines, ["Total: " + totalTxt() + " (pay at pickup)", "Collect within 24 hours of our ready message."]).join("\n"));
-    var msg = ["*Almond Tree Market: " + W.one + " reservation " + c + "*", "", "Name: " + f.get("name"), "Phone: " + f.get("phone"), "Pickup: " + dayTxt, ""].concat(lines,
-      ["", "Total: " + totalTxt() + " (pay at pickup)", "Notes: " + (f.get("notes") || "-"), ""], FINE_TXT).join("\n");
-    var res = { code: c, msg: msg, qr: qrText, day: dayTxt, total: totalTxt(), lines: lines, name: f.get("name") };
-    try { localStorage.setItem(cfg.lastResKey, JSON.stringify(res)); } catch (x) {}
-    showConfirm(res);
-  }
-  function showConfirm(res) {
-    var panel = $(".bpanel", drawer);
-    panel.innerHTML = '<div class="bhead"><h3>Almost done</h3><button class="x" data-close-basket aria-label="Close">×</button></div>' +
-      '<div class="conf"><span class="eyebrow">Your pickup code</span><div class="ccode">' + esc(res.code) + '</div><div class="qr" id="res-qr" aria-label="QR code for reservation ' + esc(res.code) + '"></div>' +
-      '<p class="step1"><b>1. Send it to us</b> so we can set your ' + esc(W.many) + ' aside:</p><a class="btn wa" id="res-send" href="' + A.wa(res.msg) + '" target="_blank" rel="noopener">Send reservation on WhatsApp</a>' +
-      '<p class="step1"><b>2. Save the QR code</b> and show it when you collect. Planned pickup: <b>' + esc(res.day) + "</b>. We'll message you when it's ready. Total " + esc(res.total) + ', paid when you collect.</p><button class="btn ghost" id="res-save" type="button">Save QR image</button>' +
-      FINE +
-      '<ul class="clist">' + res.lines.map(function (l) { return "<li>" + esc(l) + "</li>"; }).join("") + "</ul>" +
-      '<button class="link" id="res-done" type="button">Done, start a new basket</button></div>';
-    var box = $("#res-qr");
-    if (window.QRCode) {
-      try { new window.QRCode(box, { text: res.qr, width: 220, height: 220, colorDark: "#06120c", colorLight: "#ffffff", correctLevel: window.QRCode.CorrectLevel.M }); }
-      catch (x) { box.innerHTML = '<p class="muted">QR code could not be made. Your code is ' + esc(res.code) + ".</p>"; }
-    } else box.innerHTML = '<p class="muted">QR code needs the internet to draw. Your code is ' + esc(res.code) + ".</p>";
-    $("#res-save").addEventListener("click", function () {
-      var cv = box.querySelector("canvas"); if (!cv) return;
-      var out = document.createElement("canvas"); out.width = 300; out.height = 384; var g = out.getContext("2d");
-      g.fillStyle = "#fff"; g.fillRect(0, 0, 300, 384); g.drawImage(cv, 40, 30, 220, 220);
-      g.fillStyle = "#06120c"; g.font = "bold 28px sans-serif"; g.textAlign = "center"; g.fillText(res.code, 150, 290);
-      g.font = "14px sans-serif"; g.fillText("Almond Tree Market · pickup " + res.day.replace(/^\w+, /, ""), 150, 318);
-      g.font = "11px sans-serif"; g.fillStyle = "#4a5a50";
-      g.fillText("Collect within 24 hours of our ready message,", 150, 346); g.fillText("or it goes back into stock.", 150, 362);
-      var a = document.createElement("a"); a.href = out.toDataURL("image/png"); a.download = "almond-tree-market-" + res.code + ".png"; document.body.appendChild(a); a.click(); a.remove();
-    });
-    $("#res-done").addEventListener("click", function () { basket = {}; save(); refresh(); closeDrawer(); });
-  }
-
-  function refresh() {
-    var n = count();
-    fab.hidden = n === 0 && !drawer.classList.contains("open");
-    $("#basket-n").textContent = n; $("#basket-w").textContent = plural(n);
-    $("#basket-t").textContent = anyTBA() ? (total() > 0 ? money(total()) + "+" : "price TBA") : money(total());
-    draw();
-    if (drawer.classList.contains("open") && !$(".conf", drawer)) renderDrawer();
-  }
+  /* the cart, checkout and QR code live in js/cart.js; keep the cards and the open item in step with it */
+  function refresh() { draw(); }
+  if (C()) C().onChange(function () { draw(); if (dlg.open && byId[pick.id] && $(".dpick-wrap", dlg)) redrawPick(); });
   refresh();
 
   /* when the register's live stock arrives, redraw everything with it */
   feed.then(function (ok) {
     if (!ok) return;
-    drawCats(); cleanBasket(); save(); refresh();
+    drawCats(); refresh(); if (C()) C().refresh();
     loadPhotos().then(function (got) {
       if (!got) return;
-      refresh();
+      refresh(); if (C()) C().refresh();
       var dm = $(".dmedia", dlg); if (dlg.open && dm && byId[pick.id]) dm.innerHTML = media(byId[pick.id]);
     });
     if (dlg.open && pick.id && byId[pick.id] && $(".dpick-wrap", dlg)) {

@@ -903,3 +903,51 @@ header.nav .brand small { justify-content: center; }
   .qb { flex: 0 0 auto; font-size: .84rem; padding: .4em .85em .4em .45em; }
   .qb .qi { width: 22px; height: 22px; } .qb .qi svg { width: 18px; height: 18px; }
 }
+
+/* ================= one cart for the whole site (js/cart.js) ================= */
+.nav .wrap .cart-btn { margin-left: auto; }
+.cart-btn { position: relative; flex: none; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--line); background: none; color: var(--cream); cursor: pointer; transition: border-color .15s, background .15s; }
+.cart-btn:hover { border-color: var(--leaf); background: rgba(47,191,111,.12); }
+.cart-btn .cart-n { position: absolute; top: -6px; right: -6px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 999px; background: var(--mango); color: #241300; font: 700 .68rem/20px var(--body); text-align: center; box-shadow: 0 0 0 2px var(--night); }
+.cart-btn .cart-n[hidden] { display: none; }
+.cart-btn.bump { animation: pop .4s; }
+.nav .wrap { gap: .6rem; }
+.nav .wrap .menu-btn { margin-left: 0; }
+.cart-toast { position: fixed; z-index: 60; left: 50%; bottom: calc(18px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); max-width: min(560px, calc(100vw - 32px)); background: var(--cream); color: var(--night); font: 500 .92rem var(--body); padding: .7rem 1rem; border-radius: 14px; box-shadow: 0 14px 40px rgba(0,0,0,.45); display: flex; flex-wrap: wrap; gap: .4rem .8rem; align-items: center; }
+.cart-toast[hidden] { display: none; }
+.cart-toast .link { color: var(--night); font-weight: 700; font-size: .9rem; }
+.btn.buynow { background: var(--mango); color: #241300; margin-top: .5rem; width: 100%; }
+.dacts .btn { width: 100%; }
+.dacts { display: grid; gap: .5rem; max-width: 280px; }
+.bgroup { margin-bottom: .9rem; }
+.bgroup > .eyebrow, .bsaved > .eyebrow { display: block; margin: 0 0 .5rem; font-size: .66rem; }
+.blinks { display: flex; flex-wrap: wrap; gap: .3rem .9rem; margin-top: .15rem; }
+.bsaved { border-top: 1px dashed var(--line); margin-top: 1rem; padding-top: .9rem; }
+.bsaved .blist li { grid-template-columns: 64px 1fr; }
+.bsaved .bline { display: none; }
+.bgo { width: 100%; margin: .2rem 0 .6rem; }
+.bfoot-links { display: flex; flex-wrap: wrap; gap: .4rem 1.1rem; justify-content: center; margin-bottom: .6rem; }
+.bconfirm { font-size: .85rem; color: var(--cream); display: inline-flex; gap: .6rem; flex-wrap: wrap; }
+.borders { text-align: center; margin: .6rem 0 0; }
+.bempty-go { display: flex; gap: .5rem; justify-content: center; flex-wrap: wrap; margin-top: .6rem; }
+.bh3 { font-size: 1.4rem; margin: .2rem 0 .8rem; }
+.bsum { list-style: none; padding: 0; margin: 0 0 .2rem; display: grid; gap: .35rem; font-size: .9rem; }
+.bsum li { display: flex; justify-content: space-between; gap: .8rem; border-bottom: 1px solid var(--line); padding-bottom: .35rem; }
+.bsum small { color: var(--mist); }
+.bsum b { font-family: var(--display); color: var(--mango); white-space: nowrap; }
+.bform .chk { display: flex; gap: .55rem; align-items: flex-start; font: 400 .88rem/1.4 var(--body); text-transform: none; letter-spacing: 0; color: var(--cream); }
+.bform .chk input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--leaf); flex: none; }
+.cash-note { font-size: .84rem; line-height: 1.45; color: #d3dfd5; background: rgba(255,178,63,.08); border: 1px solid rgba(255,178,63,.35); border-radius: 12px; padding: .65rem .8rem; margin: .4rem 0 .8rem; }
+.cash-note b { color: var(--mango); }
+.cash-note.small { font-size: .78rem; margin: .2rem 0 0; }
+.conf .cash-note { justify-self: stretch; text-align: left; }
+.foot-cash { font-size: .82rem; color: var(--mist); margin-top: .6rem; }
+.foot-cash b { color: var(--mango); }
+.cart-wrap { max-width: 720px; }
+.cart-page { background: var(--deep); border: 1px solid var(--line); border-radius: 20px; padding: 1.2rem; }
+.cart-page .bhead h3 { font-size: 1.6rem; }
+.cart-hero h1 { max-width: none; }
+@media (max-width: 480px) { .cart-btn { width: 40px; height: 40px; } .cart-page { padding: 1rem .8rem; } }
+/* phones: make room for the cart button; the toast sits above the floating Checkout button */
+@media (max-width: 480px) { header.nav .brand .brand-home { display: none; } }
+.cart-toast { bottom: calc(84px + env(safe-area-inset-bottom, 0px)); }
