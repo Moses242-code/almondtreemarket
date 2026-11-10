@@ -198,10 +198,14 @@ window.ATM_SHOP = function (cfg) {
   /* ---------- home page window ---------- */
   var win = $(cfg.windowSel);
   function drawWindow() {
-    Array.prototype.forEach.call(document.querySelectorAll("[" + cfg.countAttr + "]"), function (el) { el.textContent = PLANTS.length; });
+    /* count = kinds in stock (one per item, whatever its sizes), not the number of pots/pieces */
+    var kinds = PLANTS.filter(function (p) { return avail(p) > 0; }).length;
+    Array.prototype.forEach.call(document.querySelectorAll("[" + cfg.countAttr + "]"), function (el) { el.textContent = kinds; });
+    var kindWord = cfg.countWord ? cfg.countWord[kinds === 1 ? 0 : 1] : W.many;
+    Array.prototype.forEach.call(document.querySelectorAll("[" + cfg.countAttr + "-word]"), function (el) { el.textContent = kindWord; });
     if (!win) return;
     var feat = PLANTS.filter(function (p) { return p.featured; }).concat(PLANTS.filter(function (p) { return !p.featured; })).slice(0, 4);
-    win.innerHTML = '<div class="pw-head"><span class="eyebrow">' + esc(cfg.winEyebrow) + '</span><span class="pw-count">' + PLANTS.length + " " + esc(W.many) + "</span></div>" +
+    win.innerHTML = '<div class="pw-head"><span class="eyebrow">' + esc(cfg.winEyebrow) + '</span><span class="pw-count">' + kinds + " " + esc(kindWord) + "</span></div>" +
       "<h3>" + esc(cfg.winHead) + " " + esc(N.daysText) + ".</h3>" +
       '<div class="pw-grid">' + feat.map(function (p) {
         var sz = p.sizes.length > 1 ? p.sizes.length + " sizes" : p.sizes[0].pot, pr = fromPrice(p);
@@ -409,7 +413,7 @@ window.ATM_SHOP.NURSERY = {
   page: "nursery", items: function () { return window.PLANTS; }, cats: function () { return window.PLANT_CATS; },
   rpc: "pos_web_plants", feedCache: "atm-pos-feed", basketKey: "atm-basket", lastResKey: "atm-last-res", codePrefix: "ATM", hash: "plant-",
   defaultSize: "Pot", moreCat: "More plants", moreArt: "pot", moreText: "At the nursery now. Tap Interested for a current photo or more about it.",
-  windowSel: "#plant-window", countAttr: "data-plant-count", winEyebrow: "Native nursery · now online", winHead: "Buy a tree online. Pick it up any day,", winGo: "Shop the nursery",
+  windowSel: "#plant-window", countAttr: "data-plant-count", countWord: ["plant type", "plant types"], winEyebrow: "Native nursery · now online", winHead: "Buy a tree online. Pick it up any day,", winGo: "Shop the nursery",
   emptyArt: "pot",
   words: { one: "plant", many: "plants", out: "Out of stock", size: "Pot size", choose: "Choose a pot size", careLabel: "Care", basket: "Your plants", qr: "PLANT",
     empty: "No plants yet. Tap <b>Add to cart</b> on any plant (pick a pot size if it asks).",
@@ -421,7 +425,7 @@ window.ATM_SHOP.PRODUCE = {
   page: "produce", sameDay: true, noPrice: "", items: function () { return window.PRODUCE; }, cats: function () { return window.PRODUCE_CATS; },
   rpc: "pos_web_produce", feedCache: "atm-pos-produce", basketKey: "atm-basket-produce", lastResKey: "atm-last-res-produce", codePrefix: "ATF", hash: "fruit-",
   defaultSize: "Each", moreCat: "More produce", moreArt: "mango", moreText: "At the market now. Tap Interested for a current photo or more about it.",
-  windowSel: "#produce-window", countAttr: "data-produce-count", winEyebrow: "Local produce · now online", winHead: "Buy island fruit online. Pick it up any day,", winGo: "Shop local produce",
+  windowSel: "#produce-window", countAttr: "data-produce-count", countWord: ["fruit", "fruits"], winEyebrow: "Local produce · now online", winHead: "Buy island fruit online. Pick it up any day,", winGo: "Shop local produce",
   emptyArt: "mango",
   words: { one: "item", many: "items", out: "Out of stock", size: "Sold by", choose: "How it's sold", careLabel: "Season", basket: "Your produce", qr: "PRODUCE",
     empty: "No produce yet. Tap <b>Add to cart</b> on any fruit.",
