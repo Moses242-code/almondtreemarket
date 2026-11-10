@@ -3,6 +3,9 @@
      Native Nursery  (nursery.html, js/data.js window.PLANTS,  register items of kind "Plant")
      Local Produce   (produce.html, js/data.js window.PRODUCE, register items of kind "Produce")
      The Pantry      (pantry.html,  js/data.js window.PANTRY,  register items of kind "Pantry")
+     Craft Closet    (craft.html,   js/data.js window.CRAFT,   register items of kind "Craft")
+     Art             (art.html,     js/data.js window.ARTWORK, register items of kind "Art")
+   The last three are grouped in sections, one per maker (window.*_SECTIONS in data.js).
    app.js calls ATM_SHOP(ATM_SHOP.NURSERY), ATM_SHOP(ATM_SHOP.PRODUCE) and ATM_SHOP(ATM_SHOP.PANTRY). */
 window.ATM_SHOP = function (cfg) {
   "use strict";
@@ -160,9 +163,12 @@ window.ATM_SHOP = function (cfg) {
   }
   /* rare: true on an item = flashing "Rare" tag at the bottom middle of its picture */
   function rareTag(p) { return p.rare ? '<span class="rare-tag">Rare</span>' : ""; }
+  /* maker sections (pantry, craft closet, art): each category is one maker's table; no maker named yet = "Coming soon" */
+  var SECTIONS = cfg.sections ? cfg.sections() || {} : null;
+  function soon(p) { var s = SECTIONS && SECTIONS[p.cat]; return !!(s && !s.host); }
   function status(p) {
     var n = avail(p);
-    if (!n) return ["out", outOfSeason(p) ? "Out of season" : W.out];
+    if (!n) return soon(p) ? ["soon", "Coming soon"] : ["out", outOfSeason(p) ? "Out of season" : W.out];
     if (p.pre) return ["pre", "Pre-order"];
     return [n <= 2 ? "low" : "in", n + " available"];
   }
@@ -210,7 +216,7 @@ window.ATM_SHOP = function (cfg) {
   if (!grid || document.body.getAttribute("data-page") !== cfg.page) { feed.then(function (ok) { if (!ok) return; drawWindow(); if (C()) C().refresh(); loadPhotos().then(function (got) { if (got) { drawWindow(); if (C()) C().refresh(); } }); }); return; }
   var state = { cat: "", q: "", sort: "featured", instock: false };
   function drawCats() {
-    var cats = CATS.filter(function (c) { return PLANTS.some(function (p) { return p.cat === c; }); });
+    var cats = CATS.filter(function (c) { return (SECTIONS && SECTIONS[c]) || PLANTS.some(function (p) { return p.cat === c; }); });
     if (state.cat && cats.indexOf(state.cat) < 0) state.cat = "";
     $("#shop-cats").innerHTML = '<button aria-pressed="' + !state.cat + '" data-cat="">All <small>' + PLANTS.length + "</small></button>" + cats.map(function (c) {
       return '<button aria-pressed="' + (state.cat === c) + '" data-cat="' + esc(c) + '">' + esc(c) + " <small>" + PLANTS.filter(function (p) { return p.cat === c; }).length + "</small></button>";
@@ -227,10 +233,15 @@ window.ATM_SHOP = function (cfg) {
       '<button class="pmedia" data-open="' + p.id + '" aria-label="More about ' + esc(p.name) + '">' + media(p) + '<span class="stock ' + st[0] + '">' + st[1] + "</span></button>" +
       '<div class="pbody"><span class="pcat">' + esc(p.cat) + '</span><button class="pname" data-open="' + p.id + '">' + esc(p.name) + '</button><span class="platin">' + esc(p.latin) + "</span>" +
       '<p class="pdesc">' + esc(p.text) + '</p><div class="pfoot pfoot2"><span class="pprice' + (sortPrice(p) === Infinity ? " tba" : "") + '">' + esc(fromPrice(p)) + '</span><span class="pchips">' + p.sizes.map(function (z) { return '<i class="' + (z.qty ? "" : "none") + '">' + esc(z.pot) + " · " + z.qty + "</i>"; }).join("") + "</span></div>" +
-      '<div class="pacts">' + (out ? '<button class="btn small add" disabled>' + esc(W.out) + "</button>" :
+      '<div class="pacts">' + (out ? '<button class="btn small add" disabled>' + esc(st[0] === "soon" ? "Coming soon" : W.out) + "</button>" :
         '<div class="pbuy"><button class="btn small add" data-quickadd="' + p.id + '">' + CART_ICON + "<span>" + (p.pre ? "Pre-order" : "Add to cart") + "</span>" + (n ? '<i class="incart">' + n + "</i>" : "") + "</button>" +
         '<button class="btn small buy1" data-quickbuy="' + p.id + '">Buy</button></div>') +
       '<button class="btn small ghost int" data-interest="' + p.id + '">Interested</button></div></div></article>';
+  }
+  function secHead(c, s) {
+    return '<div class="msec"><h2>' + esc(c) + "</h2>" +
+      (s ? '<p class="msec-host"><span>Hosted by</span>' + (s.host ? "<b>" + esc(s.host) + "</b>" : '<b class="soon">Coming soon</b>') + "</p>" : "") +
+      (s && s.note ? '<p class="msec-note">' + esc(s.note) + "</p>" : "") + "</div>";
   }
   function list() {
     var q = state.q.trim().toLowerCase();
@@ -247,7 +258,17 @@ window.ATM_SHOP = function (cfg) {
     var l = list();
     /* sold-out items fade next to the ones in stock; when nothing is in stock yet, nothing fades */
     var fade = PLANTS.some(function (p) { return avail(p) > 0; });
-    grid.innerHTML = l.map(function (p) { return card(p, fade); }).join("") || '<p class="muted" style="grid-column:1/-1">' + esc(W.none) + "</p>";
+    var html;
+    if (SECTIONS) {
+      var filtering = state.q.trim() || state.instock;
+      html = CATS.filter(function (c) { return !state.cat || c === state.cat; }).map(function (c) {
+        var items = l.filter(function (p) { return p.cat === c; }), s = SECTIONS[c];
+        if (!items.length && (filtering || !s)) return "";
+        return secHead(c, s) + (items.length ? items.map(function (p) { return card(p, fade); }).join("") :
+          '<div class="pcard msec-soon">' + A.art(s.art || cfg.moreArt) + '<div class="pbody"><b>Coming soon</b><span>' + esc(s.note || "") + "</span></div></div>");
+      }).join("");
+    } else html = l.map(function (p) { return card(p, fade); }).join("");
+    grid.innerHTML = html || '<p class="muted" style="grid-column:1/-1">' + esc(W.none) + "</p>";
     $("#shop-count").innerHTML = esc(l.length + " " + plural(l.length)) + (LIVE ? ' <span class="live-pill" title="Sizes, prices and counts come straight from our register">● Live stock</span>' : "");
   }
   $("#shop-cats").addEventListener("click", function (e) {
@@ -409,7 +430,7 @@ window.ATM_SHOP.PRODUCE = {
     askHint: "e.g. Can I get two dozen mangoes for Saturday?", notesHint: "e.g. Pick ripe ones for this weekend" }
 };
 window.ATM_SHOP.PANTRY = {
-  page: "pantry", sameDay: true, noPrice: "", items: function () { return window.PANTRY; }, cats: function () { return window.PANTRY_CATS; },
+  page: "pantry", sameDay: true, noPrice: "", items: function () { return window.PANTRY; }, cats: function () { return window.PANTRY_CATS; }, sections: function () { return window.PANTRY_SECTIONS; },
   rpc: "pos_web_pantry", feedCache: "atm-pos-pantry", basketKey: "atm-basket-pantry", lastResKey: "atm-last-res-pantry", codePrefix: "ATP", hash: "jar-",
   defaultSize: "Jar", moreCat: "More from the pantry", moreArt: "jar", moreText: "On the pantry shelf now. Tap Interested for a current photo or more about it.",
   windowSel: "#pantry-window", countAttr: "data-pantry-count", winEyebrow: "The Pantry · now online", winHead: "Jams, jellies and pickles. Pick them up any day,", winGo: "Shop the pantry",
@@ -419,4 +440,28 @@ window.ATM_SHOP.PANTRY = {
     none: "Nothing matches that. Try another search, or tap Interested on something similar and ask us.",
     want: ["Tell me when it's in", "Send me a current photo", "Tell me the price", "I'd like a bulk order", "I have a question"],
     askHint: "e.g. Can I get six jars of guava jam for Saturday?", notesHint: "e.g. It's a gift, please" }
+};
+window.ATM_SHOP.CRAFT = {
+  page: "craft", sameDay: true, noPrice: "", items: function () { return window.CRAFT; }, cats: function () { return window.CRAFT_CATS; }, sections: function () { return window.CRAFT_SECTIONS; },
+  rpc: "pos_web_craft", feedCache: "atm-pos-craft", basketKey: "atm-basket-craft", lastResKey: "atm-last-res-craft", codePrefix: "ATC", hash: "craft-",
+  defaultSize: "Each", moreCat: "More from the closet", moreArt: "quilt", moreText: "In the Craft Closet now. Tap Interested for a current photo or more about it.",
+  windowSel: "#craft-window", countAttr: "data-craft-count", winEyebrow: "Craft Closet · now online", winHead: "Handmade in Abaco. Pick it up any day,", winGo: "Open the Craft Closet",
+  emptyArt: "quilt",
+  words: { one: "item", many: "items", out: "Out of stock", size: "Size", choose: "Choose one", careLabel: "Care", basket: "Your crafts", qr: "CRAFT",
+    empty: "Nothing from the Craft Closet yet. Tap <b>Add to cart</b> on anything you like.",
+    none: "Nothing matches that. Try another search, or tap Interested on something similar and ask us.",
+    want: ["Tell me when it's in", "Send me a current photo", "Tell me the price", "I'd like one made for me", "I have a question"],
+    askHint: "e.g. Can you make a pillow in blue and yellow?", notesHint: "e.g. It's a gift, please" }
+};
+window.ATM_SHOP.ART = {
+  page: "art", sameDay: true, noPrice: "", items: function () { return window.ARTWORK; }, cats: function () { return window.ARTWORK_CATS; }, sections: function () { return window.ARTWORK_SECTIONS; },
+  rpc: "pos_web_art", feedCache: "atm-pos-art", basketKey: "atm-basket-art", lastResKey: "atm-last-res-art", codePrefix: "ATA", hash: "art-",
+  defaultSize: "Each", moreCat: "More art", moreArt: "easel", moreText: "At the market now. Tap Interested for a current photo or more about it.",
+  windowSel: "#art-window", countAttr: "data-art-count", winEyebrow: "Art · now online", winHead: "Art made in Abaco. Pick it up any day,", winGo: "See the art",
+  emptyArt: "easel",
+  words: { one: "piece", many: "pieces", out: "Out of stock", size: "Size", choose: "Choose one", careLabel: "About", basket: "Your art", qr: "ART",
+    empty: "No art yet. Tap <b>Add to cart</b> on anything you like.",
+    none: "Nothing matches that. Try another search, or tap Interested on something similar and ask us.",
+    want: ["Tell me when it's in", "Send me a current photo", "Tell me the price", "I'd like one made for me", "I have a question"],
+    askHint: "e.g. Can I get a pen engraved with a name?", notesHint: "e.g. It's a gift, please" }
 };

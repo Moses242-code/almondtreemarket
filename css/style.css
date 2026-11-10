@@ -420,6 +420,7 @@ footer .base { grid-column: 1 / -1; border-top: 1px solid var(--line); padding-t
 .pmedia .art-bg svg { width: 56%; }
 .pmedia:focus-visible { outline: 2px solid var(--leaf); outline-offset: -2px; }
 .stock { position: absolute; left: 8px; top: 8px; font: 500 .58rem var(--mono); letter-spacing: .08em; text-transform: uppercase; padding: .3em .6em; border-radius: 999px; background: rgba(6,18,12,.8); backdrop-filter: blur(4px); }
+.stock.soon { color: #241300; background: var(--mango); }
 .stock.in { color: var(--leaf); } .stock.low { color: var(--mango); } .stock.pre { color: var(--citrus); } .stock.out { color: var(--hibiscus); }
 .dprice .stock { position: static; }
 .pbody { padding: .7rem .75rem .8rem; display: flex; flex-direction: column; gap: .22rem; flex: 1; }
@@ -1164,3 +1165,16 @@ body[data-page="join"] #contact { padding-block: clamp(20px, 3vw, 40px) clamp(40
 .privacy a { text-decoration: underline; text-underline-offset: 3px; }
 #site-foot .base a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 @media (max-width: 1240px) { .privacy { padding-top: 56px; } }
+
+/* ================= maker sections (The Pantry, Craft Closet, Art): one maker per section ================= */
+.msec { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: .35rem 1rem; padding: 1.6rem 0 .35rem; margin-top: .4rem; border-top: 1px solid var(--line); }
+.msec:first-child { border-top: 0; padding-top: .2rem; margin-top: 0; }
+.msec h2 { font-size: clamp(1.25rem, 3.2vw, 1.75rem); flex: 1 1 auto; min-width: 0; }
+.msec-host { margin: 0; display: flex; align-items: center; gap: .55em; font: 400 .68rem var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--mist); }
+.msec-host b { font: 600 .8rem var(--body); letter-spacing: 0; text-transform: none; color: var(--cream); }
+.msec-host b.soon { color: #241300; background: var(--mango); border-radius: 999px; padding: .28em .8em; }
+.msec-note { flex-basis: 100%; margin: 0; font-size: .9rem; color: var(--mist); }
+.msec-soon { opacity: .85; border-style: dashed; }
+.msec-soon .art-bg { aspect-ratio: 1; position: relative; }
+.msec-soon .pbody b { font: 800 1.05rem var(--display); color: var(--mango); }
+.msec-soon .pbody span { font-size: .8rem; color: var(--mist); }

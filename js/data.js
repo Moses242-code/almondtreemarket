@@ -308,12 +308,51 @@ window.PLANTS = [
    -------------------------------------------------------------------------- */
 /* The Pantry (pantry.html): jams, jellies, pickles and sauces. Register items of kind "Pantry" fill in price,
    size and stock; pantry items in the register that aren't listed here show under "More from the pantry". */
-window.PANTRY_CATS = ["Jams & jellies", "Pickles"];
+window.PANTRY_CATS = ["Jars, jams & jellies", "Honey", "Hot sauces"];
+/* one section per maker. host: the maker's name once they're set up ("" shows "Coming soon") */
+window.PANTRY_SECTIONS = {
+  "Jars, jams & jellies": { host: "", art: "jar" },
+  "Honey": { host: "", art: "honey" },
+  "Hot sauces": { host: "", art: "pepper" }
+};
 window.PANTRY = [
-  { id: "guava-jam", featured: true, img: "", name: "Guava jam", latin: "", cat: "Jams & jellies", art: "guava", sizes: [{ pot: "Jar", price: 0, qty: 0 }], aliases: ["guava jelly", "guava preserves"],
-    text: "Guava jam from Under the Almond Tree." },
-  { id: "pickled-onions", featured: true, img: "", name: "Pickled onions", latin: "", cat: "Pickles", art: "jar", sizes: [{ pot: "Jar", price: 0, qty: 0 }], aliases: ["pickled onion"],
-    text: "Pickled onions from Under the Almond Tree." }
+  { id: "guava-jam", featured: true, img: "", name: "Guava jam", latin: "", cat: "Jars, jams & jellies", art: "guava", sizes: [{ pot: "Jar", price: 0, qty: 0 }], aliases: ["guava jelly", "guava preserves"],
+    text: "Guava jam in a jar, made in Abaco." },
+  { id: "pickled-onions", featured: true, img: "", name: "Pickled onions", latin: "", cat: "Jars, jams & jellies", art: "jar", sizes: [{ pot: "Jar", price: 0, qty: 0 }], aliases: ["pickled onion"],
+    text: "Pickled onions in a jar, made in Abaco." },
+  { id: "honey", img: "", name: "Honey", latin: "", cat: "Honey", art: "honey", sizes: [{ pot: "Jar", price: 0, qty: 0 }], aliases: ["local honey", "abaco honey"],
+    text: "Honey from an Abaco beekeeper." },
+  { id: "hot-sauce", img: "", name: "Hot sauce", latin: "", cat: "Hot sauces", art: "pepper", sizes: [{ pot: "Bottle", price: 0, qty: 0 }], aliases: ["pepper sauce", "goat pepper sauce"],
+    text: "Hot sauce, bottled in Abaco." }
+];
+
+/* Craft Closet (craft.html): handmade things, one section per maker */
+window.CRAFT_CATS = ["Quilted pillows & clothing", "Candles"];
+window.CRAFT_SECTIONS = {
+  "Quilted pillows & clothing": { host: "", art: "quilt" },
+  "Candles": { host: "", art: "candle" }
+};
+window.CRAFT = [
+  { id: "quilted-pillow", img: "", name: "Quilted pillow", latin: "", cat: "Quilted pillows & clothing", art: "quilt", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["quilt pillow", "pillow"],
+    text: "A handmade quilted pillow." },
+  { id: "quilted-clothing", img: "", name: "Quilted clothing", latin: "", cat: "Quilted pillows & clothing", art: "quilt", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["quilt clothing"],
+    text: "Handmade quilted clothing." },
+  { id: "candle", img: "", name: "Candles", latin: "", cat: "Candles", art: "candle", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["candle"],
+    text: "Handmade candles." }
+];
+
+/* Art (art.html): one section per artist */
+window.ARTWORK_CATS = ["Handcrafted wooden pens", "Bahamian children's books", "More artists"];
+window.ARTWORK_SECTIONS = {
+  "Handcrafted wooden pens": { host: "", art: "pen" },
+  "Bahamian children's books": { host: "", art: "book" },
+  "More artists": { host: "", art: "easel", note: "Another Abaco artist is getting ready." }
+};
+window.ARTWORK = [
+  { id: "wooden-pen", img: "", name: "Wooden pen", latin: "", cat: "Handcrafted wooden pens", art: "pen", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["handcrafted wooden pen", "wood pen", "pen"],
+    text: "A pen turned by hand from wood." },
+  { id: "childrens-book", img: "", name: "Children's book", latin: "", cat: "Bahamian children's books", art: "book", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["childrens book", "children's books", "book"],
+    text: "A colourful Bahamian children's book." }
 ];
 
 window.PRODUCE_CATS = ["Mangoes", "Island fruit", "Citrus", "Bananas, coconuts & pineapples", "Wild & native fruit", "Peppers, peas & provisions"];
