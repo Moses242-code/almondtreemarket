@@ -1233,3 +1233,10 @@ body[data-page="join"] #contact { padding-block: clamp(20px, 3vw, 40px) clamp(40
 /* ".com" after the shop name in the header: same font, half size */
 .brand b .dotcom { font-style: normal; font-size: .62em; text-transform: lowercase; letter-spacing: .04em; margin-left: .1em; }
 @media (min-width: 401px) { header.nav .brand b { white-space: nowrap; } }
+/* "Marsh Harbour · Abaco · The Bahamas": the words are centred under the name and the flag hangs to their left
+   (an empty space the flag's size on the right balances it) */
+header.nav .brand small { white-space: nowrap; }
+header.nav .brand small::after { content: ""; flex: none; width: 18px; height: 1px; }
+@media (max-width: 480px) { header.nav .brand small::after { width: 14px; } }
+header.nav .brand > span { min-width: 0; }
+@media (max-width: 374px) { header.nav .brand small { font-size: .42rem; letter-spacing: 0; gap: .25em; } header.nav .brand small .bs-flag, header.nav .brand small::after { width: 12px; } header.nav .brand small .bs-flag { height: 6px; } }
