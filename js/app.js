@@ -554,7 +554,25 @@ var COMPASS = (function () {
 })();
 /* tree hover (the coconut palm and the mango tree): a gust each time; the third gust drops a coconut
    (or a mango) on a passer-by, then it all starts over */
-Array.prototype.forEach.call(document.querySelectorAll(".ns-tree"), function (tree) {
+/* scenes (The Pantry cupboard, the Arts & Crafts sewing machine): hover or tap = one go ("run");
+   the third go is the payoff ("fly": parrot / t-shirt off behind the sign). Tapping the scene never leaves the page;
+   the sign and the arrow still open the shop. */
+Array.prototype.forEach.call(document.querySelectorAll(".ns-scene"), function (sc) {
+  var still = matchMedia("(prefers-reduced-motion: reduce)").matches, count = 0, busy = false;
+  function go(e) {
+    if (e.type === "click") { e.preventDefault(); e.stopPropagation(); }
+    if (busy || still) return;
+    busy = true; count++;
+    var big = count >= 3;
+    if (big) count = 0;
+    sc.classList.remove("run", "fly"); void sc.getBoundingClientRect();
+    sc.classList.add(big ? "fly" : "run");
+    setTimeout(function () { sc.classList.remove("run", "fly"); busy = false; }, big ? 6050 : 1650);
+  }
+  sc.addEventListener("mouseenter", go);
+  sc.addEventListener("click", go);
+});
+Array.prototype.forEach.call(document.querySelectorAll(".ns-tree:not(.ns-scene)"), function (tree) {
   if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
   var count = 0, busy = false;
   tree.addEventListener("mouseenter", function () {

@@ -1240,3 +1240,97 @@ header.nav .brand small::after { content: ""; flex: none; width: 18px; height: 1
 @media (max-width: 480px) { header.nav .brand small::after { width: 14px; } }
 header.nav .brand > span { min-width: 0; }
 @media (max-width: 374px) { header.nav .brand small { font-size: .42rem; letter-spacing: 0; gap: .25em; } header.nav .brand small .bs-flag, header.nav .brand small::after { width: 12px; } header.nav .brand small .bs-flag { height: 6px; } }
+
+/* ================= HOME: The Pantry and Arts & Crafts tiles (same setup as Local Produce) =================
+   Each has a cartoon scene in place of the tree. Hover or tap the scene: something happens; the third time,
+   the payoff runs and ends behind the hanging sign (6s), like the coconut on the nursery palm.
+   The Pantry: the cupboard doors swing open; third time an Abaco parrot flies out and off behind the sign.
+   Arts & Crafts: the sewing machine runs; third time a finished t-shirt lifts off and flies behind the sign. */
+.hero-pantry > img { object-position: 50% 30%; }
+.hero-crafts > img { object-position: 50% 55%; }
+.ns-scene { cursor: pointer; }
+.ns-scene .pt-door, .ns-scene .pt-goods, .ns-scene .pt-parrot, .ns-scene .pt-wing, .ns-scene .sc-stars,
+.ns-scene .sm-needle, .ns-scene .sm-wheel, .ns-scene .sm-fabric, .ns-scene .sm-stitch, .ns-scene .sm-shirt, .ns-scene .sm-machine { transform-box: view-box; }
+.ns-scene .pt-parrot, .ns-scene .sm-shirt, .ns-scene .sc-stars { opacity: 0; pointer-events: none; }
+.ns-scene .sc-stars path { transform-box: fill-box; transform-origin: center; }
+
+/* The Pantry: idle, the right door creaks open a touch now and then */
+.ns-pantry .pt-door-l { transform-origin: 28px 144px; }
+.ns-pantry .pt-door-r { transform-origin: 122px 144px; animation: pt-creak 5.5s ease-in-out infinite; }
+.ns-pantry .pt-parrot { transform-origin: 75px 150px; }
+.ns-pantry .pt-wing { transform-origin: 78px 147px; }
+.ns-pantry.run .pt-door-l { animation: pt-open-l 1.6s ease-in-out both; }
+.ns-pantry.run .pt-door-r { animation: pt-open-r 1.6s ease-in-out both; }
+.ns-pantry.run .pt-goods { animation: pt-jiggle 1.6s ease-in-out both; }
+.ns-pantry.fly .pt-door-l { animation: pt-fly-l 6s ease-in-out both; }
+.ns-pantry.fly .pt-door-r { animation: pt-fly-r 6s ease-in-out both; }
+.ns-pantry.fly .pt-goods { animation: pt-jiggle 1.6s ease-in-out .3s both; }
+.ns-pantry.fly .pt-parrot { animation: pt-parrot 6s both; }
+.ns-pantry.fly .pt-wing { animation: pt-flap .16s ease-in-out infinite alternate; }
+.ns-pantry.fly .sc-stars { animation: sc-stars 6s both; }
+@keyframes pt-creak { 0%, 78%, 100% { transform: scaleX(1); } 84% { transform: scaleX(.9) skewY(2deg); } 88% { transform: scaleX(.94); } 92% { transform: scaleX(1); } }
+@keyframes pt-open-l { 0% { transform: scaleX(1); } 22%, 70% { transform: scaleX(.16) skewY(-10deg); } 90%, 100% { transform: scaleX(1); } }
+@keyframes pt-open-r { 0% { transform: scaleX(1); } 22%, 70% { transform: scaleX(.16) skewY(10deg); } 90%, 100% { transform: scaleX(1); } }
+@keyframes pt-fly-l { 0% { transform: scaleX(1); } 7%, 74% { transform: scaleX(.16) skewY(-10deg); } 84%, 100% { transform: scaleX(1); } }
+@keyframes pt-fly-r { 0% { transform: scaleX(1); } 7%, 74% { transform: scaleX(.16) skewY(10deg); } 84%, 100% { transform: scaleX(1); } }
+@keyframes pt-jiggle { 0%, 20%, 62%, 100% { transform: translateY(0); } 28% { transform: translateY(-2.5px); } 36% { transform: translateY(0); } 44% { transform: translateY(-1.5px); } 52% { transform: translateY(0); } }
+@keyframes pt-flap { from { transform: scaleY(1) rotate(0); } to { transform: scaleY(-.55) rotate(8deg); } }
+/* parrot: pops up inside, hops out the top, circles over the cupboard, then dives right, behind the sign */
+@keyframes pt-parrot {
+  0%, 8% { opacity: 0; transform: translate(0, 0) scale(.5); }
+  11% { opacity: 1; transform: translate(0, 0) scale(.6); }
+  18% { transform: translate(0, -34px) scale(1); }
+  27% { transform: translate(-12px, -98px) scale(1.12) rotate(-10deg); }
+  37% { transform: translate(18px, -118px) scale(1.12) rotate(6deg); }
+  47% { transform: translate(52px, -108px) scale(1.1) rotate(-4deg); }
+  62% { transform: translate(120px, -46px) scale(1.05) rotate(12deg); }
+  76% { opacity: 1; transform: translate(186px, 28px) scale(1) rotate(6deg); }
+  86% { opacity: 1; transform: translate(230px, 38px) scale(1) rotate(2deg); }
+  92%, 100% { opacity: 0; transform: translate(250px, 38px) scale(1); }
+}
+@keyframes sc-stars { 0%, 10% { opacity: 0; transform: scale(.4); } 16% { opacity: 1; transform: scale(1.1); } 30% { opacity: 1; transform: scale(.9) rotate(30deg); } 38%, 100% { opacity: 0; transform: scale(.4) rotate(60deg); } }
+
+/* Arts & Crafts: idle, the needle bobs and the wheel turns slowly */
+.ns-crafts .sm-needle { animation: sm-needle 1.3s ease-in-out infinite; }
+.ns-crafts .sm-wheel { transform-origin: 134px 112px; animation: sm-wheel 7s linear infinite; }
+.ns-crafts .sm-shirt { transform-origin: 47px 148px; }
+.ns-crafts.run .sm-needle { animation: sm-needle .13s linear 12; }
+.ns-crafts.run .sm-wheel { animation: sm-wheel .5s linear 3; }
+.ns-crafts.run .sm-fabric { animation: sm-slide 1.6s ease-in-out both; }
+.ns-crafts.run .sm-stitch { animation: sm-stitch .4s linear 4; }
+.ns-crafts.run .sm-machine { animation: sm-hum .1s linear 15; }
+.ns-crafts.fly .sm-needle { animation: sm-needle .13s linear 12; }
+.ns-crafts.fly .sm-wheel { animation: sm-wheel .5s linear 3; }
+.ns-crafts.fly .sm-stitch { animation: sm-stitch .4s linear 4; }
+.ns-crafts.fly .sm-machine { animation: sm-hum .1s linear 15; }
+.ns-crafts.fly .sm-fabric { animation: sm-fabric 6s ease-in-out both; }
+.ns-crafts.fly .sm-shirt { animation: sm-shirt 6s both; }
+.ns-crafts.fly .sc-stars { animation: sm-stars 6s both; }
+@keyframes sm-needle { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+@keyframes sm-wheel { to { transform: rotate(360deg); } }
+@keyframes sm-slide { 0%, 100% { transform: translateX(0); } 70% { transform: translateX(-7px); } }
+@keyframes sm-stitch { to { stroke-dashoffset: -11; } }
+@keyframes sm-hum { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-.7px); } }
+/* the fabric becomes the t-shirt: it fades as the shirt appears, and comes back once the shirt is gone */
+@keyframes sm-fabric { 0% { opacity: 1; transform: translateX(0); } 24% { opacity: 1; transform: translateX(-7px); } 30% { opacity: 0; transform: translateX(-7px); } 88% { opacity: 0; transform: translateX(0); } 96%, 100% { opacity: 1; transform: translateX(0); } }
+@keyframes sm-shirt {
+  0%, 26% { opacity: 0; transform: translate(0, 0) scale(.3); }
+  29% { opacity: 1; transform: translate(0, 0) scale(.4); }
+  35% { transform: translate(0, -10px) scale(1); }
+  44% { transform: translate(6px, -64px) scale(1.15) rotate(-10deg); }
+  52% { transform: translate(16px, -74px) scale(1.15) rotate(8deg); }
+  60% { transform: translate(32px, -68px) scale(1.12) rotate(-6deg); }
+  76% { opacity: 1; transform: translate(150px, 8px) scale(1.05) rotate(14deg); }
+  86% { opacity: 1; transform: translate(205px, 34px) scale(1) rotate(6deg); }
+  92%, 100% { opacity: 0; transform: translate(225px, 34px) scale(1); }
+}
+@keyframes sm-stars { 0%, 27% { opacity: 0; transform: scale(.4); } 32% { opacity: 1; transform: scale(1.1); } 44% { opacity: 1; transform: scale(.9) rotate(30deg); } 52%, 100% { opacity: 0; transform: scale(.4) rotate(60deg); } }
+.ns-pantry .sc-stars { transform-origin: 75px 140px; }
+.ns-crafts .sc-stars { transform-origin: 46px 132px; }
+@media (min-width: 961px) { .hero-text .ns-scene { width: 236px; margin: -214px -3.1rem -6px -1.6rem; } }
+@media (max-width: 960px) { .hero-side .ns-scene { width: 156px; margin: -40px -2rem -4px -.6rem; } }
+@media (min-width: 600px) and (max-width: 960px) { .hero-side .ns-scene { width: clamp(120px, 19vw, 156px); margin-right: -1.8rem; } }
+@media (max-width: 480px) { .hero-side .ns-scene { width: 124px; margin: -30px -1.6rem -4px -.5rem; } }
+/* only the drawn parts of a scene catch taps; its empty corners let taps through */
+.ns-scene, .ns-scene svg { pointer-events: none; }
+.ns-scene svg > g:not(.pt-parrot):not(.sm-shirt):not(.sc-stars) { pointer-events: auto; }
