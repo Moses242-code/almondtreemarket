@@ -506,13 +506,11 @@ window.EVENTS = [
 window.PHOTOS = [
   ["img/2025-01-12_779B2A.jpg", "Potted plants under the almond tree"],
   ["img/market-structure.jpg", "Crowds under the market roof"],
-  ["img/2025-09-07_52BEBB.jpg", "Mangoes and passion fruit"],
   ["img/IMG_3470.jpg", "Pineapples and tomatoes by the crate"],
   ["img/handmade.jpg", "Handmade, island colours"],
   ["img/2025-09-06_2CE224.jpg", "The fruit stand"],
   ["img/IMG_0168.jpg", "Stalls in the morning sun"],
   ["img/IMG_3418.jpg", "Pineapples, plants and produce"],
-  ["img/IMG_0180.jpg", "Fresh greens and fruit"],
   ["img/2026-02-14_51E475.jpg", "A busy market day"],
   ["img/IMG_2092.jpg", "Young entrepreneurs at the market"],
 ];
