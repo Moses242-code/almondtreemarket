@@ -308,11 +308,11 @@ window.PLANTS = [
    -------------------------------------------------------------------------- */
 /* The Pantry (pantry.html): jams, jellies, pickles and sauces. Register items of kind "Pantry" fill in price,
    size and stock; pantry items in the register that aren't listed here show under "More from the pantry". */
-window.PANTRY_CATS = ["Jars, jams & jellies", "Honey", "Hot sauces"];
+window.PANTRY_CATS = ["Jars, jams & jellies", "The Honey Union", "Hot sauces"];
 /* one section per maker. host: the maker's name once they're set up ("" shows "Coming soon") */
 window.PANTRY_SECTIONS = {
   "Jars, jams & jellies": { host: "", art: "jar" },
-  "Honey": { host: "", art: "honey" },
+  "The Honey Union": { host: "", art: "honey", note: "Honey from beekeepers all over Abaco." },
   "Hot sauces": { host: "", art: "pepper" }
 };
 window.PANTRY = [
@@ -320,8 +320,8 @@ window.PANTRY = [
     text: "Guava jam in a jar, made in Abaco." },
   { id: "pickled-onions", featured: true, img: "", name: "Pickled onions", latin: "", cat: "Jars, jams & jellies", art: "jar", sizes: [{ pot: "Jar", price: 0, qty: 0 }], aliases: ["pickled onion"],
     text: "Pickled onions in a jar, made in Abaco." },
-  { id: "honey", img: "", name: "Honey", latin: "", cat: "Honey", art: "honey", sizes: [{ pot: "Jar", price: 0, qty: 0 }], aliases: ["local honey", "abaco honey"],
-    text: "Honey from an Abaco beekeeper." },
+  { id: "honey", img: "", name: "Honey", latin: "", cat: "The Honey Union", art: "honey", sizes: [{ pot: "Jar", price: 0, qty: 0 }], aliases: ["local honey", "abaco honey"],
+    text: "Honey from beekeepers all over Abaco." },
   { id: "hot-sauce", img: "", name: "Hot sauce", latin: "", cat: "Hot sauces", art: "pepper", sizes: [{ pot: "Bottle", price: 0, qty: 0 }], aliases: ["pepper sauce", "goat pepper sauce"],
     text: "Hot sauce, bottled in Abaco." }
 ];
