@@ -256,7 +256,8 @@ window.ATM_SHOP = function (cfg) {
     if (state.sort === "low") out.sort(function (a, b) { return sortPrice(a) - sortPrice(b); });
     if (state.sort === "high") out.sort(function (a, b) { var x = sortPrice(a), y = sortPrice(b); return (y === Infinity ? -1 : y) - (x === Infinity ? -1 : x); });
     if (state.sort === "az") out.sort(function (a, b) { return a.name.localeCompare(b.name); });
-    return out;
+    /* whatever the sort, items in stock come first and sold-out ones follow (each group keeps its order) */
+    return out.filter(function (p) { return avail(p) > 0; }).concat(out.filter(function (p) { return avail(p) <= 0; }));
   }
   function draw() {
     var l = list();
