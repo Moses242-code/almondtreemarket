@@ -2,7 +2,8 @@
    One engine runs both shops:
      Native Nursery  (nursery.html, js/data.js window.PLANTS,  register items of kind "Plant")
      Local Produce   (produce.html, js/data.js window.PRODUCE, register items of kind "Produce")
-   app.js calls ATM_SHOP(ATM_SHOP.NURSERY) and ATM_SHOP(ATM_SHOP.PRODUCE). */
+     The Pantry      (pantry.html,  js/data.js window.PANTRY,  register items of kind "Pantry")
+   app.js calls ATM_SHOP(ATM_SHOP.NURSERY), ATM_SHOP(ATM_SHOP.PRODUCE) and ATM_SHOP(ATM_SHOP.PANTRY). */
 window.ATM_SHOP = function (cfg) {
   "use strict";
   cfg = cfg || window.ATM_SHOP.NURSERY;
@@ -406,4 +407,16 @@ window.ATM_SHOP.PRODUCE = {
     none: "Nothing matches that. Try another search, or tap Interested on something similar and ask us.",
     want: ["Tell me when it's in", "Send me a current photo", "Tell me the price", "I'd like a bulk order", "I have a question"],
     askHint: "e.g. Can I get two dozen mangoes for Saturday?", notesHint: "e.g. Pick ripe ones for this weekend" }
+};
+window.ATM_SHOP.PANTRY = {
+  page: "pantry", sameDay: true, noPrice: "", items: function () { return window.PANTRY; }, cats: function () { return window.PANTRY_CATS; },
+  rpc: "pos_web_pantry", feedCache: "atm-pos-pantry", basketKey: "atm-basket-pantry", lastResKey: "atm-last-res-pantry", codePrefix: "ATP", hash: "jar-",
+  defaultSize: "Jar", moreCat: "More from the pantry", moreArt: "jar", moreText: "On the pantry shelf now. Tap Interested for a current photo or more about it.",
+  windowSel: "#pantry-window", countAttr: "data-pantry-count", winEyebrow: "The Pantry · now online", winHead: "Jams, jellies and pickles. Pick them up any day,", winGo: "Shop the pantry",
+  emptyArt: "jar",
+  words: { one: "item", many: "items", out: "Out of stock", size: "Size", choose: "Choose a size", careLabel: "Keeps", basket: "Your pantry", qr: "PANTRY",
+    empty: "Nothing from the pantry yet. Tap <b>Add to cart</b> on any jar.",
+    none: "Nothing matches that. Try another search, or tap Interested on something similar and ask us.",
+    want: ["Tell me when it's in", "Send me a current photo", "Tell me the price", "I'd like a bulk order", "I have a question"],
+    askHint: "e.g. Can I get six jars of guava jam for Saturday?", notesHint: "e.g. It's a gift, please" }
 };

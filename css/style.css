@@ -906,6 +906,7 @@ header.nav .brand small { justify-content: center; }
 .qb .qi svg { width: 20px; height: 20px; }
 .qb.on { background: var(--leaf); border-color: var(--leaf); color: #04230f; font-weight: 600; }
 .qb.on .qi { background: rgba(4,35,15,.18); }
+.qb.mk:not(.on) { color: var(--mango); }
 .qb.next { color: var(--mango); border-color: rgba(255,178,63,.45); background: rgba(255,178,63,.07); }
 .qb.next:hover { border-color: var(--mango); background: rgba(255,178,63,.14); }
 @media (max-width: 760px) {

@@ -10,4 +10,4 @@ function pick(list, shop) {
              img: /^https?:/.test(p.img) ? p.img : BASE + String(p.img).replace(/^\//, "") };
   });
 }
-print(JSON.stringify({ items: pick(window.PLANTS, "plant").concat(pick(window.PRODUCE, "produce")) }));
+print(JSON.stringify({ items: pick(window.PLANTS, "plant").concat(pick(window.PRODUCE, "produce")).concat(pick(window.PANTRY, "pantry")) }));

@@ -14,7 +14,7 @@ window.ATM_CART = (function () {
   var F = M.posFeed || {};
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var KEY = "atm-cart", SAVED = "atm-cart-saved", ORDERS = "atm-orders";
-  var SHOP_NAME = { nursery: "Plants · Native Nursery", produce: "Local produce" };
+  var SHOP_NAME = { nursery: "Plants · Native Nursery", produce: "Local produce", pantry: "The Pantry" };
   var CASH = "Cash only. Pick up on site. Pay when you collect. No deliveries. Collect your order at Under the Almond Tree, Marsh Harbour.";
 
   function read(k, d) { try { var v = JSON.parse(localStorage.getItem(k) || "null"); return v == null ? d : v; } catch (e) { return d; } }
@@ -37,7 +37,7 @@ window.ATM_CART = (function () {
     return z ? { key: k, shop: x.shop, id: x.id, pot: x.pot, qty: cart[k], p: p, z: z, S: S } : null;
   }
   function lines() { return Object.keys(cart).map(line).filter(Boolean); }
-  function ready() { var s = shops(); return !!(s.nursery && s.produce); }
+  function ready() { var s = shops(); return !!(s.nursery && s.produce && s.pantry); }
   function clean() {
     if (!ready()) return;
     Object.keys(cart).forEach(function (k) {
@@ -184,9 +184,9 @@ window.ATM_CART = (function () {
     var tail = (orders.length ? '<p class="borders"><button type="button" class="link" data-view="orders">Your orders (' + orders.length + ")</button></p>" : "");
     if (!ls.length) {
       return head + '<div class="bempty">' + (A.ART.mango || "") + "<p>Your cart is empty.</p>" +
-        '<div class="bempty-go"><a class="btn small" href="/nursery.html">Shop plants</a><a class="btn small" href="/produce.html">Shop local produce</a></div></div>' + savedHTML() + tail + cashNote();
+        '<div class="bempty-go"><a class="btn small" href="/nursery.html">Shop plants</a><a class="btn small" href="/produce.html">Shop local produce</a><a class="btn small" href="/pantry.html">Shop the pantry</a></div></div>' + savedHTML() + tail + cashNote();
     }
-    var groups = ["nursery", "produce"].map(function (s) {
+    var groups = ["nursery", "produce", "pantry"].map(function (s) {
       var g = ls.filter(function (l) { return l.shop === s; }); if (!g.length) return "";
       return '<div class="bgroup"><div class="eyebrow">' + esc(SHOP_NAME[s]) + "</div><ul class=\"blist\">" + g.map(lineHTML).join("") + "</ul></div>";
     }).join("");

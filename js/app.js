@@ -79,6 +79,8 @@ var COMPASS = (function () {
     jar: '<svg viewBox="0 0 120 120"><rect x="38" y="20" width="44" height="14" rx="4" fill="#ff5f7e"/><path d="M34 40c0-4 4-6 8-6h36c4 0 8 2 8 6v56c0 6-4 10-10 10H44c-6 0-10-4-10-10Z" fill="#e2402f"/><rect x="40" y="56" width="40" height="26" rx="4" fill="#f4f0e2"/><path d="M54 64c4 4 8 4 12 0" stroke="#e2402f" stroke-width="3" fill="none"/><path d="M52 74h16" stroke="#21402d" stroke-width="2"/></svg>',
     cake: '<svg viewBox="0 0 120 120"><path d="M22 70h76v30a6 6 0 0 1-6 6H28a6 6 0 0 1-6-6Z" fill="#c9783e"/><path d="M22 70c0-16 16-26 38-26s38 10 38 26Z" fill="#f4f0e2"/><path d="M22 70c6 8 12 8 19 0s12-8 19 0 12 8 19 0 13-8 19 0" fill="#f4f0e2"/><circle cx="60" cy="36" r="8" fill="#ff5f7e"/><path d="M60 28c2-6 6-8 10-8" stroke="#6be59c" stroke-width="3" fill="none"/><path d="M22 86h76" stroke="#ffb23f" stroke-width="4"/></svg>',
     pot: '<svg viewBox="0 0 120 120"><path d="M36 74h48l-6 34H42Z" fill="#d06a3a"/><rect x="32" y="68" width="56" height="10" rx="3" fill="#e57d48"/><path d="M60 68V36" stroke="#2fbf6f" stroke-width="4"/><path d="M60 50C38 52 26 38 28 20c20 0 32 12 32 30Z" fill="#6be59c"/><path d="M60 58c22 0 34-14 32-32-20 0-32 12-32 32Z" fill="#2fbf6f"/><path d="M60 44c-8 0-14-6-16-14" stroke="#06120c" stroke-width="1.6" fill="none" opacity=".5"/></svg>',
+    /* The Pantry: a hot sauce bottle next to a jar of jam */
+    pantry: '<svg viewBox="0 0 120 120"><rect x="77" y="8" width="16" height="13" rx="3" fill="#ff5f7e"/><rect x="79" y="20" width="12" height="20" rx="2" fill="#e2402f"/><path d="M79 38c-9 5-13 11-13 20v42c0 5 3 8 8 8h22c5 0 8-3 8-8V58c0-9-4-15-13-20Z" fill="#c8241b"/><rect x="70" y="60" width="30" height="30" rx="4" fill="#f4f0e2"/><path d="M80 82c-2-8 3-15 10-15 2 0 3 2 1 4-5 3-6 7-6 11Z" fill="#e2402f"/><path d="M89 67c1-3 3-4 5-4" stroke="#2fbf6f" stroke-width="2.6" fill="none" stroke-linecap="round"/><path d="M82 44c-4 3-6 7-6 12" stroke="#ff8b7a" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".7"/><rect x="16" y="52" width="44" height="12" rx="3" fill="#ffb23f"/><path d="M18 64h40c3 0 5 2 5 5v31c0 5-3 8-8 8H21c-5 0-8-3-8-8V69c0-3 2-5 5-5Z" fill="#e85d8a"/><rect x="19" y="74" width="38" height="20" rx="3" fill="#f4f0e2"/><circle cx="31" cy="84" r="5" fill="#e85d8a"/><path d="M31 79c1-2 3-3 5-3" stroke="#2fbf6f" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M40 82h11M40 87h8" stroke="#a8692c" stroke-width="2" stroke-linecap="round"/><path d="M19 70c3-1 6-1 9 0" stroke="#ffc1d6" stroke-width="2.4" stroke-linecap="round" opacity=".8"/></svg>',
     cornucopia: '<svg viewBox="0 0 120 120"><path d="M14 30c3-9 13-9 15 1 5 27 24 46 55 58l-2-50C58 42 38 38 29 28" fill="#d79a4e"/><path d="M14 30c3-9 13-9 15 1 5 27 24 46 55 58" fill="none" stroke="#a8692c" stroke-width="3"/><path d="M33 44c4-3 6-6 6-9M44 60c5-4 8-9 8-14M58 73c5-5 8-11 8-17M71 82c4-6 6-13 6-20" stroke="#a8692c" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="83" cy="64" rx="9" ry="25" fill="#7a4a1f"/><circle cx="95" cy="50" r="12" fill="#ffb23f"/><path d="M95 38c2-6 7-8 12-7-2 5-6 8-12 7Z" fill="#6be59c"/><circle cx="100" cy="76" r="10" fill="#ff5f7e"/><circle cx="84" cy="94" r="8" fill="#b9dc4a"/><circle cx="104" cy="96" r="5" fill="#9b5de5"/><circle cx="96" cy="100" r="5" fill="#9b5de5"/><circle cx="101" cy="104" r="5" fill="#8a4fd6"/></svg>',
     pitchfork: '<svg viewBox="0 0 120 120"><g transform="rotate(-32 60 62)"><rect x="55" y="52" width="10" height="62" rx="5" fill="#c98a3e"/><path d="M58 60v52" stroke="#a8692c" stroke-width="2"/><rect x="50" y="46" width="20" height="9" rx="3" fill="#9aa7a0"/><path d="M40 14v24c0 8 8 12 20 12s20-4 20-12V14M60 10v38" stroke="#dfe7e2" stroke-width="8" stroke-linecap="round" fill="none"/><path d="M40 14v24c0 8 8 12 20 12s20-4 20-12V14" stroke="#9aa7a0" stroke-width="2" fill="none" transform="translate(2 2)" opacity=".5"/></g><path d="M74 96c6-8 14-10 22-8M78 102c8-4 16-4 22 0M72 106c10 0 18 2 24 6" stroke="#e6c35a" stroke-width="3.5" stroke-linecap="round" fill="none"/></svg>',
     fish: '<svg viewBox="0 0 120 120"><path d="M14 60c14-22 46-28 68-13l20-15v56l-20-15C60 88 28 82 14 60Z" fill="#ff7a59"/><path d="M18 64c16 14 44 18 62 8-20 2-44-1-62-8Z" fill="#ffd1b8"/><path d="M48 40c6-8 16-12 26-10-4 6-10 10-18 12Z" fill="#ff5f7e"/><path d="M46 80c4 6 10 8 16 8-2-4-6-6-10-8Z" fill="#ff5f7e"/><path d="M44 48c4 7 4 17 0 24" stroke="#d9573a" stroke-width="3" fill="none" stroke-linecap="round"/><circle cx="30" cy="56" r="6" fill="#fff"/><circle cx="31" cy="56" r="3" fill="#1f2a20"/><path d="M60 52l8 4-8 4M70 54l6 3-6 3" stroke="#ffb23f" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>',
@@ -137,7 +139,7 @@ var COMPASS = (function () {
   function art(key) { return '<div class="art-bg ' + (TONE[key] || "") + '">' + (ART[key] || ART.sugarapple) + "</div>"; }
 
   /* ---------- shared header + footer ---------- */
-  var NAV = [["index.html", "The Market"], ["nursery.html", "Nursery"], ["produce.html", "Local Produce"], ["join.html", "Farmer?"], ["vendor.html", "Become a vendor"]];
+  var NAV = [["index.html", "The Market"], ["nursery.html", "Nursery"], ["produce.html", "Local Produce"], ["pantry.html", "The Pantry"], ["join.html", "Farmer?"], ["vendor.html", "Become a vendor"]];
   /* "We buy coconuts" sign: same flashing neon box as the farmer sign, links to the Farmers page sell form */
   var COCO_ICON = '<svg class="cc-ico" viewBox="0 0 40 40" width="30" height="30" aria-hidden="true">' +
     '<path d="M22 8c3-5 9-6 13-4-2 4-7 6-11 6" fill="#6be59c"/><path d="M21 9c-1-4-5-7-10-7 1 4 4 7 9 8" fill="#2fbf6f"/>' +
@@ -177,11 +179,11 @@ var COMPASS = (function () {
       '<div class="grain" aria-hidden="true"></div>';
   }
   /* the row of section buttons under the banner (sticks with the header on every page) */
-  var QUICK = [["index.html", "The Market", "cornucopia"], ["nursery.html", "Nursery", "pot"], ["produce.html", "Local Produce", "mango"], ["join.html", "Farmer?", "pitchfork"], ["vendor.html", "Become a vendor", "stall"]];
+  var QUICK = [["index.html", "The Market", "cornucopia"], ["nursery.html", "Nursery", "pot"], ["produce.html", "Local Produce", "mango"], ["pantry.html", "The Pantry", "pantry"], ["join.html", "Farmer?", "pitchfork"], ["vendor.html", "Become a vendor", "stall"]];
   function quickBar() {
     return '<nav class="quick" aria-label="Sections"><div class="wrap"><div class="quick-row">' + QUICK.map(function (n) {
       var on = page === n[0].replace(".html", "");
-      return '<a class="qb' + (on ? " on" : "") + '" href="' + n[0] + '"' + (on ? ' aria-current="page"' : "") + '><span class="qi" aria-hidden="true">' + (ART[n[2]] || "") + "</span>" + n[1] + "</a>";
+      return '<a class="qb' + (on ? " on" : "") + (n[0] === "index.html" ? " mk" : "") + '" href="' + n[0] + '"' + (on ? ' aria-current="page"' : "") + '><span class="qi" aria-hidden="true">' + (ART[n[2]] || "") + "</span>" + n[1] + "</a>";
     }).join("") + '<a class="qb next" href="' + M.nextDoor + '"><span class="qi" aria-hidden="true">' + ART.fish + "</span>Food next door <span aria-hidden=\"true\">↗</span></a></div></div></nav>";
   }
   function nextMarketStripe() {
@@ -194,7 +196,7 @@ var COMPASS = (function () {
     return '<div class="bs-band" aria-hidden="true"></div><div class="wrap"><div><a class="brand" href="index.html">' + BRAND + "<span><b>Almond Tree Market</b><small>" + esc(M.place) + "</small></span></a>" +
       "<p>A native market for Abaco growers and makers. Fruit, plants, straw work, candles, sauces and sweets, Monday to Saturday under the almond tree.</p>" +
       '<p class="foot-cash"><b>Cash only · pick up on site.</b> Pay when you collect. No deliveries. Collect your order at Under the Almond Tree, Marsh Harbour.</p></div>' +
-      '<div><h4>Market</h4><ul><li><a href="nursery.html">Native nursery</a></li><li><a href="produce.html">Local produce</a></li><li><a href="cart.html">Your cart &amp; orders</a></li><li><a href="join.html#sell">Farmer? Sell to us</a></li><li><a href="vendor.html">Become a vendor</a></li><li><a href="' + M.nextDoor + '">Hungry? Food next door ↗</a></li></ul></div>' +
+      '<div><h4>Market</h4><ul><li><a href="nursery.html">Native nursery</a></li><li><a href="produce.html">Local produce</a></li><li><a href="pantry.html">The Pantry</a></li><li><a href="cart.html">Your cart &amp; orders</a></li><li><a href="join.html#sell">Farmer? Sell to us</a></li><li><a href="vendor.html">Become a vendor</a></li><li><a href="' + M.nextDoor + '">Hungry? Food next door ↗</a></li></ul></div>' +
       '<div><h4>Contact</h4><ul><li><a href="' + wa("Hi! I have a question about Almond Tree Market.") + '" target="_blank" rel="noopener">WhatsApp ' + esc(M.phoneDisplay) + "</a></li>" +
       '<li><a href="mailto:' + M.email + '">' + esc(M.email) + '</a></li><li><a href="' + M.instagram + '" target="_blank" rel="noopener">Instagram</a> · <a href="' + M.facebook + '" target="_blank" rel="noopener">Facebook</a></li>' +
       '<li><a href="' + M.mapsLink + '" target="_blank" rel="noopener">Directions · GWPQ+WQ</a></li></ul></div>' +
@@ -558,7 +560,7 @@ Array.prototype.forEach.call(document.querySelectorAll(".ns-tree"), function (tr
     if (drop) setTimeout(function () { tree.classList.remove("drop"); busy = false; }, 6050);
   });
 });
-  if (window.ATM_SHOP) { window.ATM_SHOP(window.ATM_SHOP.NURSERY); window.ATM_SHOP(window.ATM_SHOP.PRODUCE); }
+  if (window.ATM_SHOP) { window.ATM_SHOP(window.ATM_SHOP.NURSERY); window.ATM_SHOP(window.ATM_SHOP.PRODUCE); window.ATM_SHOP(window.ATM_SHOP.PANTRY); }
   if (window.ATM_CART) window.ATM_CART.mount();
 
   /* ---------- reveal on scroll ---------- */
