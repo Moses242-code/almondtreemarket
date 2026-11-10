@@ -1388,3 +1388,6 @@ body[data-page="craft"] .pcard { box-shadow: 0 10px 26px rgba(6,10,26,.35); }
 body[data-page="craft"] .pcard .art-bg, body[data-page="craft"] #plant-dialog .art-bg { background: radial-gradient(circle at 50% 42%, #33498a, #18244a 75%); }
 body[data-page="craft"] .msec h2 { color: #fff6ec; }
 body[data-page="craft"] .msec { border-color: rgba(201,228,106,.25); }
+/* parrot wing: flap from the shoulder so the wing stays on the bird (it was pivoting from a point far off the body) */
+.ns-pantry .pt-wing { transform-box: fill-box; transform-origin: 96% 94%; }
+@keyframes pt-flap { from { transform: rotate(4deg) scaleY(1); } to { transform: rotate(-6deg) scaleY(-.5); } }
