@@ -805,6 +805,17 @@ header.nav .brand small { justify-content: center; }
 /* ================= nursery: pot sizes, quantities and "Interested" ================= */
 .pacts { display: grid; grid-template-columns: 1fr; gap: .35rem; margin-top: .55rem; }
 .pcard .pacts .add { margin-top: 0; }
+.pbuy { display: grid; grid-template-columns: 2fr 1fr; gap: .35rem; }
+.pbuy .btn { margin-top: 0; width: 100%; min-width: 0; }
+.pbuy .add { gap: .4em; font-size: .9rem; font-weight: 700; padding: .6em .6em; }
+.pbuy .add svg { flex: none; }
+.pbuy .add span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pbuy .add { position: relative; }
+.pbuy .add .incart { position: absolute; top: -7px; right: -3px; min-width: 19px; font: 700 .68rem/1 var(--body); font-style: normal; background: #04230f; color: var(--leaf); border: 1.5px solid var(--leaf); border-radius: 999px; padding: .22em .4em; text-align: center; }
+.btn.buy1 { background: var(--mango); color: #241300; padding: .6em .4em; font-size: .84rem; font-weight: 700; }
+.btn.buy1:hover { background: var(--mango-deep); }
+.pacts { container-type: inline-size; }
+@container (max-width: 230px) { .pbuy { gap: .3rem; } .pbuy .add { font-size: .78rem; gap: .28em; padding: .6em .3em; letter-spacing: -.01em; } .pbuy .add svg { width: 15px; height: 15px; } .btn.buy1 { font-size: .78rem; padding: .6em .2em; } }
 .btn.int { padding: .5em .8em; font-size: .8rem; border-color: rgba(255,178,63,.55); color: var(--mango); }
 .btn.int:hover { background: rgba(255,178,63,.1); }
 .pcard .psize { text-align: right; line-height: 1.35; }

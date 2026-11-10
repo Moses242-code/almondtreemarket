@@ -217,13 +217,18 @@ window.ATM_SHOP = function (cfg) {
   }
   drawCats();
 
+  var CART_ICON = '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M2.5 3.5h2.6l2.3 11.2a1.6 1.6 0 0 0 1.6 1.3h8.6a1.6 1.6 0 0 0 1.6-1.2l1.6-6.8H6.2"/></svg>';
+  /* the one size a card can add straight away: only when exactly one size is in stock; more than one opens the size picker */
+  function onlySize(p) { var z = p.sizes.filter(function (s) { return s.qty > 0; }); return z.length === 1 ? z[0] : null; }
   function card(p, fade) {
     var st = status(p), n = inBasket(p.id), out = !avail(p);
     return '<article class="pcard' + (out && fade ? " is-out" : "") + '" data-id="' + p.id + '" id="' + cfg.hash + p.id + '">' +
       '<button class="pmedia" data-open="' + p.id + '" aria-label="More about ' + esc(p.name) + '">' + media(p) + '<span class="stock ' + st[0] + '">' + st[1] + "</span></button>" +
       '<div class="pbody"><span class="pcat">' + esc(p.cat) + '</span><button class="pname" data-open="' + p.id + '">' + esc(p.name) + '</button><span class="platin">' + esc(p.latin) + "</span>" +
       '<p class="pdesc">' + esc(p.text) + '</p><div class="pfoot pfoot2"><span class="pprice' + (sortPrice(p) === Infinity ? " tba" : "") + '">' + esc(fromPrice(p)) + '</span><span class="pchips">' + p.sizes.map(function (z) { return '<i class="' + (z.qty ? "" : "none") + '">' + esc(z.pot) + " · " + z.qty + "</i>"; }).join("") + "</span></div>" +
-      '<div class="pacts"><button class="btn small add" data-open="' + p.id + '"' + (out ? " disabled" : "") + ">" + (out ? W.out : n ? "In cart · " + n : p.pre ? "Pre-order" : "Buy") + "</button>" +
+      '<div class="pacts">' + (out ? '<button class="btn small add" disabled>' + esc(W.out) + "</button>" :
+        '<div class="pbuy"><button class="btn small add" data-quickadd="' + p.id + '">' + CART_ICON + "<span>" + (p.pre ? "Pre-order" : "Add to cart") + "</span>" + (n ? '<i class="incart">' + n + "</i>" : "") + "</button>" +
+        '<button class="btn small buy1" data-quickbuy="' + p.id + '">Buy</button></div>') +
       '<button class="btn small ghost int" data-interest="' + p.id + '">Interested</button></div></div></article>';
   }
   function list() {
@@ -342,6 +347,14 @@ window.ATM_SHOP = function (cfg) {
       return;
     }
     var i = e.target.closest("[data-interest]"); if (i) { openInterest(i.getAttribute("data-interest")); return; }
+    var qa = e.target.closest("[data-quickadd]"), qb = e.target.closest("[data-quickbuy]");
+    if (qa || qb) {
+      var id = (qa || qb).getAttribute(qa ? "data-quickadd" : "data-quickbuy"), p = byId[id], z = p && onlySize(p);
+      if (!z) { openPlant(id); return; }   /* several sizes: pick one first */
+      if (qa) { if (C()) C().add(cfg.page, id, z.pot, 1); return; }
+      if (C()) { if (!C().inCart(cfg.page, id, z.pot)) C().add(cfg.page, id, z.pot, 1); C().open("cart"); }
+      return;
+    }
     var o = e.target.closest("[data-open]"); if (o && !o.disabled) { openPlant(o.getAttribute("data-open")); return; }
   });
 
@@ -377,7 +390,7 @@ window.ATM_SHOP.NURSERY = {
   windowSel: "#plant-window", countAttr: "data-plant-count", winEyebrow: "Native nursery · now online", winHead: "Buy a tree online. Pick it up any day,", winGo: "Shop the nursery",
   emptyArt: "pot",
   words: { one: "plant", many: "plants", out: "Out of stock", size: "Pot size", choose: "Choose a pot size", careLabel: "Care", basket: "Your plants", qr: "PLANT",
-    empty: "No plants yet. Tap <b>Buy</b> on any plant, pick a pot size and add it.",
+    empty: "No plants yet. Tap <b>Add to cart</b> on any plant (pick a pot size if it asks).",
     none: "No plants match that. Try another search, or tap Interested on a similar plant and ask us.",
     want: ["Send me a current photo", "Tell me the price", "Tell me when it's available", "I'd like a different size", "I have a question"],
     askHint: "e.g. Is it fruiting yet? Can you deliver to Hope Town?", notesHint: "e.g. I need help loading" }
@@ -389,7 +402,7 @@ window.ATM_SHOP.PRODUCE = {
   windowSel: "#produce-window", countAttr: "data-produce-count", winEyebrow: "Local produce · now online", winHead: "Buy island fruit online. Pick it up any day,", winGo: "Shop local produce",
   emptyArt: "mango",
   words: { one: "item", many: "items", out: "Out of stock", size: "Sold by", choose: "How it's sold", careLabel: "Season", basket: "Your produce", qr: "PRODUCE",
-    empty: "No produce yet. Tap <b>Buy</b> on any fruit and add how many you want.",
+    empty: "No produce yet. Tap <b>Add to cart</b> on any fruit.",
     none: "Nothing matches that. Try another search, or tap Interested on something similar and ask us.",
     want: ["Tell me when it's in", "Send me a current photo", "Tell me the price", "I'd like a bulk order", "I have a question"],
     askHint: "e.g. Can I get two dozen mangoes for Saturday?", notesHint: "e.g. Pick ripe ones for this weekend" }
