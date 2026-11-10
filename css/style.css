@@ -1370,3 +1370,21 @@ header.nav .brand > span { min-width: 0; }
 #craft-window .pw-go { background: #e0483e; color: #fff6f2; }
 #craft-window .pw-go:hover { background: #ff5a4f; }
 #craft-window .pw-card .art-bg { background: radial-gradient(circle at 50% 42%, #33498a, #18244a 75%); }
+
+/* ================= Arts & Crafts shop page (craft.html), dressed in Bahamian batik =================
+   Same layout as every shop; only the colours change, on this page only: deep navy cloth with faint white shells,
+   lime nautilus-green accents, coral-red buttons, and a strip of red coral print under the heading. */
+body[data-page="craft"] main, body[data-page="craft"] #plant-dialog {
+  --night: #141f40; --deep: #1b2a54; --ink: #22356a; --line: #34477f; --mist: #b9c4e6;
+  --leaf: #c9e46a; --leaf-deep: #8fb33a; --mango: #ff7f6a; --mango-deep: #e0483e; --hibiscus: #ff9a8a; }
+body[data-page="craft"] main { background-color: #141f40;
+  background-image: linear-gradient(180deg, rgba(20,31,64,.05), rgba(20,31,64,.4)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='%23eef2ff' opacity='.13'%3E%3Cpath d='M22 6l4.2 9.2 10 1.1-7.4 6.8 2 9.9L22 28l-8.8 5 2-9.9-7.4-6.8 10-1.1Z'/%3E%3Ccircle cx='86' cy='30' r='13'/%3E%3Ccircle cx='40' cy='88' r='10'/%3E%3C/g%3E%3Cg fill='%231f2f5c'%3E%3Ccircle cx='86' cy='24' r='2'/%3E%3Ccircle cx='91.7' cy='28' r='2'/%3E%3Ccircle cx='89.5' cy='34.8' r='2'/%3E%3Ccircle cx='82.5' cy='34.8' r='2'/%3E%3Ccircle cx='80.3' cy='28' r='2'/%3E%3C/g%3E%3Cg stroke='%23eef2ff' stroke-width='3' fill='none' stroke-linecap='round' opacity='.13'%3E%3Cpath d='M74 80c10-7 22 0 19 11s-18 11-21 4 3-14 11-10'/%3E%3Cpath d='M98 100l-8-6M104 96l-9-1M104 104l-9 1'/%3E%3Cpath d='M12 60c6 4 10 10 10 18M12 60c-3 6-3 12 0 18M12 60c8 0 14 3 18 8'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: auto, 200px 200px; }
+body[data-page="craft"] .shop-hero { position: relative; background: radial-gradient(70% 120% at 100% 0%, rgba(201,228,106,.16), transparent 60%), radial-gradient(60% 90% at 0% 100%, rgba(255,127,106,.16), transparent 60%), transparent; }
+body[data-page="craft"] .shop-hero::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 18px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='18' viewBox='0 0 36 18'%3E%3Crect width='36' height='18' fill='%23c8242b'/%3E%3Cg stroke='%23ffe1d6' stroke-width='1.6' stroke-linecap='round' fill='none' opacity='.9'%3E%3Cpath d='M7 18V12M7 14L4 10L3.6 7M7 13L10 9L9.4 5.6M10 9L13 7.4'/%3E%3Cpath d='M25 15V9.5M25 12L22.5 8.4M25 11L28 7.4M25 13L28.6 11.6'/%3E%3Cpath d='M17 6V2.4M17 4L15 1.4M17 4L19.2 1.2'/%3E%3C/g%3E%3C/svg%3E") repeat-x 0 0 / 36px 18px; }
+body[data-page="craft"] .shop-hero h1 { text-shadow: 0 2px 18px rgba(10,16,36,.6); }
+body[data-page="craft"] .pcard { box-shadow: 0 10px 26px rgba(6,10,26,.35); }
+body[data-page="craft"] .pcard .art-bg, body[data-page="craft"] #plant-dialog .art-bg { background: radial-gradient(circle at 50% 42%, #33498a, #18244a 75%); }
+body[data-page="craft"] .msec h2 { color: #fff6ec; }
+body[data-page="craft"] .msec { border-color: rgba(201,228,106,.25); }
