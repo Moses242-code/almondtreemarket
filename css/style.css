@@ -1194,6 +1194,10 @@ body[data-page="join"] #contact { padding-block: clamp(20px, 3vw, 40px) clamp(40
 @media (min-width: 600px) { .sq.full b { white-space: normal; line-height: 1; margin-top: 2px; } .sq.full .sq-logo { width: 38%; } }
 .sq.vacant { border-color: var(--mango); animation: neon-mango 2.4s ease-in-out infinite, sq-flash 1.6s ease-in-out infinite; }
 .sq.vacant b { color: var(--mango); text-shadow: 0 0 10px rgba(255,178,63,.55); }
+@media (max-width: 599px) { .sq.vacant { padding-top: 8px; } .sq.vacant b { font-size: .4rem; } }
+.sq .sq-cta { display: block; font: 600 .3rem/1.05 var(--mono); letter-spacing: .02em; text-transform: uppercase; color: var(--cream); opacity: .85; }
+@media (min-width: 600px) { .sq .sq-cta { font-size: .44rem; margin-top: 2px; } }
+@media (min-width: 961px) { .sq .sq-cta { font-size: .56rem; letter-spacing: .05em; } }
 @keyframes neon-mango {
   0%, 100% { box-shadow: 0 0 0 1px rgba(255,178,63,.25), 0 0 16px rgba(255,178,63,.45), inset 0 0 10px rgba(255,178,63,.15); }
   50% { box-shadow: 0 0 0 1px rgba(255,178,63,.15), 0 0 6px rgba(255,178,63,.2), inset 0 0 4px rgba(255,178,63,.08); }
