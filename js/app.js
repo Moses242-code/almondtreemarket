@@ -565,6 +565,8 @@ Array.prototype.forEach.call(document.querySelectorAll(".ns-tree"), function (tr
     if (drop) setTimeout(function () { tree.classList.remove("drop"); busy = false; }, 6050);
   });
 });
+  /* home page: logos in the taken market squares (placeholder drawings until the real logos are in) */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-sq-art]"), function (el) { el.innerHTML = ART[el.getAttribute("data-sq-art")] || ""; });
   if (window.ATM_SHOP) { window.ATM_SHOP(window.ATM_SHOP.NURSERY); window.ATM_SHOP(window.ATM_SHOP.PRODUCE); window.ATM_SHOP(window.ATM_SHOP.PANTRY); window.ATM_SHOP(window.ATM_SHOP.CRAFT); window.ATM_SHOP(window.ATM_SHOP.ART); }
   if (window.ATM_CART) window.ATM_CART.mount();
 
