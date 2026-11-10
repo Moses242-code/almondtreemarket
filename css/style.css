@@ -1209,3 +1209,12 @@ body[data-page="join"] #contact { padding-block: clamp(20px, 3vw, 40px) clamp(40
 @media (prefers-reduced-motion: reduce) { .sq.vacant { animation: none; } }
 .sq .sq-wide { display: none; }
 @media (min-width: 600px) { .sq .sq-wide { display: inline; } }
+
+/* squares 1 and 2: red "Open soon / Online only" sash across the square */
+.sq .sq-soon { position: absolute; left: 50%; top: 50%; width: 160%; transform: translate(-50%, -50%) rotate(-32deg); padding: 1px 0; background: #d8322f; color: #fff; text-align: center; font: 800 .3rem/1.05 var(--mono); letter-spacing: .03em; text-transform: uppercase; box-shadow: 0 1px 4px rgba(0,0,0,.45); pointer-events: none; }
+@media (min-width: 600px) { .sq .sq-soon { font-size: .48rem; padding: 2px 0; transform: translate(-50%, -50%) rotate(-20deg); } }
+@media (min-width: 961px) { .sq .sq-soon { font-size: .62rem; padding: 3px 0; transform: translate(-50%, -50%) rotate(-14deg); } }
+
+/* vacant squares: plain yellow border, no flashing */
+.sq.vacant { animation: none; border-color: var(--mango); box-shadow: none; }
+.sq.vacant b { text-shadow: none; }
