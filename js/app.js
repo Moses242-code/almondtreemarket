@@ -554,13 +554,14 @@ var COMPASS = (function () {
 })();
 /* tree hover (the coconut palm and the mango tree): a gust each time; the third gust drops a coconut
    (or a mango) on a passer-by, then it all starts over */
-/* scenes (The Pantry cupboard, the Arts & Crafts sewing machine): hover or tap = one go ("run");
-   the third go is the payoff ("fly": parrot / t-shirt off behind the sign). Tapping the scene never leaves the page;
-   the sign and the arrow still open the shop. */
+/* scenes (The Pantry cupboard, the Arts & Crafts sewing machine): moving the mouse over the scene = one go ("run"),
+   the same as the palm and mango trees; clicking does nothing special (it opens the shop like the rest of the sign).
+   The third go is the payoff ("fly": parrot / t-shirt off behind the sign).
+   Phones and tablets have no mouse to hover with, so there a tap on the scene is one go (and stays on the page). */
 Array.prototype.forEach.call(document.querySelectorAll(".ns-scene"), function (sc) {
-  var still = matchMedia("(prefers-reduced-motion: reduce)").matches, count = 0, busy = false;
+  var still = matchMedia("(prefers-reduced-motion: reduce)").matches, mouse = matchMedia("(hover: hover)").matches, count = 0, busy = false;
   function go(e) {
-    if (e.type === "click") { e.preventDefault(); e.stopPropagation(); }
+    if (e.type === "click") { if (mouse) return; e.preventDefault(); e.stopPropagation(); }
     if (busy || still) return;
     busy = true; count++;
     var big = count >= 3;
