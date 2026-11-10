@@ -628,7 +628,7 @@ footer .base .bs-flag { width: 20px; height: 10px; margin: 0 .2em; }
 @keyframes nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(10px); } }
 @keyframes ring { 0% { box-shadow: 0 0 0 0 rgba(255,178,63,.55); } 100% { box-shadow: 0 0 0 18px rgba(255,178,63,0); } }
 @media (prefers-reduced-motion: reduce) { .nursery-sign, .ns-board, .ns-dot, .ns-arrow { animation: none !important; } }
-@media (min-width: 961px) { .nursery-sign { margin-bottom: auto; } .hero-text .chips { margin-top: 2rem; } .hero-text .mkt-sq + .chips { margin-top: 0; } }
+@media (min-width: 961px) { .nursery-sign { margin-bottom: auto; } .hero-text .chips { margin-top: 2rem; } }
 
 /* swaying coconut cluster beside the nursery sign */
 .ns-coco { display: none; }
@@ -1180,7 +1180,8 @@ body[data-page="join"] #contact { padding-block: clamp(20px, 3vw, 40px) clamp(40
 .msec-soon .pbody span { font-size: .8rem; color: var(--mist); }
 
 /* ================= home: the 8 squares of the Almond Tree Market (above "Open Mon–Sat") ================= */
-.mkt-sq { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 4px; width: 100%; max-width: 400px; margin: .9rem 0 .8rem; }
+.mkt-strip { position: relative; z-index: 5; padding: .5rem max(16px, env(safe-area-inset-right, 0px)) .3rem max(16px, env(safe-area-inset-left, 0px)); }
+.mkt-sq { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 4px; width: 100%; margin: 0; }
 .sq { position: relative; aspect-ratio: 1; min-width: 0; border-radius: 7px; display: grid; place-items: center; align-content: center; gap: 1px; padding: 2px; text-decoration: none; text-align: center; overflow: hidden;
   background: rgba(6,18,12,.78); border: 2px solid var(--line); color: var(--cream); transition: transform .15s, border-color .15s; }
 .sq:hover, .sq:focus-visible { transform: translateY(-2px); }
@@ -1198,8 +1199,9 @@ body[data-page="join"] #contact { padding-block: clamp(20px, 3vw, 40px) clamp(40
   50% { box-shadow: 0 0 0 1px rgba(255,178,63,.15), 0 0 6px rgba(255,178,63,.2), inset 0 0 4px rgba(255,178,63,.08); }
 }
 @keyframes sq-flash { 0%, 100% { border-color: var(--mango); } 50% { border-color: rgba(255,178,63,.3); } }
-@media (min-width: 600px) { .mkt-sq { gap: 6px; max-width: 520px; } .sq { border-radius: 9px; } .sq .sq-n { font-size: .58rem; top: 3px; left: 5px; } .sq b { font-size: .55rem; } .sq.full b { font-size: .46rem; } }
-@media (min-width: 961px) { .mkt-sq { max-width: 560px; margin-top: 2rem; } }
+@media (min-width: 600px) { .mkt-sq { gap: 8px; } .sq { aspect-ratio: 1.5; } .sq.full .sq-logo { width: 34%; } .sq { border-radius: 9px; } .sq .sq-n { font-size: .58rem; top: 3px; left: 5px; } .sq b { font-size: .55rem; } .sq.full b { font-size: .46rem; } }
+@media (min-width: 961px) { .mkt-sq { gap: 10px; } .sq { aspect-ratio: 2.1; border-radius: 12px; } .sq.full .sq-logo { width: 26%; } .sq b { font-size: .68rem; } .sq.full b { font-size: .6rem; } .sq .sq-n { font-size: .66rem; } }
+@media (min-width: 1241px) { .mkt-strip { width: min(100%, 1240px); margin-inline: auto; padding-top: .8rem; } }
 @media (prefers-reduced-motion: reduce) { .sq.vacant { animation: none; } }
 .sq .sq-wide { display: none; }
 @media (min-width: 600px) { .sq .sq-wide { display: inline; } }
