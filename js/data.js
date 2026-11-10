@@ -504,6 +504,8 @@ window.EVENTS = [
 
 /* PHOTOS for the gallery (img/ folder). Newest at the top. */
 window.PHOTOS = [
+  ["img/2026-02-14_2E7490.jpg", "The Under the Almond Tree sign, market behind"],
+  ["img/market-palms-lawn.jpg", "The market roof and palms on the lawn"],
   ["img/2025-01-12_779B2A.jpg", "Potted plants under the almond tree"],
   ["img/market-structure.jpg", "Crowds under the market roof"],
   ["img/IMG_3470.jpg", "Pineapples and tomatoes by the crate"],
