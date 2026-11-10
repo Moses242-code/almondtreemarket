@@ -185,10 +185,13 @@ var COMPASS = (function () {
   }
   /* the row of section buttons under the banner (sticks with the header on every page) */
   var QUICK = [["index.html", "The Market", "cornucopia"], ["produce.html", "Local Produce", "mango"], ["nursery.html", "Nursery", "pot"], ["pantry.html", "The Pantry", "pantry"], ["art.html", "Art", "easel"], ["craft.html", "Craft Closet", "quilt"]];
+  var QUICK_SOON = ["pantry.html", "art.html", "craft.html"];
   function quickBar() {
     return '<nav class="quick" aria-label="Sections"><div class="wrap"><div class="quick-row">' + QUICK.map(function (n) {
       var on = page === n[0].replace(".html", "");
-      return '<a class="qb' + (on ? " on" : "") + (n[0] === "index.html" ? " mk" : "") + '" href="' + n[0] + '"' + (on ? ' aria-current="page"' : "") + '><span class="qi" aria-hidden="true">' + (ART[n[2]] || "") + "</span>" + n[1] + "</a>";
+      /* shops not open yet get a faint "Coming soon" sash, same style as squares 1 and 2 on the home page */
+      var soon = QUICK_SOON.indexOf(n[0]) > -1;
+      return '<a class="qb' + (on ? " on" : "") + (soon ? " soon" : "") + (n[0] === "index.html" ? " mk" : "") + '" href="' + n[0] + '"' + (on ? ' aria-current="page"' : "") + '><span class="qi" aria-hidden="true">' + (ART[n[2]] || "") + "</span>" + n[1] + (soon ? '<span class="qb-soon">Coming soon</span>' : "") + "</a>";
     }).join("") + '<a class="qb next" href="' + M.nextDoor + '"><span class="qi" aria-hidden="true">' + ART.fish + "</span>Food next door <span aria-hidden=\"true\">↗</span></a></div></div></nav>";
   }
   function nextMarketStripe() {
