@@ -1218,3 +1218,4 @@ body[data-page="join"] #contact { padding-block: clamp(20px, 3vw, 40px) clamp(40
 /* vacant squares: plain yellow border, no flashing */
 .sq.vacant { animation: none; border-color: var(--mango); box-shadow: none; }
 .sq.vacant b { text-shadow: none; }
+.sq .sq-soon { background: rgba(216,50,47,.42); box-shadow: none; text-shadow: 0 1px 2px rgba(0,0,0,.7); }
