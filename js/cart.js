@@ -14,8 +14,8 @@ window.ATM_CART = (function () {
   var F = M.posFeed || {};
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var KEY = "atm-cart", SAVED = "atm-cart-saved", ORDERS = "atm-orders";
-  var SHOP_NAME = { nursery: "Plants · Native Nursery", produce: "Local produce", pantry: "The Pantry", craft: "Craft Closet", art: "Art" };
-  var SHOP_LIST = ["nursery", "produce", "pantry", "craft", "art"];
+  var SHOP_NAME = { nursery: "Plants · Native Nursery", produce: "Local produce", pantry: "The Pantry", craft: "Arts & Crafts" };
+  var SHOP_LIST = ["nursery", "produce", "pantry", "craft"];
   var CASH = "Cash only. Pick up on site. Pay when you collect. No deliveries. Collect your order at Under the Almond Tree, Marsh Harbour.";
 
   function read(k, d) { try { var v = JSON.parse(localStorage.getItem(k) || "null"); return v == null ? d : v; } catch (e) { return d; } }
@@ -26,6 +26,10 @@ window.ATM_CART = (function () {
     var old = read(o[0], null); if (!old || typeof old !== "object") return;
     Object.keys(old).forEach(function (k) { if (old[k] > 0) cart[o[1] + "|" + k] = (cart[o[1] + "|" + k] || 0) + old[k]; });
     try { localStorage.removeItem(o[0]); } catch (e) {}
+  });
+  /* Art moved into Arts & Crafts (shop "craft"): carry over anything already in a cart or saved for later */
+  [cart, saved].forEach(function (o) {
+    Object.keys(o).forEach(function (k) { if (k.indexOf("art|") === 0) { var n = "craft|" + k.slice(4); o[n] = (o[n] || 0) + o[k]; delete o[k]; } });
   });
 
   function money(n) { return "$" + (Math.round(n * 100) / 100).toFixed(n % 1 ? 2 : 0); }

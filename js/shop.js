@@ -3,9 +3,8 @@
      Native Nursery  (nursery.html, js/data.js window.PLANTS,  register items of kind "Plant")
      Local Produce   (produce.html, js/data.js window.PRODUCE, register items of kind "Produce")
      The Pantry      (pantry.html,  js/data.js window.PANTRY,  register items of kind "Pantry")
-     Craft Closet    (craft.html,   js/data.js window.CRAFT,   register items of kind "Craft")
-     Art             (art.html,     js/data.js window.ARTWORK, register items of kind "Art")
-   The last three are grouped in sections, one per maker (window.*_SECTIONS in data.js).
+     Arts & Crafts   (craft.html,   js/data.js window.ARTWORK + window.CRAFT, register items of kind "Art" and "Craft")
+   The last two are grouped in sections, one per maker (window.*_SECTIONS in data.js).
    app.js calls ATM_SHOP(ATM_SHOP.NURSERY), ATM_SHOP(ATM_SHOP.PRODUCE) and ATM_SHOP(ATM_SHOP.PANTRY). */
 window.ATM_SHOP = function (cfg) {
   "use strict";
@@ -99,10 +98,14 @@ window.ATM_SHOP = function (cfg) {
     try { var c = JSON.parse(localStorage.getItem(CK) || "null"); if (c && Date.now() - c.t < 10 * 60 * 1000) mergeFeed(c.rows); } catch (e) {}
     feed = new Promise(function (done) {
       var ctl = window.AbortController ? new AbortController() : null, timer = setTimeout(function () { if (ctl) ctl.abort(); }, 8000);
-      fetch(F.url.replace(/\/$/, "") + "/rest/v1/rpc/" + cfg.rpc, { method: "POST", headers: { "Content-Type": "application/json", apikey: F.key }, body: "{}", signal: ctl ? ctl.signal : undefined })
-        .then(function (r) { if (!r.ok) throw new Error("feed " + r.status); return r.json(); })
-        .then(function (rows) {
+      /* cfg.rpc can be a list (Arts & Crafts reads both the Art and the Craft register items) */
+      Promise.all([].concat(cfg.rpc).map(function (fn) {
+        return fetch(F.url.replace(/\/$/, "") + "/rest/v1/rpc/" + fn, { method: "POST", headers: { "Content-Type": "application/json", apikey: F.key }, body: "{}", signal: ctl ? ctl.signal : undefined })
+          .then(function (r) { if (!r.ok) throw new Error("feed " + r.status); return r.json(); });
+      }))
+        .then(function (lists) {
           clearTimeout(timer);
+          var rows = lists.every(Array.isArray) ? [].concat.apply([], lists) : null;
           if (!Array.isArray(rows)) return done(false);
           try { localStorage.setItem(CK, JSON.stringify({ t: Date.now(), rows: rows })); } catch (e) {}
           /* rebuild from data.js first, so repeated updates never stack on top of each other */
@@ -446,26 +449,18 @@ window.ATM_SHOP.PANTRY = {
     want: ["Tell me when it's in", "Send me a current photo", "Tell me the price", "I'd like a bulk order", "I have a question"],
     askHint: "e.g. Can I get six jars of guava jam for Saturday?", notesHint: "e.g. It's a gift, please" }
 };
+/* Arts & Crafts (craft.html): register items of kind "Art" and kind "Craft" on one page, one section per maker */
 window.ATM_SHOP.CRAFT = {
-  page: "craft", sameDay: true, noPrice: "", items: function () { return window.CRAFT; }, cats: function () { return window.CRAFT_CATS; }, sections: function () { return window.CRAFT_SECTIONS; },
-  rpc: "pos_web_craft", feedCache: "atm-pos-craft", basketKey: "atm-basket-craft", lastResKey: "atm-last-res-craft", codePrefix: "ATC", hash: "craft-",
-  defaultSize: "Each", moreCat: "More from the closet", moreArt: "quilt", moreText: "In the Craft Closet now. Tap Interested for a current photo or more about it.",
-  windowSel: "#craft-window", countAttr: "data-craft-count", winEyebrow: "Craft Closet · now online", winHead: "Handmade in Abaco. Pick it up any day,", winGo: "Open the Craft Closet",
-  emptyArt: "quilt",
-  words: { one: "item", many: "items", out: "Out of stock", size: "Size", choose: "Choose one", careLabel: "Care", basket: "Your crafts", qr: "CRAFT",
-    empty: "Nothing from the Craft Closet yet. Tap <b>Add to cart</b> on anything you like.",
-    none: "Nothing matches that. Try another search, or tap Interested on something similar and ask us.",
-    want: ["Tell me when it's in", "Send me a current photo", "Tell me the price", "I'd like one made for me", "I have a question"],
-    askHint: "e.g. Can you make a pillow in blue and yellow?", notesHint: "e.g. It's a gift, please" }
-};
-window.ATM_SHOP.ART = {
-  page: "art", sameDay: true, noPrice: "", items: function () { return window.ARTWORK; }, cats: function () { return window.ARTWORK_CATS; }, sections: function () { return window.ARTWORK_SECTIONS; },
-  rpc: "pos_web_art", feedCache: "atm-pos-art", basketKey: "atm-basket-art", lastResKey: "atm-last-res-art", codePrefix: "ATA", hash: "art-",
-  defaultSize: "Each", moreCat: "More art", moreArt: "easel", moreText: "At the market now. Tap Interested for a current photo or more about it.",
-  windowSel: "#art-window", countAttr: "data-art-count", winEyebrow: "Art · now online", winHead: "Art made in Abaco. Pick it up any day,", winGo: "See the art",
+  page: "craft", sameDay: true, noPrice: "",
+  items: function () { return (window.ARTWORK || []).concat(window.CRAFT || []); },
+  cats: function () { return (window.ARTWORK_CATS || []).concat(window.CRAFT_CATS || [], window.CRAFTS_MORE_CATS || []); },
+  sections: function () { return Object.assign({}, window.ARTWORK_SECTIONS, window.CRAFT_SECTIONS, window.CRAFTS_MORE_SECTIONS); },
+  rpc: ["pos_web_art", "pos_web_craft"], feedCache: "atm-pos-arts-crafts", basketKey: "atm-basket-craft", lastResKey: "atm-last-res-craft", codePrefix: "ATC", hash: "craft-",
+  defaultSize: "Each", moreCat: "More arts & crafts", moreArt: "easel", moreText: "At the market now. Tap Interested for a current photo or more about it.",
+  windowSel: "#craft-window", countAttr: "data-craft-count", winEyebrow: "Arts & Crafts · now online", winHead: "Made by hand in Abaco. Pick it up any day,", winGo: "See the arts & crafts",
   emptyArt: "easel",
-  words: { one: "piece", many: "pieces", out: "Out of stock", size: "Size", choose: "Choose one", careLabel: "About", basket: "Your art", qr: "ART",
-    empty: "No art yet. Tap <b>Add to cart</b> on anything you like.",
+  words: { one: "item", many: "items", out: "Out of stock", size: "Size", choose: "Choose one", careLabel: "About", basket: "Your arts & crafts", qr: "CRAFT",
+    empty: "Nothing from Arts &amp; Crafts yet. Tap <b>Add to cart</b> on anything you like.",
     none: "Nothing matches that. Try another search, or tap Interested on something similar and ask us.",
     want: ["Tell me when it's in", "Send me a current photo", "Tell me the price", "I'd like one made for me", "I have a question"],
     askHint: "e.g. Can I get a pen engraved with a name?", notesHint: "e.g. It's a gift, please" }

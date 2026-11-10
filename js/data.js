@@ -326,7 +326,8 @@ window.PANTRY = [
     text: "Hot sauce, bottled in Abaco." }
 ];
 
-/* Craft Closet (craft.html): handmade things, one section per maker */
+/* Arts & Crafts (craft.html) shows the art sections first, then these crafts, then "More makers" (one section per maker).
+   Craft part (register items of kind "Craft"): */
 window.CRAFT_CATS = ["Quilted pillows & clothing", "Candles"];
 window.CRAFT_SECTIONS = {
   "Quilted pillows & clothing": { host: "", art: "quilt" },
@@ -341,13 +342,15 @@ window.CRAFT = [
     text: "Handmade candles." }
 ];
 
-/* Art (art.html): one section per artist */
-window.ARTWORK_CATS = ["Handcrafted wooden pens", "Bahamian children's books", "More artists"];
+/* Arts & Crafts, art part (register items of kind "Art"): one section per artist */
+window.ARTWORK_CATS = ["Handcrafted wooden pens", "Bahamian children's books"];
 window.ARTWORK_SECTIONS = {
   "Handcrafted wooden pens": { host: "", art: "pen" },
-  "Bahamian children's books": { host: "", art: "book" },
-  "More artists": { host: "", art: "easel", note: "Another Abaco artist is getting ready." }
+  "Bahamian children's books": { host: "", art: "book" }
 };
+/* the last section on Arts & Crafts */
+window.CRAFTS_MORE_CATS = ["More makers"];
+window.CRAFTS_MORE_SECTIONS = { "More makers": { host: "", art: "easel", note: "Another Abaco artist or maker is getting ready." } };
 window.ARTWORK = [
   { id: "wooden-pen", img: "", name: "Wooden pen", latin: "", cat: "Handcrafted wooden pens", art: "pen", sizes: [{ pot: "Each", price: 0, qty: 0 }], aliases: ["handcrafted wooden pen", "wood pen", "pen"],
     text: "A pen turned by hand from wood." },

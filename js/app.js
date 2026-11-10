@@ -144,7 +144,7 @@ var COMPASS = (function () {
   function art(key) { return '<div class="art-bg ' + (TONE[key] || "") + '">' + (ART[key] || ART.sugarapple) + "</div>"; }
 
   /* ---------- shared header + footer ---------- */
-  var NAV = [["index.html", "The Market"], ["produce.html", "Local Produce"], ["nursery.html", "Nursery"], ["pantry.html", "The Pantry"], ["art.html", "Art"], ["craft.html", "Craft Closet"]];
+  var NAV = [["index.html", "The Market"], ["produce.html", "Local Produce"], ["nursery.html", "Nursery"], ["pantry.html", "The Pantry"], ["craft.html", "Arts &amp; Crafts"]];
   /* "We buy coconuts" sign: same flashing neon box as the farmer sign, links to the Farmers page sell form */
   var COCO_ICON = '<svg class="cc-ico" viewBox="0 0 40 40" width="30" height="30" aria-hidden="true">' +
     '<path d="M22 8c3-5 9-6 13-4-2 4-7 6-11 6" fill="#6be59c"/><path d="M21 9c-1-4-5-7-10-7 1 4 4 7 9 8" fill="#2fbf6f"/>' +
@@ -184,8 +184,8 @@ var COMPASS = (function () {
       '<div class="grain" aria-hidden="true"></div>';
   }
   /* the row of section buttons under the banner (sticks with the header on every page) */
-  var QUICK = [["index.html", "The Market", "cornucopia"], ["produce.html", "Local Produce", "mango"], ["nursery.html", "Nursery", "pot"], ["pantry.html", "The Pantry", "pantry"], ["art.html", "Art", "easel"], ["craft.html", "Craft Closet", "quilt"]];
-  var QUICK_SOON = ["pantry.html", "art.html", "craft.html"];
+  var QUICK = [["index.html", "The Market", "cornucopia"], ["produce.html", "Local Produce", "mango"], ["nursery.html", "Nursery", "pot"], ["pantry.html", "The Pantry", "pantry"], ["craft.html", "Arts &amp; Crafts", "easel"]];
+  var QUICK_SOON = ["pantry.html", "craft.html"];
   function quickBar() {
     return '<nav class="quick" aria-label="Sections"><div class="wrap"><div class="quick-row">' + QUICK.map(function (n) {
       var on = page === n[0].replace(".html", "");
@@ -204,7 +204,7 @@ var COMPASS = (function () {
     return '<div class="bs-band" aria-hidden="true"></div><div class="wrap"><div><a class="brand" href="index.html">' + BRAND + "<span><b>Almond Tree Market</b><small>" + esc(M.place) + "</small></span></a>" +
       "<p>A native market for Abaco growers and makers. Fruit, plants, straw work, candles, sauces and sweets, Monday to Saturday under the almond tree.</p>" +
       '<p class="foot-cash"><b>Cash only · pick up on site.</b> Pay when you collect. No deliveries. Collect your order at Under the Almond Tree, Marsh Harbour.</p></div>' +
-      '<div><h4>Market</h4><ul><li><a href="nursery.html">Native nursery</a></li><li><a href="produce.html">Local produce</a></li><li><a href="pantry.html">The Pantry</a></li><li><a href="craft.html">Craft Closet</a></li><li><a href="art.html">Art</a></li><li><a href="cart.html">Your cart &amp; orders</a></li><li><a href="join.html#sell">Farmer? Sell to us</a></li><li><a href="vendor.html">Become a vendor</a></li><li><a href="' + M.nextDoor + '">Hungry? Food next door ↗</a></li></ul></div>' +
+      '<div><h4>Market</h4><ul><li><a href="nursery.html">Native nursery</a></li><li><a href="produce.html">Local produce</a></li><li><a href="pantry.html">The Pantry</a></li><li><a href="craft.html">Arts &amp; Crafts</a></li><li><a href="cart.html">Your cart &amp; orders</a></li><li><a href="join.html#sell">Farmer? Sell to us</a></li><li><a href="vendor.html">Become a vendor</a></li><li><a href="' + M.nextDoor + '">Hungry? Food next door ↗</a></li></ul></div>' +
       '<div><h4>Contact</h4><ul><li><a href="' + wa("Hi! I have a question about Almond Tree Market.") + '" target="_blank" rel="noopener">WhatsApp ' + esc(M.phoneDisplay) + "</a></li>" +
       '<li><a href="mailto:' + M.email + '">' + esc(M.email) + '</a></li><li><a href="' + M.instagram + '" target="_blank" rel="noopener">Instagram</a> · <a href="' + M.facebook + '" target="_blank" rel="noopener">Facebook</a></li>' +
       '<li><a href="' + M.mapsLink + '" target="_blank" rel="noopener">Directions · GWPQ+WQ</a></li></ul></div>' +
@@ -570,7 +570,7 @@ Array.prototype.forEach.call(document.querySelectorAll(".ns-tree"), function (tr
 });
   /* home page: logos in the taken market squares (placeholder drawings until the real logos are in) */
   Array.prototype.forEach.call(document.querySelectorAll("[data-sq-art]"), function (el) { el.innerHTML = ART[el.getAttribute("data-sq-art")] || ""; });
-  if (window.ATM_SHOP) { window.ATM_SHOP(window.ATM_SHOP.NURSERY); window.ATM_SHOP(window.ATM_SHOP.PRODUCE); window.ATM_SHOP(window.ATM_SHOP.PANTRY); window.ATM_SHOP(window.ATM_SHOP.CRAFT); window.ATM_SHOP(window.ATM_SHOP.ART); }
+  if (window.ATM_SHOP) { window.ATM_SHOP(window.ATM_SHOP.NURSERY); window.ATM_SHOP(window.ATM_SHOP.PRODUCE); window.ATM_SHOP(window.ATM_SHOP.PANTRY); window.ATM_SHOP(window.ATM_SHOP.CRAFT); }
   if (window.ATM_CART) window.ATM_CART.mount();
 
   /* ---------- reveal on scroll ---------- */
