@@ -1356,20 +1356,6 @@ header.nav .brand > span { min-width: 0; }
 .ns-pantry.run svg, .ns-pantry.fly svg { animation: pt-shake .7s ease-in-out; }
 @keyframes pt-shake { 0%, 100% { transform: rotate(0) translateX(0); } 12% { transform: rotate(-3deg) translateX(-2px); } 26% { transform: rotate(3deg) translateX(2px); } 40% { transform: rotate(-2.4deg) translateX(-1.5px); } 54% { transform: rotate(2deg) translateX(1.5px); } 68% { transform: rotate(-1.2deg); } 82% { transform: rotate(.8deg); } }
 
-/* Arts & Crafts window on the home page, dressed in Bahamian batik: navy cloth with white shells,
-   coral-red count and button, lime accents */
-#craft-window { --bk-navy: #1f2f5c; border-color: rgba(238,242,255,.45);
-  background-color: var(--bk-navy);
-  background-image: linear-gradient(180deg, rgba(31,47,92,.55), rgba(20,30,62,.82)), url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='%23eef2ff' opacity='.32'%3E%3Cpath d='M22 6l4.2 9.2 10 1.1-7.4 6.8 2 9.9L22 28l-8.8 5 2-9.9-7.4-6.8 10-1.1Z'/%3E%3Ccircle cx='86' cy='30' r='13'/%3E%3Ccircle cx='40' cy='88' r='10'/%3E%3C/g%3E%3Cg fill='%231f2f5c'%3E%3Ccircle cx='86' cy='24' r='2'/%3E%3Ccircle cx='91.7' cy='28' r='2'/%3E%3Ccircle cx='89.5' cy='34.8' r='2'/%3E%3Ccircle cx='82.5' cy='34.8' r='2'/%3E%3Ccircle cx='80.3' cy='28' r='2'/%3E%3C/g%3E%3Cg stroke='%23eef2ff' stroke-width='3' fill='none' stroke-linecap='round' opacity='.32'%3E%3Cpath d='M74 80c10-7 22 0 19 11s-18 11-21 4 3-14 11-10'/%3E%3Cpath d='M98 100l-8-6M104 96l-9-1M104 104l-9 1'/%3E%3Cpath d='M12 60c6 4 10 10 10 18M12 60c-3 6-3 12 0 18M12 60c8 0 14 3 18 8'/%3E%3C/g%3E%3C/svg%3E");
-  background-size: auto, 120px 120px; }
-#craft-window:hover { border-color: #ff8a80; }
-#craft-window .eyebrow { color: #d6e88a; }
-#craft-window .pw-count { background: #e0483e; color: #fff6f2; }
-#craft-window .pw-card { background: rgba(14,22,48,.86); border-color: rgba(238,242,255,.18); }
-#craft-window .pw-card > span { color: #b9c4e6; }
-#craft-window .pw-go { background: #e0483e; color: #fff6f2; }
-#craft-window .pw-go:hover { background: #ff5a4f; }
-#craft-window .pw-card .art-bg { background: radial-gradient(circle at 50% 42%, #33498a, #18244a 75%); }
 
 /* ================= Arts & Crafts shop page (craft.html), dressed in Bahamian batik =================
    Same layout as every shop; only the colours change, on this page only: deep navy cloth with faint white shells,
