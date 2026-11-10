@@ -166,7 +166,7 @@ var COMPASS = (function () {
       '<a class="go" href="vendor.html#register">Reserve a slot →</a></div></div>' : "";
     return stripe +
       '<a class="skip" href="#main">Skip to content</a>' +
-      '<header class="nav"><div class="wrap"><a class="brand" href="index.html" aria-label="Almond Tree Market home">' + BRAND + "<span><b>Almond Tree Market</b><small>" + FLAG + "Marsh Harbour · Abaco · The Bahamas</small></span>" + HOMEMADE + "</a>" +
+      '<header class="nav"><div class="wrap"><a class="brand" href="index.html" aria-label="Almond Tree Market home">' + BRAND + "<span><b>Almond Tree Market<i class=\"dotcom\">.com</i></b><small>" + FLAG + "Marsh Harbour · Abaco · The Bahamas</small></span>" + HOMEMADE + "</a>" +
       /* flashing call-out for growers, centred in the gap between the shop name and the Cart button */
       '<div class="hdr-ctas">' + FARMER_CTA + COCO_CTA + '</div>' +
       '<button class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="navlist">' + '<svg class="hb-ico" viewBox="0 0 28 28" width="24" height="24" aria-hidden="true">' +
