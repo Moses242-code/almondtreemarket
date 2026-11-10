@@ -189,9 +189,9 @@ var COMPASS = (function () {
   function quickBar() {
     return '<nav class="quick" aria-label="Sections"><div class="wrap"><div class="quick-row">' + QUICK.map(function (n) {
       var on = page === n[0].replace(".html", "");
-      /* shops not open yet get a faint "Coming soon" sash, same style as squares 1 and 2 on the home page */
+      /* shops not open yet get a "Coming soon" in bold red above the name */
       var soon = QUICK_SOON.indexOf(n[0]) > -1;
-      return '<a class="qb' + (on ? " on" : "") + (soon ? " soon" : "") + (n[0] === "index.html" ? " mk" : "") + '" href="' + n[0] + '"' + (on ? ' aria-current="page"' : "") + '><span class="qi" aria-hidden="true">' + (ART[n[2]] || "") + "</span>" + n[1] + (soon ? '<span class="qb-soon">Coming soon</span>' : "") + "</a>";
+      return '<a class="qb' + (on ? " on" : "") + (soon ? " soon" : "") + (n[0] === "index.html" ? " mk" : "") + '" href="' + n[0] + '"' + (on ? ' aria-current="page"' : "") + '><span class="qi" aria-hidden="true">' + (ART[n[2]] || "") + "</span>" + (soon ? '<span class="qb-t"><span class="qb-soon">Coming soon</span>' + n[1] + "</span>" : n[1]) + "</a>";
     }).join("") + '<a class="qb next" href="' + M.nextDoor + '"><span class="qi" aria-hidden="true">' + ART.fish + "</span>Food next door <span aria-hidden=\"true\">↗</span></a></div></div></nav>";
   }
   function nextMarketStripe() {
