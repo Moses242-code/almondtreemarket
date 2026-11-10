@@ -1377,3 +1377,51 @@ body[data-page="craft"] .msec { border-color: rgba(201,228,106,.25); }
 /* parrot wing: flap from the shoulder so the wing stays on the bird (it was pivoting from a point far off the body) */
 .ns-pantry .pt-wing { transform-box: fill-box; transform-origin: 96% 94%; }
 @keyframes pt-flap { from { transform: rotate(4deg) scaleY(1); } to { transform: rotate(-6deg) scaleY(-.5); } }
+
+/* Pantry parrot: one smooth flight (replaces the stop-start keyframes) */
+.ns-pantry.fly .pt-parrot { animation: pt-glide 6s linear both; }
+@keyframes pt-glide {
+  0%, 8% { opacity: 0; transform: translate(0px, 0px) scale(.55) rotate(0deg); }
+  10.0% { opacity: 0.67; transform: translate(0.0px, 0.0px) scale(0.600) rotate(-14.0deg); }
+  12.0% { opacity: 1.00; transform: translate(0.0px, -1.1px) scale(0.683) rotate(-14.0deg); }
+  14.0% { opacity: 1.00; transform: translate(0.0px, -2.2px) scale(0.767) rotate(-14.0deg); }
+  16.0% { opacity: 1.00; transform: translate(0.1px, -5.6px) scale(0.850) rotate(-14.0deg); }
+  18.0% { opacity: 1.00; transform: translate(0.1px, -8.8px) scale(0.933) rotate(-14.0deg); }
+  20.0% { opacity: 1.00; transform: translate(0.4px, -14.2px) scale(1.017) rotate(-14.0deg); }
+  22.0% { opacity: 1.00; transform: translate(0.8px, -20.5px) scale(1.100) rotate(-14.0deg); }
+  24.0% { opacity: 1.00; transform: translate(1.5px, -27.5px) scale(1.096) rotate(-14.0deg); }
+  26.0% { opacity: 1.00; transform: translate(2.5px, -35.3px) scale(1.093) rotate(-14.0deg); }
+  28.0% { opacity: 1.00; transform: translate(4.2px, -44.5px) scale(1.089) rotate(-14.0deg); }
+  30.0% { opacity: 1.00; transform: translate(6.7px, -54.8px) scale(1.086) rotate(-14.0deg); }
+  32.0% { opacity: 1.00; transform: translate(10.1px, -65.2px) scale(1.082) rotate(-14.0deg); }
+  34.0% { opacity: 1.00; transform: translate(14.4px, -75.2px) scale(1.079) rotate(-14.0deg); }
+  36.0% { opacity: 1.00; transform: translate(19.8px, -84.7px) scale(1.075) rotate(-12.5deg); }
+  38.0% { opacity: 1.00; transform: translate(26.5px, -93.5px) scale(1.072) rotate(-10.7deg); }
+  40.0% { opacity: 1.00; transform: translate(34.4px, -101.1px) scale(1.068) rotate(-8.5deg); }
+  42.0% { opacity: 1.00; transform: translate(43.2px, -107.0px) scale(1.065) rotate(-6.2deg); }
+  44.0% { opacity: 1.00; transform: translate(53.4px, -111.2px) scale(1.061) rotate(-3.7deg); }
+  46.0% { opacity: 1.00; transform: translate(63.9px, -113.3px) scale(1.058) rotate(-1.4deg); }
+  48.0% { opacity: 1.00; transform: translate(75.0px, -113.6px) scale(1.054) rotate(0.7deg); }
+  50.0% { opacity: 1.00; transform: translate(86.1px, -112.1px) scale(1.051) rotate(2.6deg); }
+  52.0% { opacity: 1.00; transform: translate(97.0px, -109.2px) scale(1.047) rotate(4.1deg); }
+  54.0% { opacity: 1.00; transform: translate(106.7px, -105.4px) scale(1.044) rotate(5.2deg); }
+  56.0% { opacity: 1.00; transform: translate(116.8px, -100.5px) scale(1.040) rotate(6.3deg); }
+  58.0% { opacity: 1.00; transform: translate(126.3px, -94.8px) scale(1.036) rotate(7.1deg); }
+  60.0% { opacity: 1.00; transform: translate(135.2px, -88.8px) scale(1.033) rotate(7.9deg); }
+  62.0% { opacity: 1.00; transform: translate(144.3px, -81.8px) scale(1.029) rotate(8.5deg); }
+  64.0% { opacity: 1.00; transform: translate(152.7px, -74.8px) scale(1.026) rotate(9.1deg); }
+  66.0% { opacity: 1.00; transform: translate(160.4px, -67.8px) scale(1.022) rotate(9.6deg); }
+  68.0% { opacity: 1.00; transform: translate(168.1px, -60.2px) scale(1.019) rotate(10.0deg); }
+  70.0% { opacity: 1.00; transform: translate(175.9px, -52.0px) scale(1.015) rotate(10.4deg); }
+  72.0% { opacity: 1.00; transform: translate(182.9px, -44.2px) scale(1.012) rotate(10.8deg); }
+  74.0% { opacity: 1.00; transform: translate(190.8px, -34.9px) scale(1.008) rotate(11.1deg); }
+  76.0% { opacity: 1.00; transform: translate(197.0px, -27.2px) scale(1.005) rotate(11.4deg); }
+  78.0% { opacity: 1.00; transform: translate(204.1px, -17.9px) scale(1.001) rotate(11.7deg); }
+  80.0% { opacity: 1.00; transform: translate(210.4px, -9.4px) scale(0.998) rotate(11.9deg); }
+  82.0% { opacity: 1.00; transform: translate(216.6px, -0.5px) scale(0.994) rotate(12.0deg); }
+  84.0% { opacity: 1.00; transform: translate(222.9px, 8.8px) scale(0.991) rotate(12.0deg); }
+  86.0% { opacity: 1.00; transform: translate(229.2px, 18.5px) scale(0.987) rotate(12.0deg); }
+  88.0% { opacity: 0.50; transform: translate(234.6px, 27.1px) scale(0.984) rotate(12.0deg); }
+  90.0% { opacity: 0.00; transform: translate(240.0px, 36.0px) scale(0.980) rotate(12.0deg); }
+  91%, 100% { opacity: 0; transform: translate(240px, 36px) scale(.98) rotate(0deg); }
+}
