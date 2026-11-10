@@ -1219,3 +1219,5 @@ body[data-page="join"] #contact { padding-block: clamp(20px, 3vw, 40px) clamp(40
 .sq.vacant { animation: none; border-color: var(--mango); box-shadow: none; }
 .sq.vacant b { text-shadow: none; }
 .sq .sq-soon { background: rgba(216,50,47,.2); box-shadow: none; text-shadow: 0 1px 2px rgba(0,0,0,.7); }
+.sq .sq-soon { background: rgba(216,50,47,.1); color: rgba(255,255,255,.62); text-shadow: 0 1px 2px rgba(0,0,0,.45); }
+@media (max-width: 599px) { .sq .sq-soon { font-size: .24rem; letter-spacing: 0; transform: translate(-50%, -50%) rotate(-24deg); } }
