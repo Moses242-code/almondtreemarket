@@ -62,13 +62,14 @@ window.ATM_SHOP = function (cfg) {
         var dm = /^(.*?)\s+[–—-]\s+(.+)$/.exec(String(r.name).trim());
         if (dm && alias[norm(dm[1])]) { p = alias[norm(dm[1])]; if (!String(r.size || "").trim()) pot = dm[2].trim(); }
       }
-      var z = { pot: pot, price: Math.max(0, +r.price_cents || 0) / 100, qty: Math.max(0, parseInt(r.qty, 10) || 0), pid: r.id || null };
+      var z = { pot: pot, price: Math.max(0, +r.price_cents || 0) / 100, qty: Math.max(0, parseInt(r.qty, 10) || 0), pid: r.id || null,
+        onsite: r.onsite_qty == null ? null : Math.max(0, parseInt(r.onsite_qty, 10) || 0) }; /* how many are at the market now; the rest are at home */
       var bucket = p ? (groups[p.id] = groups[p.id] || []) : (extras[key] = extras[key] || { name: baseName(r), sizes: [] }).sizes;
       /* the item's photo in the inventory app, if it has one (first one found wins) */
       var gk = p ? p.id : "pos-" + key;
       if (r.photo_id && !pics[gk]) pics[gk] = { id: String(r.photo_id), at: r.photo_at || 0 };
       var same = bucket.filter(function (x) { return x.pot === z.pot; })[0];
-      if (same) { same.qty += z.qty; if (!same.price) same.price = z.price; if (!same.pid) same.pid = z.pid; } else bucket.push(z);
+      if (same) { same.onsite = same.onsite == null || z.onsite == null ? null : same.onsite + z.onsite; same.qty += z.qty; if (!same.price) same.price = z.price; if (!same.pid) same.pid = z.pid; } else bucket.push(z);
     });
     var bySize = function (a, b) { return gal(a.pot) - gal(b.pot) || a.pot.localeCompare(b.pot); };
     var mode = F.notInRegister || "keep";
@@ -92,11 +93,13 @@ window.ATM_SHOP = function (cfg) {
     LIVE = true;
     return true;
   }
-  var feed = Promise.resolve(false);
+  var feed = Promise.resolve(false), feedHooks = [], fetchFeed = null, lastSig = "";
+  /* run fn when the live stock arrives, and again each time it's re-checked */
+  function onFeed(fn) { feed.then(fn); feedHooks.push(fn); }
   if (F.url && F.key && window.fetch) {
     var CK = cfg.feedCache;
     try { var c = JSON.parse(localStorage.getItem(CK) || "null"); if (c && Date.now() - c.t < 10 * 60 * 1000) mergeFeed(c.rows); } catch (e) {}
-    feed = new Promise(function (done) {
+    fetchFeed = function () { return new Promise(function (done) {
       var ctl = window.AbortController ? new AbortController() : null, timer = setTimeout(function () { if (ctl) ctl.abort(); }, 8000);
       /* cfg.rpc can be a list (Arts & Crafts reads both the Art and the Craft register items) */
       Promise.all([].concat(cfg.rpc).map(function (fn) {
@@ -107,13 +110,27 @@ window.ATM_SHOP = function (cfg) {
           clearTimeout(timer);
           var rows = lists.every(Array.isArray) ? [].concat.apply([], lists) : null;
           if (!Array.isArray(rows)) return done(false);
+          var sig = JSON.stringify(rows);
+          if (sig === lastSig) return done(false); /* nothing changed since the last check: no redraw */
+          lastSig = sig;
           try { localStorage.setItem(CK, JSON.stringify({ t: Date.now(), rows: rows })); } catch (e) {}
           /* rebuild from data.js first, so repeated updates never stack on top of each other */
           PLANTS = fromData();
           done(mergeFeed(rows));
         })
         .catch(function () { clearTimeout(timer); done(false); });
-    });
+    }); };
+    feed = fetchFeed();
+    /* stock moves (home → market), sales and counts show up without reloading: re-check every minute
+       while the page is open, and as soon as someone comes back to the tab */
+    var lastCheck = Date.now(), checking = false;
+    var recheck = function () {
+      if (checking || document.hidden) return;
+      checking = true; lastCheck = Date.now();
+      fetchFeed().then(function (ok) { checking = false; feedHooks.forEach(function (h) { h(ok); }); }, function () { checking = false; });
+    };
+    setInterval(function () { if (Date.now() - lastCheck >= 60000) recheck(); }, 15000);
+    document.addEventListener("visibilitychange", function () { if (!document.hidden && Date.now() - lastCheck > 20000) recheck(); });
   }
   /* ---------- photos from the inventory app ----------
      When a register item has a photo (taken in the POS inventory app), the website shows that photo
@@ -196,7 +213,7 @@ window.ATM_SHOP = function (cfg) {
   function inBasket(id) { return C() ? C().qtyFor(cfg.page, id) : 0; }
   function inCartSize(id, pot) { return C() ? C().inCart(cfg.page, id, pot) : 0; }
   window.ATM_SHOPS = window.ATM_SHOPS || {};
-  window.ATM_SHOPS[cfg.page] = { cfg: cfg, byId: function (id) { return byId[id]; }, sizeOf: function (p, pot) { return sizeOf(p, pot); }, media: function (p) { return media(p); } };
+  window.ATM_SHOPS[cfg.page] = { cfg: cfg, byId: function (id) { return byId[id]; }, sizeOf: function (p, pot) { return sizeOf(p, pot); }, whenNote: whenNote, media: function (p) { return media(p); } };
 
   /* ---------- home page window ---------- */
   var win = $(cfg.windowSel);
@@ -220,7 +237,7 @@ window.ATM_SHOP = function (cfg) {
 
   /* ---------- shop page ---------- */
   var grid = $("#shop-grid");
-  if (!grid || document.body.getAttribute("data-page") !== cfg.page) { feed.then(function (ok) { if (!ok) return; drawWindow(); if (C()) C().refresh(); loadPhotos().then(function (got) { if (got) { drawWindow(); if (C()) C().refresh(); } }); }); return; }
+  if (!grid || document.body.getAttribute("data-page") !== cfg.page) { onFeed(function (ok) { if (!ok) return; drawWindow(); if (C()) C().refresh(); loadPhotos().then(function (got) { if (got) { drawWindow(); if (C()) C().refresh(); } }); }); return; }
   var state = { cat: "", q: "", sort: "featured", instock: false };
   function drawCats() {
     var cats = CATS.filter(function (c) { return (SECTIONS && SECTIONS[c]) || PLANTS.some(function (p) { return p.cat === c; }); });
@@ -289,17 +306,24 @@ window.ATM_SHOP = function (cfg) {
 
   /* ---------- quick view: pick a size, how many, then reserve ---------- */
   var dlg = $("#plant-dialog"), pick = { id: "", pot: "", n: 1 };
-  function sizeBtns(p) {
+  /* when it can be picked up: at the market now (green), or at home, needing 24 hours to bring in (red) */
+  function whenNote(z, n) {
+    if (!z || !z.qty || z.onsite == null) return "";
+    if (z.onsite >= n) return '<div class="dwhen on" role="status"><b>Item on site</b><span>You may collect within business hours.</span></div>';
+    return '<div class="dwhen away" role="status"><b>Please allow 24 hours</b><span>' +
+      (z.onsite > 0 ? "Only " + z.onsite + " on site now. Allow 24 hours for the rest to be delivered on site." : "for this item to be delivered on site.") + "</span></div>";
+  }
+  function sizeBtns(p, note) {
     return '<div class="sizes" role="radiogroup" aria-label="' + esc(W.size) + '">' + p.sizes.map(function (z) {
       var on = z.pot === pick.pot;
       return '<button type="button" role="radio" aria-checked="' + on + '" data-pot="' + esc(z.pot) + '"' + (z.qty ? "" : " disabled") + ">" +
         "<b>" + esc(z.pot) + "</b><span>" + esc(priceTxt(z.price)) + "</span><small>" + (z.qty ? z.qty + " available" : W.out) + "</small></button>";
-    }).join("") + "</div>";
+    }).join("") + (note || "") + "</div>";
   }
   function pickPanel(p) {
     var z = sizeOf(p, pick.pot), have = z ? inCartSize(p.id, z.pot) : 0, left = z ? z.qty - have : 0;
     if (pick.n > Math.max(1, left)) pick.n = Math.max(1, left);
-    return '<div class="dpick"><span class="eyebrow">' + esc(W.choose) + "</span>" + sizeBtns(p) +
+    return '<div class="dpick"><span class="eyebrow">' + esc(W.choose) + "</span>" + sizeBtns(p, whenNote(z, have + pick.n)) +
       (z ? '<div class="dqty"><span>How many</span><div class="stepper"><button type="button" data-n="-1" aria-label="Fewer">−</button><span>' + pick.n + '</span><button type="button" data-n="1" aria-label="More">+</button></div>' +
         "<small>" + (have ? have + " already in your cart · " : "") + z.qty + " " + esc(z.pot) + " available</small></div>" : "") +
       '<div class="dacts"><button class="btn primary" type="button" data-addpick' + (z && left > 0 ? "" : " disabled") + ">" +
@@ -394,7 +418,7 @@ window.ATM_SHOP = function (cfg) {
   refresh();
 
   /* when the register's live stock arrives, redraw everything with it */
-  feed.then(function (ok) {
+  onFeed(function (ok) {
     if (!ok) return;
     drawCats(); refresh(); if (C()) C().refresh();
     loadPhotos().then(function (got) {

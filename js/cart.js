@@ -167,7 +167,7 @@ window.ATM_CART = (function () {
   /* ---------- rendering ---------- */
   function lineHTML(l) {
     var atMax = l.qty >= l.z.qty;
-    return '<li data-key="' + esc(l.key) + '"><div class="bthumb">' + l.S.media(l.p) + '</div><div class="binfo"><b>' + esc(l.p.name) + "</b><span>" + esc(l.z.pot) + " · " + esc(l.z.price ? money(l.z.price) + " each" : "Price on request") + "</span>" +
+    return '<li data-key="' + esc(l.key) + '"><div class="bthumb">' + l.S.media(l.p) + '</div><div class="binfo"><b>' + esc(l.p.name) + "</b><span>" + esc(l.z.pot) + " · " + esc(l.z.price ? money(l.z.price) + " each" : "Price on request") + "</span>" + (l.S.whenNote ? l.S.whenNote(l.z, l.qty).replace('class="dwhen', 'class="dwhen bwhen') : "") +
       '<div class="stepper"><button type="button" data-step="-1" aria-label="One fewer">−</button><span>' + l.qty + '</span><button type="button" data-step="1" aria-label="One more"' + (atMax ? " disabled" : "") + ">+</button></div>" +
       (atMax ? '<small class="bmax">That&#39;s all the ' + esc(l.z.pot) + " we have</small>" : "") +
       '<div class="blinks"><button type="button" class="link" data-later>Save for later</button><button type="button" class="link" data-remove>Remove</button></div></div>' +

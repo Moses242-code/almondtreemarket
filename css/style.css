@@ -830,6 +830,16 @@ header.nav .brand small { justify-content: center; }
 .sizes button[aria-checked="true"] { border-color: var(--leaf); background: rgba(107,229,156,.1); box-shadow: 0 0 0 1px var(--leaf); }
 .sizes button:disabled { opacity: .45; cursor: not-allowed; }
 .sizes button:not(:disabled):hover { border-color: #3a6b4c; }
+/* on site (green) or at home, allow 24 hours (red): sits in the free space beside the size buttons */
+.dwhen { grid-column: span 2; align-self: stretch; display: grid; align-content: center; gap: .15rem; padding: .6rem .8rem; border-radius: 12px; border: 1px solid; font-size: .84rem; line-height: 1.3; }
+.dwhen b { font: 700 .95rem/1.15 var(--body); display: flex; align-items: center; gap: .45em; }
+.dwhen b::before { content: ""; flex: 0 0 auto; width: 9px; height: 9px; border-radius: 50%; background: currentColor; box-shadow: 0 0 8px currentColor; }
+.dwhen.on { color: #4ade80; border-color: rgba(74,222,128,.45); background: rgba(74,222,128,.08); }
+.dwhen.away { color: #ff5c5c; border-color: rgba(255,92,92,.5); background: rgba(255,92,92,.08); }
+.dwhen span { color: inherit; opacity: .92; }
+@media (max-width: 480px) { .dwhen { grid-column: 1 / -1; } }
+.bwhen { grid-column: auto; margin: .35rem 0 .15rem; padding: .35rem .55rem; font-size: .76rem; border-radius: 9px; }
+.bwhen b { font-size: .8rem; }
 .dqty { display: grid; grid-template-columns: auto 130px; align-items: center; gap: .3rem .8rem; }
 .dqty > span { font: 400 .7rem var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--mist); }
 .dqty small { grid-column: 1 / -1; color: var(--mist); font-size: .8rem; }
