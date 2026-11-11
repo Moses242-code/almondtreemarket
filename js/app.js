@@ -177,7 +177,7 @@ var COMPASS = (function () {
         '<span class="hb-l">Menu</span>' + "</button>" +
       '<ul id="navlist">' + NAV.map(function (n) {
         return '<li><a href="' + n[0] + '"' + (page === n[0].replace(".html", "") ? ' aria-current="page"' : "") + ">" + n[1] + "</a></li>";
-      }).join("") + '<li><a class="next" href="' + M.nextDoor + '">Food next door ↗</a></li>' +
+      }).join("") + '<li><a class="next" href="' + M.nextDoor + '" target="_blank" rel="noopener">Food next door ↗</a></li>' +
       "</ul></div>" + quickBar() + '</header>' +
       /* phones and tablets: the farmer call-out sits just under the header (scrolls away) */
       '<div class="farmer-m">' + FARMER_CTA + COCO_CTA + '</div>' +
@@ -192,7 +192,7 @@ var COMPASS = (function () {
       /* shops not open yet get a "Coming soon" in bold red above the name */
       var soon = QUICK_SOON.indexOf(n[0]) > -1;
       return '<a class="qb' + (on ? " on" : "") + (soon ? " soon" : "") + (n[0] === "index.html" ? " mk" : "") + '" href="' + n[0] + '"' + (on ? ' aria-current="page"' : "") + '><span class="qi" aria-hidden="true">' + (ART[n[2]] || "") + "</span>" + (soon ? '<span class="qb-t"><span class="qb-soon">Coming soon</span>' + n[1] + "</span>" : n[1]) + "</a>";
-    }).join("") + '<a class="qb next" href="' + M.nextDoor + '"><span class="qi" aria-hidden="true">' + ART.fish + "</span>Food next door <span aria-hidden=\"true\">↗</span></a></div></div></nav>";
+    }).join("") + '<a class="qb next" href="' + M.nextDoor + '" target="_blank" rel="noopener"><span class="qi" aria-hidden="true">' + ART.fish + "</span>Food next door <span aria-hidden=\"true\">↗</span></a></div></div></nav>";
   }
   function nextMarketStripe() {
     var n = upcoming(1)[0];
@@ -204,7 +204,7 @@ var COMPASS = (function () {
     return '<div class="bs-band" aria-hidden="true"></div><div class="wrap"><div><a class="brand" href="index.html">' + BRAND + "<span><b>Almond Tree Market</b><small>" + esc(M.place) + "</small></span></a>" +
       "<p>A native market for Abaco growers and makers. Fruit, plants, straw work, candles, sauces and sweets, Monday to Saturday under the almond tree.</p>" +
       '<p class="foot-cash"><b>Cash only · pick up on site.</b> Pay when you collect. No deliveries. Collect your order at Under the Almond Tree, Marsh Harbour.</p></div>' +
-      '<div><h4>Market</h4><ul><li><a href="nursery.html">Native nursery</a></li><li><a href="produce.html">Local produce</a></li><li><a href="pantry.html">The Pantry</a></li><li><a href="craft.html">Arts &amp; Crafts</a></li><li><a href="cart.html">Your cart &amp; orders</a></li><li><a href="join.html#sell">Farmer? Sell to us</a></li><li><a href="vendor.html">Become a vendor</a></li><li><a href="' + M.nextDoor + '">Hungry? Food next door ↗</a></li></ul></div>' +
+      '<div><h4>Market</h4><ul><li><a href="nursery.html">Native nursery</a></li><li><a href="produce.html">Local produce</a></li><li><a href="pantry.html">The Pantry</a></li><li><a href="craft.html">Arts &amp; Crafts</a></li><li><a href="cart.html">Your cart &amp; orders</a></li><li><a href="join.html#sell">Farmer? Sell to us</a></li><li><a href="vendor.html">Become a vendor</a></li><li><a href="' + M.nextDoor + '" target="_blank" rel="noopener">Hungry? Food next door ↗</a></li></ul></div>' +
       '<div><h4>Contact</h4><ul><li><a href="' + wa("Hi! I have a question about Almond Tree Market.") + '" target="_blank" rel="noopener">WhatsApp ' + esc(M.phoneDisplay) + "</a></li>" +
       '<li><a href="mailto:' + M.email + '">' + esc(M.email) + '</a></li><li><a href="' + M.instagram + '" target="_blank" rel="noopener">Instagram</a> · <a href="' + M.facebook + '" target="_blank" rel="noopener">Facebook</a></li>' +
       '<li><a href="' + M.mapsLink + '" target="_blank" rel="noopener">Directions · GWPQ+WQ</a></li></ul></div>' +
@@ -216,7 +216,7 @@ var COMPASS = (function () {
   var hf = $(".hero .frond-slot"); if (hf) hf.outerHTML = FROND;
   $$("[data-flag]").forEach(function (el) { el.innerHTML = FLAG; });
   $$("[data-compass]").forEach(function (el) { el.innerHTML = COMPASS; });
-  $$("[data-next]").forEach(function (a) { a.href = M.nextDoor; });
+  $$("[data-next]").forEach(function (a) { a.href = M.nextDoor; a.target = "_blank"; a.rel = "noopener"; });
   /* on phones the section buttons scroll sideways: bring this page's button into view */
   var qon = $(".qb.on");
   if (qon) {

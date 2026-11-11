@@ -13,8 +13,8 @@ window.MARKET = {
   facebook: "https://www.facebook.com/share/1DvHtLoC6S/",
   mapsLink: "https://www.google.com/maps/search/?api=1&query=GWPQ%2BWQ%20Marsh%20Harbour%2C%20The%20Bahamas",
 
-  /* "Hungry? Check out next door" goes here: the food vendors page */
-  nextDoor: "https://underthealmondtree.market/vendors.html",
+  /* "Food next door" links go here: the Under the Almond Tree home page (opens in a new tab) */
+  nextDoor: "https://underthealmondtree.market/",
 
   /* Coming-soon stripe across the top. Set comingSoon: false to switch it to "next market" messages. */
   comingSoon: true,
