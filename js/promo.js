@@ -65,6 +65,8 @@
     ".pz-card.pz-idle{animation:none}.pz-idle .pz-img img{filter:grayscale(.55) brightness(.7)}.pz-soon{position:absolute;left:0;right:0;top:50%;translate:0 -50%;background:#e5322d;color:#fff;text-align:center;font-weight:900;letter-spacing:.08em;font-size:.95rem;padding:8px 6px;transform:rotate(-6deg);box-shadow:0 4px 14px rgba(0,0,0,.4)}.pz-idle .pz-left{background:#e5322d}.pz-body .pz-out{color:#ff6b61!important;font-weight:800}" +
     ".pz-pair{display:flex;gap:16px;align-items:flex-start}.pz-main{flex:1;min-width:0}.pz-side{flex:0 0 200px;max-width:200px}.pz-side h2{font-size:1.1rem;margin:0 0 8px;color:inherit}.pz-side .pz-row{grid-template-columns:1fr}" +
     "@media (max-width:640px){.pz-pair{flex-direction:column}.pz-side{flex:none;max-width:none;width:100%}.pz-side .pz-row{grid-template-columns:repeat(auto-fill,minmax(156px,1fr))}}@media (max-width:400px){.pz-side .pz-row{grid-template-columns:1fr 1fr}}" +
+    ".pz-slots .pz-card.pz-card{height:100%;min-height:140px;border-radius:14px}.pz-slots .pz-card .pz-img{position:absolute;inset:0;aspect-ratio:auto}.pz-slots .pz-card .pz-body{position:relative;flex:none;margin-top:auto;padding:22px 8px 8px;gap:3px;background:linear-gradient(180deg,rgba(13,26,18,0),rgba(13,26,18,.92) 38%)}" +
+    ".pz-slots .pz-card .pz-tag,.pz-slots .pz-card .pz-blurb,.pz-slots .pz-card .pz-out,.pz-slots .pz-card .pz-small,.pz-slots .pz-card .pz-hurry{display:none}.pz-slots .pz-card .pz-body h3{font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pz-slots .pz-card .pz-price{font-size:.78rem}.pz-slots .pz-card .pz-btn{padding:6px 8px;font-size:.74rem;border-radius:8px}.pz-slots .pz-card .pz-badge{top:6px;left:6px;font-size:10px;padding:3px 7px}.pz-slots .pz-card .pz-left{top:6px;right:6px;font-size:10px;padding:2px 7px}.pz-slots .pz-card .pz-soon{top:32%;font-size:.68rem;padding:4px}" +
     "@keyframes pzBlink{to{visibility:hidden}}@keyframes pzGlow{0%,100%{box-shadow:0 0 0 0 rgba(229,50,45,.45)}50%{box-shadow:0 0 0 8px rgba(229,50,45,0)}}" +
     "@media (prefers-reduced-motion:reduce){.pz-badge,.pz-card{animation:none}}";
   document.head.appendChild(css);
@@ -116,6 +118,15 @@
       if (!grid._pzObs && window.MutationObserver) { grid._pzObs = new MutationObserver(put); grid._pzObs.observe(grid, { childList: true }); }
     } else {
       var old = $(".pz-strip"); if (old) old.remove();
+      /* stall pages with promotion slots (under the stall drawing + name): cards first, the rest "coming soon" */
+      var slots = $(".pz-slots");
+      if (slots) {
+        var soon = '<div class="pz-soonslot" aria-hidden="true"><span>🎁</span><b>Promotion</b><small>coming soon</small></div>', k;
+        var html = list.map(function (d) { return cardHTML(d, "div"); }).join("");
+        for (k = list.length; k < 3; k++) html += soon;
+        if (slots.innerHTML !== html) slots.innerHTML = html;
+        showMine(); return;
+      }
       var title = "<h2>" + (list.some(function (d) { return d.drop_id; }) ? "🎁 Today's drop" : "🎁 Giveaway") + "</h2>";
       /* stall pages: the giveaway card sits to the left of the vendor's card, in the same row */
       var pair = $(".pz-pair"), host = pair ? null : $(".stall-about .wrap > .stall-showcase, .stall-about .wrap > .stall-card");
