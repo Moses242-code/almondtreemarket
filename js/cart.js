@@ -159,7 +159,7 @@ window.ATM_CART = (function () {
   }
   function fine(plants) {
     var bh = N.daysText + (N.hours ? ", " + N.hours : "");
-    return '<p class="fine"><b>How pickup works:</b> buy it, then come in and pick it up the same day, during business hours (' + esc(bh) + ")<sup>*</sup>. Bring your QR code. You have <b>24 hours</b> to collect it, or it goes back into stock." +
+    return '<p class="fine"><b>How pickup works:</b> buy it, then come in and pick it up the same day unless we notify you, during business hours (' + esc(bh) + "). Bring your QR code. You have <b>24 hours</b> from your stated pickup day to collect it, or your item goes back into inventory.<sup>*</sup>" +
       '<span class="fine-star fine-xs"><sup>*</sup> If it will take more than 24 hours, we will let you know.</span></p>';
   }
   function cashNote(cls) { return '<p class="cash-note' + (cls ? " " + cls : "") + '"><b>Cash only · pick up on site.</b> ' + esc(CASH.replace(/^Cash only\. Pick up on site\. /, "")) + "</p>"; }
@@ -333,7 +333,7 @@ window.ATM_CART = (function () {
     g.fillStyle = "#06120c"; g.textAlign = "center"; g.font = "bold 28px sans-serif"; g.fillText(o.code, 160, 300);
     g.font = "14px sans-serif"; g.fillText("Almond Tree Market · pickup " + o.day.replace(/^\w+, /, ""), 160, 326);
     g.fillText("Total " + o.total.replace(" + items priced on request", "+"), 160, 348);
-    g.font = "12px sans-serif"; g.fillStyle = "#4a5a50"; g.fillText("Cash only at pickup. No deliveries.", 160, 378); g.fillText("Pick up the same day. Collect within 24 hours.", 160, 396);
+    g.font = "12px sans-serif"; g.fillStyle = "#4a5a50"; g.fillText("Cash only at pickup. No deliveries.", 160, 378); g.fillText("Same day unless notified. 24 hours to collect.", 160, 396);
     var a = document.createElement("a"); a.href = out.toDataURL("image/png"); a.download = "almond-tree-market-" + o.code + ".png"; document.body.appendChild(a); a.click(); a.remove();
   }
 
