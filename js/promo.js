@@ -63,6 +63,8 @@
     ".pz-qr{display:grid;place-items:center;background:#fff;padding:12px;border-radius:12px;margin:8px auto;width:fit-content}" +
     ".pz-verdict{font-size:2.2rem;font-weight:900;text-align:center;padding:16px;border-radius:14px;margin:8px 0;color:#fff}.pz-ok{background:#1f8a4c}.pz-bad{background:#b3261e}" +
     ".pz-card.pz-idle{animation:none}.pz-idle .pz-img img{filter:grayscale(.55) brightness(.7)}.pz-soon{position:absolute;left:0;right:0;top:50%;translate:0 -50%;background:#e5322d;color:#fff;text-align:center;font-weight:900;letter-spacing:.08em;font-size:.95rem;padding:8px 6px;transform:rotate(-6deg);box-shadow:0 4px 14px rgba(0,0,0,.4)}.pz-idle .pz-left{background:#e5322d}.pz-body .pz-out{color:#ff6b61!important;font-weight:800}" +
+    ".pz-pair{display:flex;gap:16px;align-items:flex-start}.pz-main{flex:1;min-width:0}.pz-side{flex:0 0 200px;max-width:200px}.pz-side h2{font-size:1.1rem;margin:0 0 8px;color:inherit}.pz-side .pz-row{grid-template-columns:1fr}" +
+    "@media (max-width:640px){.pz-pair{flex-direction:column}.pz-side{flex:none;max-width:none;width:100%}.pz-side .pz-row{grid-template-columns:repeat(auto-fill,minmax(156px,1fr))}}@media (max-width:400px){.pz-side .pz-row{grid-template-columns:1fr 1fr}}" +
     "@keyframes pzBlink{to{visibility:hidden}}@keyframes pzGlow{0%,100%{box-shadow:0 0 0 0 rgba(229,50,45,.45)}50%{box-shadow:0 0 0 8px rgba(229,50,45,0)}}" +
     "@media (prefers-reduced-motion:reduce){.pz-badge,.pz-card{animation:none}}";
   document.head.appendChild(css);
@@ -114,12 +116,26 @@
       if (!grid._pzObs && window.MutationObserver) { grid._pzObs = new MutationObserver(put); grid._pzObs.observe(grid, { childList: true }); }
     } else {
       var old = $(".pz-strip"); if (old) old.remove();
-      if (list.length) {
+      var title = "<h2>" + (list.some(function (d) { return d.drop_id; }) ? "🎁 Today's drop" : "🎁 Giveaway") + "</h2>";
+      /* stall pages: the giveaway card sits to the left of the vendor's card, in the same row */
+      var pair = $(".pz-pair"), host = pair ? null : $(".stall-about .wrap > .stall-showcase, .stall-about .wrap > .stall-card");
+      if (!pair && host && list.length) {
+        pair = document.createElement("div"); pair.className = "pz-pair";
+        host.parentNode.insertBefore(pair, host);
+        var mn = document.createElement("div"); mn.className = "pz-main"; mn.appendChild(host); pair.appendChild(mn);
+      }
+      if (pair) {
+        var side = pair.querySelector(".pz-side");
+        if (list.length) {
+          if (!side) { side = document.createElement("aside"); side.className = "pz-side"; side.setAttribute("aria-label", "Promotion"); pair.insertBefore(side, pair.firstChild); }
+          side.innerHTML = title + '<div class="pz-row">' + list.map(function (d) { return cardHTML(d, "div"); }).join("") + "</div>";
+        } else if (side) side.remove();
+      } else if (list.length) {
         var main = $("main") || document.body, first = main.querySelector("section, header.hero, .hero");
         var strip = document.createElement("section");
         strip.className = "pz-strip";
         strip.setAttribute("aria-label", "Promotion");
-        strip.innerHTML = "<h2>" + (list.some(function (d) { return d.drop_id; }) ? "🎁 Today's drop" : "🎁 Giveaway") + "</h2><div class=\"pz-row\">" + list.map(function (d) { return cardHTML(d, "div"); }).join("") + "</div>";
+        strip.innerHTML = title + "<div class=\"pz-row\">" + list.map(function (d) { return cardHTML(d, "div"); }).join("") + "</div>";
         if (first && first.parentNode === main) main.insertBefore(strip, first.nextSibling); else main.insertBefore(strip, main.firstChild);
       }
     }
