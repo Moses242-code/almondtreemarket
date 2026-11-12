@@ -62,6 +62,7 @@
     ".pz-code{font-family:ui-monospace,Menlo,monospace;font-size:1.6rem;font-weight:800;letter-spacing:.08em;text-align:center;margin:8px 0}" +
     ".pz-qr{display:grid;place-items:center;background:#fff;padding:12px;border-radius:12px;margin:8px auto;width:fit-content}" +
     ".pz-verdict{font-size:2.2rem;font-weight:900;text-align:center;padding:16px;border-radius:14px;margin:8px 0;color:#fff}.pz-ok{background:#1f8a4c}.pz-bad{background:#b3261e}" +
+    ".pz-card.pz-idle{animation:none}.pz-idle .pz-img img{filter:grayscale(.55) brightness(.7)}.pz-soon{position:absolute;left:0;right:0;top:50%;translate:0 -50%;background:#e5322d;color:#fff;text-align:center;font-weight:900;letter-spacing:.08em;font-size:.95rem;padding:8px 6px;transform:rotate(-6deg);box-shadow:0 4px 14px rgba(0,0,0,.4)}.pz-idle .pz-left{background:#e5322d}.pz-body .pz-out{color:#ff6b61!important;font-weight:800}" +
     "@keyframes pzBlink{to{visibility:hidden}}@keyframes pzGlow{0%,100%{box-shadow:0 0 0 0 rgba(229,50,45,.45)}50%{box-shadow:0 0 0 8px rgba(229,50,45,0)}}" +
     "@media (prefers-reduced-motion:reduce){.pz-badge,.pz-card{animation:none}}";
   document.head.appendChild(css);
@@ -71,7 +72,17 @@
     return d.price_cents ? '<span class="pz-price">' + money(d.price_cents) + " web price" + (d.regular_cents > d.price_cents ? "<s>" + money(d.regular_cents) + "</s>" : "") + "</span>"
       : '<span class="pz-price">FREE' + (d.regular_cents ? "<s>" + money(d.regular_cents) + "</s>" : "") + "</span>";
   }
+  function idleHTML(d, tag) {
+    return "<" + tag + ' class="pz-card pz-idle' + (tag === "article" ? " pcard" : "") + '" data-pzidle="' + esc(d.promo_id) + '">' +
+      '<div class="pz-img">' + (d.image_url ? '<img src="' + esc(d.image_url) + '" alt="' + esc(d.item) + '" loading="lazy">' : "") +
+      '<span class="pz-badge" style="animation:none">' + (d.price_cents ? "WEB DEAL" : "FREE") + '</span><span class="pz-left">0 left</span>' +
+      '<span class="pz-soon">NEXT DROP SOON</span></div>' +
+      '<div class="pz-body"><span class="pz-tag">Giveaway</span><h3>' + esc(d.name) + "</h3>" + priceHTML(d) +
+      '<p class="pz-out">Next drop soon. Check back for more!</p>' +
+      '<button class="pz-btn" type="button" disabled>Next drop soon</button></div></' + tag + ">";
+  }
   function cardHTML(d, tag) {
+    if (!d.drop_id) return idleHTML(d, tag);
     var left = d.left_now <= 1 ? "Only 1 left" : "Only " + d.left_now + " left";
     return "<" + tag + ' class="pz-card' + (tag === "article" ? " pcard" : "") + '" data-pz="' + esc(d.drop_id) + '">' +
       '<div class="pz-img">' + (d.image_url ? '<img src="' + esc(d.image_url) + '" alt="' + esc(d.item) + '" loading="lazy">' : "") +
@@ -91,8 +102,10 @@
     if (grid) {
       /* first cards of the shop list; shop.js redraws the grid, so put them back each time */
       var put = function () {
-        var list = mine(), have = grid.querySelectorAll(".pz-card");
-        if (have.length === list.length && (!list.length || grid.firstElementChild === have[0])) return;
+        var list = mine(), have = grid.querySelectorAll(".pz-card"),
+            sig = list.map(function (d) { return d.promo_id + ":" + (d.drop_id || "0"); }).join(",");
+        if (have.length === list.length && grid._pzSig === sig && (!list.length || grid.firstElementChild === have[0])) return;
+        grid._pzSig = sig;
         Array.prototype.forEach.call(have, function (n) { n.remove(); });
         var html = list.map(function (d) { return cardHTML(d, "article"); }).join("");
         if (html) grid.insertAdjacentHTML("afterbegin", html);
@@ -106,7 +119,7 @@
         var strip = document.createElement("section");
         strip.className = "pz-strip";
         strip.setAttribute("aria-label", "Promotion");
-        strip.innerHTML = "<h2>🎁 Today's drop</h2><div class=\"pz-row\">" + list.map(function (d) { return cardHTML(d, "div"); }).join("") + "</div>";
+        strip.innerHTML = "<h2>" + (list.some(function (d) { return d.drop_id; }) ? "🎁 Today's drop" : "🎁 Giveaway") + "</h2><div class=\"pz-row\">" + list.map(function (d) { return cardHTML(d, "div"); }).join("") + "</div>";
         if (first && first.parentNode === main) main.insertBefore(strip, first.nextSibling); else main.insertBefore(strip, main.firstChild);
       }
     }
@@ -168,7 +181,7 @@
       btn.disabled = true; btn.textContent = "Claiming…";
       rpc("pos_web_promo_claim", { p_claim: { drop_id: d.drop_id, name: name, phone: phone } }).then(function (c) {
         var all = read(); all.unshift(c); write(all);
-        DROPS = DROPS.filter(function (x) { return x.drop_id !== d.drop_id; });
+        DROPS = DROPS.map(function (x) { if (x.drop_id === d.drop_id) { x.drop_id = null; x.left_now = 0; } return x; });
         mount(); done(c);
       }, function (x) {
         btn.disabled = false; btn.textContent = d.price_cents ? "Claim it" : "Claim it free";
@@ -238,7 +251,11 @@
     if (b) { e.preventDefault(); e.stopPropagation(); claim(b.getAttribute("data-pzclaim")); }
   }, true);
   function load() {
-    rpc("pos_web_promos", { p_site: SITE }).then(function (rows) { DROPS = Array.isArray(rows) ? rows : []; mount(); }, function () { DROPS = []; showMine(); });
+    var got = function (rows) { DROPS = Array.isArray(rows) ? rows : []; mount(); };
+    /* slots: also the pages of a running giveaway with nothing out right now (0 left, "Next drop soon") */
+    rpc("pos_web_promo_slots", { p_site: SITE }).then(got, function () {
+      rpc("pos_web_promos", { p_site: SITE }).then(got, function () { DROPS = []; showMine(); });
+    });
   }
   var m = /[?&]claim=([A-Za-z0-9-]{4,20})/.exec(location.search);
   function go() { load(); if (m) check(decodeURIComponent(m[1]).toUpperCase()); }
