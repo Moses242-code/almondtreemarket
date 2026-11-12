@@ -43,16 +43,16 @@
   var css = document.createElement("style");
   css.textContent =
     ".pz-card{position:relative;display:flex;flex-direction:column;border:2px solid #e5322d!important;border-radius:16px;overflow:hidden;background:#13231a;color:#f4efe2;text-align:left;box-shadow:0 0 0 0 rgba(229,50,45,.5);animation:pzGlow 1.6s ease-in-out infinite}" +
-    ".pz-card .pz-img{position:relative;aspect-ratio:4/3;background:#0d1a12;overflow:hidden}.pz-card .pz-img img{width:100%;height:100%;object-fit:cover;display:block}" +
-    ".pz-badge{position:absolute;top:10px;left:10px;background:#e5322d;color:#fff;font-weight:800;letter-spacing:.06em;padding:6px 12px;border-radius:999px;font-size:15px;animation:pzBlink 1s steps(2,start) infinite}" +
-    ".pz-left{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.65);color:#fff;font-weight:700;padding:5px 10px;border-radius:999px;font-size:12px}" +
-    ".pz-body{padding:14px;display:flex;flex-direction:column;gap:6px;flex:1}.pz-body h3{margin:0;font-size:1.15rem;line-height:1.2;color:#fff}" +
-    ".pz-tag{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#ff8a80;font-weight:700}" +
-    ".pz-body p{margin:0;font-size:.92rem;line-height:1.4;color:#d9d3c3}.pz-hurry{color:#ffb4ab!important;font-weight:700}" +
-    ".pz-price{font-weight:800;font-size:1.1rem;color:#fff}.pz-price s{opacity:.6;font-weight:500;margin-left:6px}" +
+    ".pz-card .pz-img{position:relative;aspect-ratio:1/1;background:#0d1a12;overflow:hidden}.pz-card .pz-img img{width:100%;height:100%;object-fit:cover;display:block}" +
+    ".pz-badge{position:absolute;top:8px;left:8px;background:#e5322d;color:#fff;font-weight:800;letter-spacing:.06em;padding:4px 9px;border-radius:999px;font-size:12px;animation:pzBlink 1s steps(2,start) infinite}" +
+    ".pz-left{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.65);color:#fff;font-weight:700;padding:3px 8px;border-radius:999px;font-size:11px}" +
+    ".pz-body{padding:10px;display:flex;flex-direction:column;gap:4px;flex:1}.pz-body h3{margin:0;font-size:.98rem;line-height:1.2;color:#fff}" +
+    ".pz-tag{font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;color:#ff8a80;font-weight:700}" +
+    ".pz-body p{margin:0;font-size:.78rem;line-height:1.35;color:#d9d3c3}.pz-body .pz-blurb{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}.pz-card .pz-small,.pz-card .pz-hurry{display:none}.pz-card .pz-tag{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pz-hurry{color:#ffb4ab!important;font-weight:700}" +
+    ".pz-price{font-weight:800;font-size:1rem;color:#fff}.pz-price s{opacity:.6;font-weight:500;margin-left:6px}" +
     ".pz-btn{margin-top:auto;appearance:none;border:0;border-radius:12px;background:#e5322d;color:#fff;font:inherit;font-weight:800;padding:13px 16px;cursor:pointer;width:100%}.pz-btn:hover{filter:brightness(1.08)}.pz-btn:disabled{opacity:.5;cursor:default}" +
-    ".pz-btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.35);color:inherit}" +
-    ".pz-strip{max-width:1180px;margin:18px auto;padding:0 16px}.pz-strip h2{font-size:1.3rem;margin:0 0 10px;color:inherit}.pz-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}" +
+    ".pz-card .pz-btn{padding:10px 12px;font-size:.88rem;border-radius:10px}.pz-btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.35);color:inherit}" +
+    ".pz-strip{max-width:1180px;margin:18px auto;padding:0 16px}.pz-strip h2{font-size:1.3rem;margin:0 0 10px;color:inherit}.pz-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(156px,1fr));gap:10px}@media (max-width:400px){.pz-row{grid-template-columns:1fr 1fr;gap:8px}}" +
     ".pz-mine{max-width:1180px;margin:12px auto;padding:0 16px}.pz-mine button{width:100%;text-align:left;border:2px dashed #e5322d;background:#2a0f0d;color:#fff;border-radius:14px;padding:12px 14px;font:inherit;cursor:pointer}" +
     ".pz-ov{position:fixed;inset:0;z-index:9999;background:rgba(5,10,8,.72);display:grid;place-items:center;padding:16px;overscroll-behavior:contain}" +
     ".pz-box{background:#fbf7ee;color:#1b2a20;border-radius:18px;width:min(440px,100%);max-height:100%;overflow:auto;padding:20px;position:relative;font-family:inherit}" +
@@ -76,8 +76,8 @@
     return "<" + tag + ' class="pz-card' + (tag === "article" ? " pcard" : "") + '" data-pz="' + esc(d.drop_id) + '">' +
       '<div class="pz-img">' + (d.image_url ? '<img src="' + esc(d.image_url) + '" alt="' + esc(d.item) + '" loading="lazy">' : "") +
       '<span class="pz-badge">' + (d.price_cents ? "WEB DEAL" : "FREE") + '</span><span class="pz-left">' + esc(left) + "</span></div>" +
-      '<div class="pz-body"><span class="pz-tag">Promotion · today only</span><h3>' + esc(d.name) + "</h3>" + priceHTML(d) +
-      (d.blurb ? "<p>" + esc(d.blurb) + "</p>" : "") + (d.urgency ? '<p class="pz-hurry">' + esc(d.urgency) + "</p>" : "") +
+      '<div class="pz-body"><span class="pz-tag">Today only</span><h3>' + esc(d.name) + "</h3>" + priceHTML(d) +
+      (d.blurb ? '<p class="pz-blurb">' + esc(d.blurb) + "</p>" : "") + (d.urgency ? '<p class="pz-hurry">' + esc(d.urgency) + "</p>" : "") +
       '<p class="pz-small" style="color:#a9b3a6">Pick up at ' + esc(d.redeem_at || "Under the Almond Tree") + " within " + (d.claim_hours || 24) + " hours.</p>" +
       '<button class="pz-btn" type="button" data-pzclaim="' + esc(d.drop_id) + '">' + (d.price_cents ? "Claim it for " + money(d.price_cents) : "Claim it free") + "</button></div></" + tag + ">";
   }
