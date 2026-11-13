@@ -1419,3 +1419,7 @@ header.nav .brand > span { text-align: left; }
 header.nav .brand small { justify-content: flex-start; margin-top: .12rem; }
 header.nav .brand b .dotcom { margin-top: .02em; }
 @media (max-width: 480px) { header.nav .brand small { font-size: .44rem; letter-spacing: .02em; gap: .25em; } header.nav .brand small .bs-flag { width: 12px; height: 6px; } }
+/* no gap between the name and the flag line: ".com" sits right after "Market" in small letters (13 Nov 2026) */
+header.nav .brand b .mkt { display: inline; }
+header.nav .brand b .dotcom { display: inline; margin: 0 0 0 .04em; line-height: inherit; }
+header.nav .brand small { margin-top: .18rem; }
