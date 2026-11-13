@@ -1418,3 +1418,4 @@ header.nav .brand small { margin-top: .22rem; }
 header.nav .brand > span { text-align: left; }
 header.nav .brand small { justify-content: flex-start; margin-top: .12rem; }
 header.nav .brand b .dotcom { margin-top: .02em; }
+@media (max-width: 480px) { header.nav .brand small { font-size: .44rem; letter-spacing: .02em; gap: .25em; } header.nav .brand small .bs-flag { width: 12px; height: 6px; } }
