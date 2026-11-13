@@ -204,19 +204,47 @@ window.ATM_CART = (function () {
       '<div class="bfoot-links"><button type="button" class="link" data-clear>Empty cart</button>' + (full ? '<a class="link" href="/produce.html">Keep shopping</a>' : '<a class="link" href="/cart.html">Open the cart page</a><button type="button" class="link" data-close-cart>Keep shopping</button>') + "</div>" +
       savedHTML() + tail;
   }
+  /* ---------- big orders: 10 or more items are set up with us directly (no QR code) ---------- */
+  var BIG = 10, PHONE_TXT = (M && M.phoneDisplay) || "(242) 809-5667", PHONE_TEL = "+" + ((M && M.whatsapp) || "12428095667"), bigInfo = null;
+  function bigNote() {
+    return '<div class="big-note" role="note"><b>Whoa, that&#39;s a big order!</b> For ' + BIG + ' or more items we set it up with you directly. ' +
+      'Send it below and we&#39;ll contact you, or call or WhatsApp us at <a href="tel:' + PHONE_TEL + '">' + esc(PHONE_TXT) + "</a>.</div>";
+  }
+  function bigHTML(full) {
+    var b = bigInfo || {};
+    return '<div class="bhead"><button type="button" class="link" data-view="cart">← Back to cart</button>' + (full ? "" : '<button class="x" data-close-cart aria-label="Close">×</button>') + "</div>" +
+      '<div class="conf big-done"><h3 class="bh3">Whoa, that&#39;s a big order!</h3>' +
+      (b.saved ? '<p class="step1">Thanks, ' + esc(b.name) + ". We got your request for <b>" + b.items + " items</b> and will contact you at <b>" + esc(b.phone) + "</b> to set it up.</p>"
+        : '<p class="step1">Orders of ' + BIG + " or more items are set up with us directly. Please contact us and we&#39;ll get it ready.</p>") +
+      '<p class="step1">Call or WhatsApp us at <a href="tel:' + PHONE_TEL + '"><b>' + esc(PHONE_TXT) + "</b></a>.</p>" +
+      '<a class="btn wa" href="' + A.wa(b.msg || "Hi! I'd like to place a big order.") + '" target="_blank" rel="noopener">Send it on WhatsApp</a>' +
+      '<p class="note">No QR code is made for big orders: we confirm them with you first. Your cart is still here if you want to change it.</p>' +
+      '<button class="btn primary" type="button" data-view="cart">Back to my cart</button></div>';
+  }
+  function bigRequest(payload, root, btn, items) {
+    var msg = ["*Big order request (" + items + " items)*", "", "Name: " + payload.name, "Phone: " + payload.phone, ""]
+      .concat(payload.lines.map(function (l) { return l.qty + " x " + l.name + " (" + l.size + ")"; }), ["", "Notes: " + (payload.notes || "-")]).join("\n");
+    var done = function (ok) { bigInfo = { saved: ok, name: payload.name, phone: payload.phone, items: items, msg: msg }; setView("big", root); };
+    btn.disabled = true; btn.textContent = "Sending your request…";
+    if (!(F.url && F.key && window.fetch)) return done(false);
+    var ctl = window.AbortController ? new AbortController() : null, timer = setTimeout(function () { if (ctl) ctl.abort(); }, 12000);
+    fetch(F.url.replace(/\/$/, "") + "/rest/v1/rpc/pos_web_big_order_request", { method: "POST", headers: { "Content-Type": "application/json", apikey: F.key }, body: JSON.stringify({ p_order: payload }), signal: ctl ? ctl.signal : undefined })
+      .then(function (r) { clearTimeout(timer); return r.ok ? r.json() : null; })
+      .then(function (j) { done(!!(j && j.ok)); }, function () { clearTimeout(timer); done(false); });
+  }
   function checkoutHTML(full) {
     var ls = lines(), days = pickupDays();
     if (!ls.length) { view = "cart"; return cartHTML(full); }
     return '<div class="bhead"><button type="button" class="link" data-view="cart">← Back to cart</button>' + (full ? "" : '<button class="x" data-close-cart aria-label="Close">×</button>') + "</div>" +
       '<h3 class="bh3">Check out</h3><ul class="bsum">' + ls.map(function (l) { return "<li><span>" + l.qty + " × " + esc(l.p.name) + " <small>(" + esc(l.z.pot) + ")</small></span><b>" + esc(l.z.price ? money(l.z.price * l.qty) : "TBA") + "</b></li>"; }).join("") + "</ul>" +
       '<div class="btotal"><span>Total · pay cash at pickup</span><b' + (anyTBA() ? ' class="tba"' : "") + ">" + esc(totalTxt()) + "</b></div>" +
-      '<form class="bform" id="co-form" novalidate><div class="eyebrow">Your details</div>' +
+      (count() >= BIG ? bigNote() : "") + '<form class="bform" id="co-form" novalidate><div class="eyebrow">Your details</div>' +
       '<label>Your name<input name="name" id="co-name" autocomplete="name" required maxlength="60"></label>' +
       '<label>Phone / WhatsApp<input name="phone" id="co-phone" type="tel" autocomplete="tel" required maxlength="30"></label>' +
       '<label>Pickup day <small>(open ' + esc(N.daysText) + ", " + esc(N.closedText) + ')</small><select name="day" id="co-day">' + days.map(function (d) { return '<option value="' + d.iso + '">' + (d.today ? "Today, " : "") + esc(A.longDate(d.d)) + "</option>"; }).join("") + "</select></label>" +
       '<label>Notes <small>(optional)</small><input name="notes" id="co-notes" maxlength="200" placeholder="e.g. pick ripe mangoes for the weekend"></label>' +
       '<label class="chk co-agree"><input type="checkbox" name="agree" id="co-agree"> I&#39;ll pay cash when I collect at Almond Tree Market. No deliveries.</label>' +
-      '<p class="err" id="co-err" role="alert"></p><button class="btn primary" type="submit" id="co-go">Place order &amp; get my QR code</button>' +
+      '<p class="err" id="co-err" role="alert"></p><button class="btn primary" type="submit" id="co-go">' + (count() >= BIG ? "Send my big order request" : "Place order &amp; get my QR code") + "</button>" +
       cashNote("small") + fine() + "</form>";
   }
   function ordersHTML(full) {
@@ -229,14 +257,14 @@ window.ATM_CART = (function () {
   function render() {
     if (!panel) return;
     clean();
-    panel.innerHTML = view === "checkout" ? checkoutHTML(false) : view === "orders" ? ordersHTML(false) : view === "done" ? doneHTML(lastOrder) : cartHTML(false);
+    panel.innerHTML = view === "checkout" ? checkoutHTML(false) : view === "orders" ? ordersHTML(false) : view === "done" ? doneHTML(lastOrder) : view === "big" ? bigHTML(false) : cartHTML(false);
     afterRender(panel);
   }
   function renderPage() {
     if (!page) return;
     if (pageView === "done" && lastOrder) { page.innerHTML = doneHTML(lastOrder, true); afterRender(page); return; }
     clean();
-    page.innerHTML = pageView === "checkout" ? checkoutHTML(true) : pageView === "orders" ? ordersHTML(true) : cartHTML(true);
+    page.innerHTML = pageView === "checkout" ? checkoutHTML(true) : pageView === "orders" ? ordersHTML(true) : pageView === "big" ? bigHTML(true) : cartHTML(true);
     afterRender(page);
   }
   var pageView = "cart";
@@ -280,6 +308,8 @@ window.ATM_CART = (function () {
     var dayTxt = dayObj ? A.longDate(dayObj.d) : dayIso;
     var payload = { name: name, phone: phone, notes: String(d.get("notes") || "").trim(), pickup_day: dayIso,
       lines: ls.map(function (l) { return { shop: l.shop, item_id: l.id, name: l.p.name, size: l.z.pot, qty: l.qty, product_id: l.z.pid || null }; }) };
+    var items = ls.reduce(function (s, l) { return s + l.qty; }, 0);
+    if (items >= BIG) { bigRequest(payload, root, btn, items); return; }
     btn.disabled = true; btn.textContent = "Placing your order…";
     var finish = function (srv) {
       var c = srv && srv.code ? srv.code : code();

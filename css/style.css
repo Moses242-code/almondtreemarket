@@ -1395,3 +1395,10 @@ body[data-page="craft"] .msec { border-color: rgba(201,228,106,.25); }
   90.0% { opacity: 0.00; transform: translate(240.0px, 36.0px) scale(0.980) rotate(12.0deg); }
   91%, 100% { opacity: 0; transform: translate(240px, 36px) scale(.98) rotate(0deg); }
 }
+/* cart: big order (10+ items) notice and result, set up with us directly instead of a QR code */
+.big-note { margin: .9rem 0 .4rem; padding: .85rem 1rem; border: 2px solid var(--mango); border-radius: 14px; background: rgba(255,178,63,.1); color: var(--cream); font-size: .95rem; line-height: 1.45; animation: fc-flash-big 1.6s ease-in-out infinite; }
+.big-note b { display: block; font: 800 1.1rem/1.15 var(--display); color: var(--mango); margin-bottom: .2rem; }
+.big-note a, .big-done a:not(.btn) { color: var(--leaf); font-weight: 700; }
+.big-done .bh3 { color: var(--mango); }
+@keyframes fc-flash-big { 0%, 100% { border-color: var(--mango); } 50% { border-color: rgba(255,178,63,.35); } }
+@media (prefers-reduced-motion: reduce) { .big-note { animation: none; } }
