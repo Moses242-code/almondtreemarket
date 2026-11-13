@@ -122,7 +122,10 @@
       if (slots) {
         var soon = '<div class="pz-soonslot" aria-hidden="true"><span>🎁</span><b>Promotion</b><small>coming soon</small></div>', k;
         var html = list.map(function (d) { return cardHTML(d, "div"); }).join("");
-        for (k = list.length; k < 3; k++) html += soon;
+/* data-fill: a picture (e.g. the stall's sign) fills the slots it isn't using, instead of "coming soon" */
+var fill = slots.getAttribute("data-fill");
+if (fill && list.length < 3) html += '<div class="pz-fill" style="grid-column:span ' + (3 - list.length) + '">' + fill + '</div>';
+else for (k = list.length; k < 3; k++) html += soon;
         if (slots.innerHTML !== html) slots.innerHTML = html;
         showMine(); return;
       }
