@@ -1407,3 +1407,9 @@ body[data-page="craft"] .msec { border-color: rgba(201,228,106,.25); }
 header.nav .brand b .mkt { display: inline-flex; flex-direction: column; align-items: flex-end; }
 header.nav .brand b .dotcom { display: block; margin: .12em 0 0; line-height: 1; }
 header.nav .brand small { margin-top: .22rem; }
+
+/* Narrow screens (960px and below): no empty band above the hero text. The text column starts right under the squares strip. */
+@media (max-width: 960px) {
+  .hero { align-items: start; min-height: 0; }
+  .hero .wrap, .hero .wrap.has-window, .hero-produce .wrap.has-window { padding-top: 28px; }
+}
