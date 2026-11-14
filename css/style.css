@@ -1435,3 +1435,8 @@ header.nav .brand small { margin-top: .08rem; line-height: 1.1; }
   .hero:not(.hero-produce) .hero-text .chips { margin-top: 0; }
   .hero:not(.hero-produce) .hero-text .nursery-sign { margin-top: 128px; align-self: flex-start; }
 }
+/* right column (14 Nov 2026, from Mo): "Hungry? Check out next door." card at the top right, the Native Nursery window under it */
+@media (min-width: 961px) {
+  .hero:not(.hero-produce) .hero-side { align-self: start; }
+  .hero:not(.hero-produce) .hero-side .next-card { order: -1; }
+}
