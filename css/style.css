@@ -1456,3 +1456,13 @@ header.nav .hdr-geo .gb-flag .bs-flag { width: 32px; height: 16px; }
 @media (min-width: 961px) { .hero.sign-below.hero-pantry .hero-text .nursery-sign, .hero.sign-below.hero-crafts .hero-text .nursery-sign { margin-top: 160px; } }
 /* Local Produce sign + fruit tree (14 Nov 2026, from Mo): a touch smaller (92%), sitting just under the blurb with a little space */
 @media (min-width: 961px) { .hero.sign-below.hero-produce:not(.hero-pantry):not(.hero-crafts) .hero-text .nursery-sign { zoom: .92; } }
+/* The Pantry: Big Bird ad card (14 Nov 2026, from Mo) in the old "Make jams, sauces or honey?" spot, moved above the pantry window.
+   Same card size; the farm logo sits in the photo area on a soft farm-green ground. */
+.bb-ad .nc-photo { display: grid; place-items: center; background: radial-gradient(circle at 50% 55%, #f4e98a 0%, #9fcf7a 55%, #3f7a45 100%); }
+.bb-ad .nc-photo, .next-card.bb-ad .nc-photo { height: 132px; min-height: 0; }
+.bb-ad .nc-photo img { width: 116px; height: 116px; object-fit: contain; border-radius: 50%; box-shadow: 0 4px 14px rgba(0,0,0,.35); }
+.bb-ad:hover .nc-photo img { transform: scale(1.06) rotate(-3deg); }
+@media (min-width: 961px) {
+  .hero-pantry.sign-below .hero-side { align-self: start; }
+  .hero-pantry.sign-below .hero-side .next-card { order: -1; }
+}
