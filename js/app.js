@@ -461,7 +461,7 @@ var COMPASS = (function () {
   Array.prototype.forEach.call(document.querySelectorAll(".hero"), function (hero) {
     var sign = hero.querySelector(".nursery-sign"), side = hero.querySelector(".hero-side"), text = hero.querySelector(".hero-text");
     if (!sign || !side || !text) return;
-    var place = function () { if (mq.matches) side.insertBefore(sign, side.firstChild); else { var lead = text.querySelector("h1") && text.querySelector(".lead"); text.insertBefore(sign, lead ? lead.nextSibling : text.firstChild); } };
+    var place = function () { if (mq.matches) side.insertBefore(sign, side.firstChild); else { var lead = hero.classList.contains("sign-below") && text.querySelector(".lead"); text.insertBefore(sign, lead ? lead.nextSibling : text.firstChild); } };
     place();
     if (mq.addEventListener) mq.addEventListener("change", place); else mq.addListener(place);
   });

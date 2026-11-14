@@ -1427,13 +1427,13 @@ header.nav .brand small { margin-top: .18rem; }
 header.nav .brand b { line-height: 1; }
 header.nav .brand small { margin-top: .08rem; line-height: 1.1; }
 
-/* HOME first hero (14 Nov 2026, from Mo): "Grown here. Made here." text goes up top, right under the squares;
+/* HOME first two heroes, class "sign-below" (Native Nursery 14 Nov 2026, Local Produce too; from Mo): "Grown here. Made here." text goes up top, right under the squares;
    the Native Nursery sign and its palm sit below the blurb (js/app.js puts the sign after .lead on wide screens) */
 @media (min-width: 961px) {
-  .hero:not(.hero-produce) .wrap.has-window { padding-top: 36px; }
-  .hero:not(.hero-produce) .hero-text { justify-content: flex-start; }
-  .hero:not(.hero-produce) .hero-text .chips { margin-top: 0; }
-  .hero:not(.hero-produce) .hero-text .nursery-sign { margin-top: 128px; align-self: flex-start; }
+  .hero.sign-below .wrap.has-window { padding-top: 36px; }
+  .hero.sign-below .hero-text { justify-content: flex-start; }
+  .hero.sign-below .hero-text .chips { margin-top: 0; }
+  .hero.sign-below .hero-text .nursery-sign { margin-top: 128px; align-self: flex-start; }
 }
 /* right column (14 Nov 2026, from Mo): "Hungry? Check out next door." card at the top right, the Native Nursery window under it */
 @media (min-width: 961px) {
