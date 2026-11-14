@@ -1435,10 +1435,11 @@ header.nav .brand small { margin-top: .08rem; line-height: 1.1; }
   .hero.sign-below .hero-text .chips { margin-top: 0; }
   .hero.sign-below .hero-text .nursery-sign { margin-top: 128px; align-self: flex-start; }
 }
-/* right column (14 Nov 2026, from Mo): "Hungry? Check out next door." card at the top right, the Native Nursery window under it */
+/* right column (14 Nov 2026, from Mo): "Hungry? Check out next door." card at the top right, the Native Nursery window under it;
+   same in Local Produce: "Got fruit in the yard?" on top, the produce window under it */
 @media (min-width: 961px) {
-  .hero:not(.hero-produce) .hero-side { align-self: start; }
-  .hero:not(.hero-produce) .hero-side .next-card { order: -1; }
+  .hero:not(.hero-produce) .hero-side, .hero-produce.sign-below:not(.hero-pantry):not(.hero-crafts) .hero-side { align-self: start; }
+  .hero:not(.hero-produce) .hero-side .next-card, .hero-produce.sign-below:not(.hero-pantry):not(.hero-crafts) .hero-side .next-card { order: -1; }
 }
 /* top bar: compass + coordinates badge (same look as the home hero badge), next to the shop name where there is room (14 Nov 2026).
    Where it shows, the hero copy on the home page is hidden so it is not there twice. */
