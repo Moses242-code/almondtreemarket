@@ -466,6 +466,38 @@ var COMPASS = (function () {
     if (mq.addEventListener) mq.addEventListener("change", place); else mq.addListener(place);
   });
 })();
+/* line up the Local Produce sign (14 Nov 2026, from Mo): on wide screens the sign + fruit tree shrink a touch (92%, less if
+   needed so the tree never covers the blurb) and move so the bottom of the sign is level with the bottom of the
+   "Local Produce · Now online" card beside it */
+(function () {
+  var hero = document.querySelector(".hero-produce.sign-below:not(.hero-pantry):not(.hero-crafts)");
+  if (!hero) return;
+  var mq = matchMedia("(min-width: 961px)"), sign = hero.querySelector(".nursery-sign"), win = hero.querySelector(".plant-window"),
+      lead = hero.querySelector(".lead"), busy = false;
+  var align = function () {
+    if (busy) return; busy = true;
+    sign.style.zoom = ""; sign.style.marginTop = "";
+    var board = sign.querySelector(".ns-board"), tree = sign.querySelector(".ns-tree") || sign;
+    if (mq.matches && board && win && lead && sign.parentNode === lead.parentNode) {
+      var B = function (e) { return e.getBoundingClientRect(); };
+      var H = B(board).bottom - B(tree).top, room = B(win).bottom - B(lead).bottom - 12;
+      var z = Math.max(0.75, Math.min(0.92, room / H));
+      sign.style.zoom = z;
+      var m = parseFloat(getComputedStyle(sign).marginTop) || 0;
+      for (var k = 0; k < 2; k++) {   /* twice: the first move can shift the text a pixel or two */
+        m = Math.max(0, m + (B(win).bottom - B(board).bottom) / z);
+        sign.style.marginTop = m + "px";
+      }
+    }
+    requestAnimationFrame(function () { busy = false; });
+  };
+  align();
+  if (mq.addEventListener) mq.addEventListener("change", align);
+  addEventListener("resize", align);
+  addEventListener("load", align);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(align);
+  if (window.ResizeObserver && win) new ResizeObserver(function () { align(); }).observe(win);
+})();
 /* almond leaf: drifts down from the top of the hero on page load and lands at spot A.
    Click or tap it and it flutters over to spot B; click again and it flutters back to A, and so on.
    Wide screens: A beside "Grown here.", B beside "almond tree." (the last headline line).
