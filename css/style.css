@@ -1466,3 +1466,17 @@ header.nav .hdr-geo .gb-flag .bs-flag { width: 32px; height: 16px; }
   .hero-pantry.sign-below .hero-side { align-self: start; }
   .hero-pantry.sign-below .hero-side .next-card { order: -1; }
 }
+
+/* Home page gallery: just three smaller photos in one even row */
+.gallery.mini { columns: auto; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; max-width: 760px; }
+.gallery.mini figure { margin: 0; aspect-ratio: 1 / 1; }
+.gallery.mini img { display: block; width: 100%; height: 100%; object-fit: cover; }
+@media (max-width: 560px) { .gallery.mini { gap: 8px; } .gallery.mini figcaption { display: none; } }
+
+/* Certified Local Product seal, bottom of the home page */
+.certified { padding: clamp(40px, 6vw, 72px) 0; }
+.cert-card { display: grid; grid-template-columns: auto 1fr; gap: clamp(1.2rem, 4vw, 2.6rem); align-items: center; max-width: 900px; }
+.cert-card img { width: clamp(150px, 22vw, 220px); height: auto; filter: drop-shadow(0 10px 22px rgba(0,0,0,.45)); }
+.cert-card h2 { margin: .6rem 0 .8rem; }
+.cert-card .lead { margin: 0; }
+@media (max-width: 600px) { .cert-card { grid-template-columns: 1fr; justify-items: center; text-align: center; } .cert-card img { width: 170px; } }
