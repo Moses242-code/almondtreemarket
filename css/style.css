@@ -1454,5 +1454,5 @@ header.nav .hdr-geo .gb-flag .bs-flag { width: 32px; height: 16px; }
 }
 /* The Pantry cupboard and Arts & Crafts sewing machine stand taller than the palm/tree: a little more room under the blurb */
 @media (min-width: 961px) { .hero.sign-below.hero-pantry .hero-text .nursery-sign, .hero.sign-below.hero-crafts .hero-text .nursery-sign { margin-top: 160px; } }
-/* Local Produce sign + fruit tree (14 Nov 2026, from Mo): a touch smaller and raised so the sign's bottom lines up with the
-   bottom of the "Local Produce · Now online" card beside it. Size (zoom) and margin are set by js/app.js ("line up the Local Produce sign"). */
+/* Local Produce sign + fruit tree (14 Nov 2026, from Mo): a touch smaller (92%), sitting just under the blurb with a little space */
+@media (min-width: 961px) { .hero.sign-below.hero-produce:not(.hero-pantry):not(.hero-crafts) .hero-text .nursery-sign { zoom: .92; } }
