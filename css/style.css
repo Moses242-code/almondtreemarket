@@ -1451,3 +1451,5 @@ header.nav .hdr-geo .gb-flag .bs-flag { width: 32px; height: 16px; }
   header.nav .hdr-geo { display: inline-flex; }
   .hero .hero-text > .geo-badge { display: none; }
 }
+/* The Pantry cupboard and Arts & Crafts sewing machine stand taller than the palm/tree: a little more room under the blurb */
+@media (min-width: 961px) { .hero.sign-below.hero-pantry .hero-text .nursery-sign, .hero.sign-below.hero-crafts .hero-text .nursery-sign { margin-top: 160px; } }
