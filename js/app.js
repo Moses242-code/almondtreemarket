@@ -452,14 +452,14 @@ var COMPASS = (function () {
 
   /* shared with js/shop.js */
   window.ATM = { ART: ART, art: art, esc: esc, wa: wa, upcoming: upcoming, longDate: longDate, MON: MON, t12: t12 };
-/* each hanging sign (Native Nursery, Local Produce) sits in its hero text on wide screens,
+/* each hanging sign (Native Nursery, Local Produce) sits in its hero text on wide screens (the first hero: under the "Grown here" headline and blurb, 14 Nov 2026),
    and just above its own window on narrow ones */
 (function () {
   var mq = matchMedia("(max-width: 960px)");
   Array.prototype.forEach.call(document.querySelectorAll(".hero"), function (hero) {
     var sign = hero.querySelector(".nursery-sign"), side = hero.querySelector(".hero-side"), text = hero.querySelector(".hero-text");
     if (!sign || !side || !text) return;
-    var place = function () { if (mq.matches) side.insertBefore(sign, side.firstChild); else text.insertBefore(sign, text.firstChild); };
+    var place = function () { if (mq.matches) side.insertBefore(sign, side.firstChild); else { var lead = text.querySelector("h1") && text.querySelector(".lead"); text.insertBefore(sign, lead ? lead.nextSibling : text.firstChild); } };
     place();
     if (mq.addEventListener) mq.addEventListener("change", place); else mq.addListener(place);
   });
