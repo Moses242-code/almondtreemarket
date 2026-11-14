@@ -220,6 +220,7 @@ else for (k = list.length; k < 3; k++) html += soon;
           err.innerHTML = "You already have one waiting. Collect it first, then claim another." + (mineC ? ' <a href="#" id="pz-show">Show my QR code</a>' : "");
           var s = $("#pz-show", ov); if (s) s.onclick = function (ev) { ev.preventDefault(); done(mineC); };
         } else if (/need_phone/.test(x.code)) err.textContent = "Please check your phone number.";
+        else if (/blocked/.test(x.code)) err.textContent = "Sorry, this number can't claim free items right now. Please message us on WhatsApp.";
         else err.textContent = "Couldn't claim it right now. Check your connection and try again.";
       });
     };
