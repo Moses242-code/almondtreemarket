@@ -167,6 +167,8 @@ var COMPASS = (function () {
     return stripe +
       '<a class="skip" href="#main">Skip to content</a>' +
       '<header class="nav"><div class="wrap"><a class="brand" href="index.html" aria-label="Almond Tree Market home">' + BRAND + "<span><b>Almond Tree <span class=\"mkt\">Market<i class=\"dotcom\">.com</i></span></b><small>" + FLAG + "Marsh Harbour · Abaco · The Bahamas</small></span>" + HOMEMADE + "</a>" +
+      /* compass + coordinates badge in the empty space next to the shop name (14 Nov 2026); hidden where it does not fit */
+      '<div class="geo-badge hdr-geo" aria-label="26.5373 N, 77.0606 W, Marsh Harbour, Abaco, The Bahamas"><span class="gb-compass" aria-hidden="true">' + COMPASS + '</span><span class="gb-text" aria-hidden="true"><b>26.5373° N · 77.0606° W</b><small>Marsh Harbour · Abaco · The Bahamas</small></span><span class="gb-flag" aria-hidden="true">' + FLAG + "</span></div>" +
       /* flashing call-out for growers, centred in the gap between the shop name and the Cart button */
       '<div class="hdr-ctas">' + FARMER_CTA + COCO_CTA + '</div>' +
       '<button class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="navlist">' + '<svg class="hb-ico" viewBox="0 0 28 28" width="24" height="24" aria-hidden="true">' +
