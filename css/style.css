@@ -2154,3 +2154,43 @@ body .farmer-m.farmer-m .farmer-cta, body .farmer-m.farmer-m .coco-cta { width: 
   body .farmer-m.farmer-m a .cc-txt { justify-items: center; text-align: center; }
   body .farmer-m.farmer-m a .fc-top { justify-content: center; }
 }
+
+/* section headings centred over the signs and shop windows below them (15 Nov 2026, from Mo): the chips, heading and
+   paragraph of Native Nursery, Island fruit, Pantry and Arts & Crafts sit in the middle of their column */
+body .duo-intro { align-items: center; text-align: center; }
+body .duo-intro .chips { justify-content: center; }
+body .duo-intro h2, body .duo-intro .lead { margin-inline: auto; align-self: center; }
+
+/* "Grown here. Made here. Sold Under the Almond Tree." stretched across the empty space to the left of the
+   "Hungry? Check out next door" sign (15 Nov 2026, from Mo): the headline gets the whole top row beside the sign, a phrase
+   per line, and the four cards start under it. Columns: left text | cards minus sign | sign */
+@media (min-width: 760px) {
+  body .row-top.rt2 { --cw: 480px; --sw: 270px; display: grid; grid-template-columns: minmax(0, 1fr) calc(var(--cw) - var(--sw) - 1.4rem) var(--sw);
+    grid-template-areas: "h h sign" "lead cards cards" "film cards cards"; grid-template-rows: auto auto 1fr; column-gap: 1.4rem; row-gap: 1.2rem; align-items: start; }
+  body .row-top.rt2 > .rt-left, body .row-top.rt2 > .rt-right { display: contents; }
+  body .rt2 h1 { grid-area: h; width: auto; max-width: none; margin: 0; align-self: center; font-size: clamp(2.6rem, 5.4vw, 5.2rem); line-height: .95; }
+  body .rt2 h1 em, body .rt2 h1 .lf { display: block; }
+  body .rt2 .nd-sign { grid-area: sign; width: 100%; max-width: none; align-self: center; justify-self: stretch; margin: 0; }
+  body .rt2 .lead { grid-area: lead; width: auto; min-width: 0; max-width: none; margin: 0; }
+  body .rt2 .film-pair { grid-area: film; }
+  body .rt2 .nc-pair.under { grid-area: cards; width: 100%; max-width: var(--cw); justify-self: end; margin: 0; }
+}
+@media (min-width: 1101px) { body .row-top.rt2 { --cw: 560px; --sw: 320px; } }
+@media (min-width: 760px) {
+  body .row-top.rt2 { container-type: inline-size; column-gap: 2.6rem; grid-template-columns: minmax(0, 1fr) calc(var(--cw) - var(--sw) - 2.6rem) var(--sw); }
+  /* a phrase per line, sized so the longest line just fills the space left of the sign */
+  body .rt2 h1 { white-space: nowrap; font-size: min(5.6rem, calc((100cqw - var(--sw) - 2.6rem) / 11.4)); }
+}
+
+/* one market photo instead of two (15 Nov 2026, from Mo): shown at its own shape (4:3), not squeezed */
+.film-pair .film-photo:only-child { flex: none; width: 100%; max-width: 440px; padding: 10px 10px 0; }
+.film-pair .film-photo:only-child img { height: auto !important; aspect-ratio: 4 / 3; object-fit: cover; }
+.film-pair .film-photo:only-child figcaption { font-size: .8rem; padding: .65rem .4rem .8rem; }
+
+/* two market photos stacked, right under the blurb, each at its own 4:3 shape (15 Nov 2026, from Mo) */
+.film-pair.stack { flex-direction: column; align-items: center; gap: 18px; margin-top: 0 !important; }
+.film-pair.stack .film-photo { flex: none; width: 100%; max-width: 440px; padding: 10px 10px 0; align-self: center; }
+.film-pair.stack .film-photo img { height: auto !important; aspect-ratio: 4 / 3; object-fit: cover; }
+.film-pair.stack .film-photo figcaption { font-size: .8rem; padding: .65rem .4rem .8rem; }
+@media (min-width: 760px) { body .row-top.rt2 { grid-template-rows: auto auto 1fr; } body .rt2 .film-pair.stack { align-self: start; } }
+@media (min-width: 1101px) { .film-pair.stack .film-photo { max-width: 360px; } }

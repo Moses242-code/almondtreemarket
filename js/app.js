@@ -644,9 +644,12 @@ Array.prototype.forEach.call(document.querySelectorAll(".ns-tree:not(.ns-scene)"
     ph.style.marginTop = ""; pair.style.rowGap = "";
     [].forEach.call(imgs, function (im) { im.style.height = ""; });
     if (!mq.matches) return;
+    /* photos stacked one under the other right below the blurb (15 Nov 2026, from Mo): no lining up with the cards */
+    if (ph.classList.contains("stack")) return;
     /* the photos are as tall as the Big Bird card: photo height = card height minus the white frame and caption */
     var fig = ph.querySelector(".film-photo");
-    if (fig && imgs.length) {
+    /* one photo (15 Nov 2026, from Mo): it keeps its own shape, not squeezed to the card height */
+    if (fig && imgs.length > 1) {
       var extra = fig.getBoundingClientRect().height - imgs[0].getBoundingClientRect().height;
       var h = Math.max(90, Math.round(bb.getBoundingClientRect().height - extra));
       [].forEach.call(imgs, function (im) { im.style.height = h + "px"; });
