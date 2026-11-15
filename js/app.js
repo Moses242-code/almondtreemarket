@@ -166,7 +166,7 @@ var COMPASS = (function () {
       '<a class="go" href="vendor.html#register">Reserve a slot →</a></div></div>' : "";
     return stripe +
       '<a class="skip" href="#main">Skip to content</a>' +
-      '<header class="nav"><div class="wrap"><a class="brand" href="index.html" aria-label="Almond Tree Market home">' + BRAND + "<span><b>Almond Tree <span class=\"mkt\">Market<i class=\"dotcom\">.com</i></span></b><small>" + FLAG + "Marsh Harbour · Abaco · The Bahamas</small></span>" + HOMEMADE + "</a>" +
+      '<header class="nav"><div class="wrap"><a class="brand" href="index.html" aria-label="Almond Tree Market home">' + BRAND + "<span><b><span class=\"atn\">Almond Tree</span> <span class=\"mkt\">Market<i class=\"dotcom\">.com</i></span></b><small>" + FLAG + "Marsh Harbour · Abaco · The Bahamas</small></span>" + HOMEMADE + "</a>" +
       /* compass + coordinates badge in the empty space next to the shop name (14 Nov 2026); hidden where it does not fit */
       '<div class="geo-badge hdr-geo" aria-label="26.5373 N, 77.0606 W, Marsh Harbour, Abaco, The Bahamas"><span class="gb-compass" aria-hidden="true">' + COMPASS + '</span><span class="gb-text" aria-hidden="true"><b>26.5373° N · 77.0606° W</b><small>Marsh Harbour · Abaco · The Bahamas</small></span><span class="gb-flag" aria-hidden="true">' + FLAG + "</span></div>" +
       /* flashing call-out for growers, centred in the gap between the shop name and the Cart button */
@@ -503,6 +503,12 @@ var COMPASS = (function () {
       start = [H.w / 2 - w / 2, top0];
       var T = rel(document.querySelector(".hero-text").getBoundingClientRect());
       cands = h1Spots(T.r + 8, w, lh);
+      /* first landing (14 Nov 2026): the empty space over the mango, between the paragraph and the hanging nursery sign, at the right of the text column */
+      var L = document.querySelector(".hero-text .lead"), NS = document.querySelector(".hero-text .nursery-sign");
+      if (L && NS) {
+        var lR = rel(L.getBoundingClientRect()), sR2 = rel(NS.getBoundingClientRect());
+        if (sR2.t - lR.b >= lh + 16) cands.unshift([T.r - w - 30, lR.b + (sR2.t - lR.b - lh) / 2 + (wide ? 14 : 12)]);
+      }
       if (!cands.length) cands.push([T.r - w, C.t - lh - 14]);
     } else {
       start = [H.w * .22, top0];

@@ -1480,3 +1480,62 @@ header.nav .hdr-geo .gb-flag .bs-flag { width: 32px; height: 16px; }
 .cert-card h2 { margin: .6rem 0 .8rem; }
 .cert-card .lead { margin: 0; }
 @media (max-width: 600px) { .cert-card { grid-template-columns: 1fr; justify-items: center; text-align: center; } .cert-card img { width: 170px; } }
+
+/* ".com" under "MARKET", pushed to the far right, level with the flag line so the name and flag line stay tight (14 Nov 2026) */
+header.nav .brand b .mkt { display: inline-block; position: relative; }
+header.nav .brand b .dotcom { display: block; position: absolute; right: -.06em; top: 100%; margin: .14em 0 0; line-height: 1; white-space: nowrap; }
+@media (max-width: 400px) {
+  /* phones: the name wraps to two lines, so ".com" sits at the far right of the "MARKET" line */
+  header.nav .brand b { position: relative; display: inline-block; }
+  header.nav .brand b .atn { display: block; }
+  header.nav .brand b .mkt { position: static; }
+  header.nav .brand b .dotcom { top: auto; bottom: .08em; right: 0; margin: 0; }
+}
+
+/* home hero: "Become a vendor" and "Hungry? next door" as two half squares side by side,
+   together the same width as the Native Nursery window under them (14 Nov 2026, from Mo) */
+.nc-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; min-width: 0; }
+.nc-pair .nc-half { grid-template-rows: auto 1fr; border-radius: 20px; }
+.nc-pair .nc-half .nc-photo { height: 92px; min-height: 0; }
+.nc-pair .nc-half .nc-tag { left: 9px; top: 9px; font-size: .54rem; letter-spacing: .1em; }
+.nc-pair .nc-half .nc-text { grid-template-rows: auto auto 1fr; align-content: stretch; gap: .25rem; padding: .65rem .75rem .75rem; }
+.nc-pair .nc-half b { font-size: .98rem; line-height: 1.12; }
+.nc-pair .nc-half .nc-sub { font-size: .76rem; line-height: 1.3; }
+.nc-pair .nc-half .nc-go { margin-top: auto; align-self: end; font-size: .74rem; padding: .5em .8em; gap: .3em; white-space: nowrap; }
+.nc-pair .nc-half .nc-go svg { width: 12px; height: 12px; }
+.nc-pair .nc-vendor { background: var(--leaf); color: #04230f; }
+.nc-pair .nc-vendor .nc-sub { color: #0d3b1d; }
+.nc-pair .nc-vendor .nc-go { background: #04230f; color: var(--leaf); }
+.nc-pair .nc-vendor .nc-tag { color: var(--leaf); }
+.nc-pair .nc-vendor .nc-photo img { object-position: 50% 55%; }
+@media (min-width: 961px) { .hero:not(.hero-produce) .hero-side .nc-pair { order: -1; } }
+/* tablets: the pair sits in the column beside the nursery window, one above the other */
+@media (min-width: 600px) and (max-width: 960px) {
+  .hero-side .nc-pair { grid-column: 2; grid-row: 2; grid-template-columns: 1fr; }
+  .hero-side .nc-pair .next-card { grid-column: auto; grid-row: auto; }
+  .nc-pair .nc-half .nc-photo { height: 84px; }
+}
+
+/* Christmas vendor square (14 Nov 2026, from Mo): red card, a string of red / green / gold lights round the border
+   that twinkle in turns, and a Santa hat on the top left corner */
+.nc-pair .nc-xmas { position: relative; overflow: visible; background: linear-gradient(180deg, #c8102e 0%, #9e0b22 100%); color: #fff8ec; box-shadow: 0 0 0 2px #0f5132; }
+.nc-xmas .nc-photo { border-radius: 20px 20px 0 0; }
+.nc-pair .nc-xmas .nc-sub { color: #fff1f1; }
+.nc-pair .nc-xmas .nc-go { background: #0f5132; color: #fff8ec; }
+.nc-pair .nc-xmas .nc-tag { color: #ffd23f; background: rgba(15,81,50,.92); }
+.xm-lights { position: absolute; inset: -7px; width: calc(100% + 14px); height: calc(100% + 14px); pointer-events: none; z-index: 2; overflow: visible; }
+.xm-lights rect { x: 7px; y: 7px; width: calc(100% - 14px); height: calc(100% - 14px); rx: 20px; ry: 20px; fill: none; }
+.xm-lights .w { stroke: #123d24; stroke-width: 2; }
+.xm-lights .r, .xm-lights .g, .xm-lights .y { stroke-width: 11; stroke-linecap: round; stroke-dasharray: 0 18; }
+.xm-lights .r { stroke: #ff2b3a; stroke-dashoffset: 0; }
+.xm-lights .g { stroke: #23d160; stroke-dashoffset: -6; }
+.xm-lights .y { stroke: #ffd23f; stroke-dashoffset: -12; }
+.xm-lights .r { animation: xm-twinkle 1.2s steps(1) infinite; }
+.xm-lights .g { animation: xm-twinkle 1.2s steps(1) infinite -.4s; }
+.xm-lights .y { animation: xm-twinkle 1.2s steps(1) infinite -.8s; }
+@keyframes xm-twinkle { 0% { opacity: 1; filter: drop-shadow(0 0 4px currentColor) brightness(1.25); } 33% { opacity: .28; filter: none; } 66% { opacity: .55; filter: none; } }
+.xm-lights .r { color: #ff2b3a; } .xm-lights .g { color: #23d160; } .xm-lights .y { color: #ffd23f; }
+/* the hat hangs on the top left corner, tilted, its tip flopping down the outside (Mo asked for the tilt, 14 Nov 2026) */
+.xm-hat { position: absolute; left: -52px; top: -30px; width: 88px; height: auto; z-index: 3; pointer-events: none; transform: scaleX(-1) rotate(40deg); transform-origin: 60% 75%; filter: drop-shadow(0 4px 5px rgba(0,0,0,.45)); }
+@media (prefers-reduced-motion: reduce) { .xm-lights rect { animation: none !important; } }
+@media (max-width: 599px) { .xm-hat { left: -22px; top: -16px; width: 50px; } }

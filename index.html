@@ -15,7 +15,7 @@
 <link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=Hanken+Grotesk:ital,wght@0,300;0,400;0,500;0,600;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/css/style.css?v=209">
+<link rel="stylesheet" href="/css/style.css?v=223">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"Store","name":"Almond Tree Market","description":"A native everyday market under the almond tree in Marsh Harbour, Abaco: local produce, native plants and fruit trees, pantry goods and arts and crafts from Abaco makers. Buy online, pick up and pay cash on site.","url":"https://almondtreemarket.com/","image":"https://almondtreemarket.com/img/hero.jpg","telephone":"+1-242-809-5667","email":"underthealmondtree242@gmail.com","priceRange":"$","paymentAccepted":"Cash","address":{"@type":"PostalAddress","streetAddress":"GWPQ+WQ","addressLocality":"Marsh Harbour","addressRegion":"Abaco","addressCountry":"BS"},"geo":{"@type":"GeoCoordinates","latitude":26.5373,"longitude":-77.0606},"openingHoursSpecification":[{"@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"]}],"containedInPlace":{"@type":"LocalBusiness","name":"Under the Almond Tree","url":"https://underthealmondtree.market/"},"sameAs":["https://www.instagram.com/underthealmondtree242","https://www.facebook.com/share/1DvHtLoC6S/"]}
 </script>
@@ -87,10 +87,21 @@
     </div>
     <div class="hero-side">
       <a class="plant-window" id="plant-window" href="/nursery.html" aria-label="Shop the native nursery"></a>
-      <a class="next-card" data-next href="https://underthealmondtree.market/" target="_blank" rel="noopener">
-        <span class="nc-photo"><img src="/img/IMG_3508.jpg" alt="Grilled fish with peas and rice, with the restaurant row behind" loading="lazy"><span class="nc-tag">Next door</span></span>
-        <span class="nc-text"><b>Hungry? Check out next door.</b><span class="nc-sub">Island plates, smoothies and more on the main row.</span><span class="nc-go">See the food vendors <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span></span>
-      </a>
+      <!-- two half squares (14 Nov 2026, from Mo): Become a vendor (left) + Hungry? next door (right), together as wide as the Native Nursery window.
+           Left photo: the market from the outside; swap img/market-palms-lawn.jpg for a new one when Mo sends it -->
+      <div class="nc-pair">
+        <!-- Christmas (14 Nov 2026, from Mo): December spaces, red card wrapped in twinkling lights, Santa hat on the top corner -->
+        <a class="next-card nc-half nc-vendor nc-xmas" href="/vendor.html" aria-label="December spaces available: become a vendor at the Almond Tree Market">
+          <svg class="xm-lights" aria-hidden="true"><rect class="w" pathLength="300"/><rect class="r" pathLength="300"/><rect class="g" pathLength="300"/><rect class="y" pathLength="300"/></svg>
+          <svg class="xm-hat" viewBox="0 0 120 110" aria-hidden="true"><defs><radialGradient id="xmRed" cx="38%" cy="30%" r="80%"><stop offset="0" stop-color="#f2414a"/><stop offset=".45" stop-color="#cc1626"/><stop offset="1" stop-color="#7a0812"/></radialGradient><linearGradient id="xmFold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5c040c" stop-opacity=".0"/><stop offset="1" stop-color="#5c040c" stop-opacity=".75"/></linearGradient><radialGradient id="xmFur" cx="40%" cy="30%" r="85%"><stop offset="0" stop-color="#ffffff"/><stop offset=".6" stop-color="#f1efea"/><stop offset="1" stop-color="#c9c4bb"/></radialGradient><filter id="xmFluff" x="-20%" y="-30%" width="140%" height="160%"><feTurbulence type="fractalNoise" baseFrequency=".55" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter></defs><path d="M12 80 C 18 50, 36 21, 62 16 C 85 12, 101 25, 106 44 C 109 56, 107 67, 102 76 L 91 74 C 93 63, 91 53, 84 47 C 87 58, 89 69, 88 80 Z" fill="url(#xmRed)"/><path d="M84 47 C 91 53, 93 63, 91 74 L 102 76 C 107 67, 109 56, 106 44 C 100 39, 91 40, 84 47 Z" fill="url(#xmFold)"/><path d="M84 47 C 87 58, 89 69, 88 80" fill="none" stroke="#5c040c" stroke-opacity=".55" stroke-width="2.2"/><path d="M28 76 C 32 56, 44 36, 60 27" fill="none" stroke="#ff9aa0" stroke-opacity=".28" stroke-width="4" stroke-linecap="round"/><g filter="url(#xmFluff)"><circle cx="98" cy="80" r="11" fill="url(#xmFur)"/><rect x="6" y="72" width="80" height="22" rx="11" fill="url(#xmFur)"/></g><rect x="10" y="86" width="72" height="6" rx="3" fill="#bdb7ad" opacity=".45" filter="url(#xmFluff)"/></svg>
+          <span class="nc-photo"><img src="/img/market-palms-lawn.jpg" alt="The Almond Tree Market from the outside: the white roof, turquoise posts and palms on the lawn" loading="lazy"><span class="nc-tag">Christmas</span></span>
+          <span class="nc-text"><b>December spaces available.</b><span class="nc-sub">Rent a table at the Almond Tree Market for Christmas.</span><span class="nc-go">Become a vendor <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></span>
+        </a>
+        <a class="next-card nc-half" data-next href="https://underthealmondtree.market/" target="_blank" rel="noopener">
+          <span class="nc-photo"><img src="/img/IMG_3508.jpg" alt="Grilled fish with peas and rice, with the restaurant row behind" loading="lazy"><span class="nc-tag">Next door</span></span>
+          <span class="nc-text"><b>Hungry? Check out next door.</b><span class="nc-sub">Island plates, smoothies and more on the main row.</span><span class="nc-go">Food vendors <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></span></span>
+        </a>
+      </div>
     </div>
   </div>
 </section>
@@ -366,7 +377,7 @@
 <script src="/js/data.js?v=195"></script>
 <script src="/js/cart.js?v=195"></script>
 <script src="/js/shop.js?v=195"></script>
-<script src="/js/app.js?v=195"></script>
+<script src="/js/app.js?v=197"></script>
 <script src="/js/promo.js?v=196"></script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "99baac2e2224442688c7bb3dd6deed12"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
