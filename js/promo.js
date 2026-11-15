@@ -68,6 +68,9 @@
     ".pz-slots .pz-card.pz-card{height:100%;min-height:140px;border-radius:14px}.pz-slots .pz-card .pz-img{position:absolute;inset:0;aspect-ratio:auto}.pz-slots .pz-card .pz-body{position:relative;flex:none;margin-top:auto;padding:22px 8px 8px;gap:3px;background:linear-gradient(180deg,rgba(13,26,18,0),rgba(13,26,18,.92) 38%)}" +
     ".pz-slots .pz-card .pz-tag,.pz-slots .pz-card .pz-blurb,.pz-slots .pz-card .pz-out,.pz-slots .pz-card .pz-small,.pz-slots .pz-card .pz-hurry{display:none}.pz-slots .pz-card .pz-body h3{font-size:.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.pz-slots .pz-card .pz-price{font-size:.78rem}.pz-slots .pz-card .pz-btn{padding:6px 8px;font-size:.74rem;border-radius:8px}.pz-slots .pz-card .pz-badge{top:6px;left:6px;font-size:10px;padding:3px 7px}.pz-slots .pz-card .pz-left{top:6px;right:6px;font-size:10px;padding:2px 7px}.pz-slots .pz-card .pz-soon{top:32%;font-size:.68rem;padding:4px}" +
     ".pz-shop-slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,263px));gap:10px;margin:0 0 18px}.pz-shop-slots .pz-card.pz-card{height:210px;min-height:0}@media (max-width:560px){.pz-shop-slots{grid-template-columns:repeat(2,minmax(0,1fr))}.pz-shop-slots .pz-card.pz-card{height:170px}}" +
+    ".pz-card.pz-idle{container-type:inline-size}.pz-stamp{position:absolute;inset:0;z-index:4;display:grid;place-items:center;pointer-events:none;overflow:hidden}" +
+    ".pz-stamp>span{display:flex;flex-direction:column;align-items:center;width:130%;transform:rotate(-28deg);background:rgba(255,255,255,.32);color:#d7261e;border-block:4px double rgba(215,38,30,.85);padding:.25em 0 .3em;text-align:center;text-shadow:0 0 3px #fff,0 0 6px #fff}" +
+    ".pz-stamp b{font:900 13cqw/1 system-ui,-apple-system,'Segoe UI',sans-serif;letter-spacing:.06em}.pz-stamp small{font:800 5.6cqw/1.2 system-ui,-apple-system,'Segoe UI',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#1b2a20;margin-top:.15em;text-shadow:0 0 3px #fff,0 0 6px #fff,0 0 8px #fff}" +
     "@keyframes pzBlink{to{visibility:hidden}}@keyframes pzGlow{0%,100%{box-shadow:0 0 0 0 rgba(229,50,45,.45)}50%{box-shadow:0 0 0 8px rgba(229,50,45,0)}}" +
     "@media (prefers-reduced-motion:reduce){.pz-badge,.pz-card{animation:none}}";
   document.head.appendChild(css);
@@ -83,7 +86,9 @@
     return "<" + tag + ' class="pz-card pz-idle' + (tag === "article" ? " pcard" : "") + '" data-pzidle="' + esc(d.promo_id) + '">' +
       '<div class="pz-img">' + (d.image_url ? '<img src="' + esc(d.image_url) + '" alt="' + esc(d.item) + '" loading="lazy">' : "") +
       '<span class="pz-badge" style="animation:none">' + (d.price_cents ? "WEB DEAL" : "FREE") + '</span><span class="pz-left">0 left</span>' +
-      '<span class="pz-soon">NEXT DROP SOON</span></div>' +
+      "</div>" +
+      /* zero left: a big diagonal stamp across the whole card (from Mo, 15 Nov 2026) */
+      '<span class="pz-stamp" aria-label="Stay tuned: check back soon for the next drop"><span><b>STAY TUNED</b><small>Check back soon</small></span></span>' +
       '<div class="pz-body"><span class="pz-tag">Giveaway</span><h3>' + esc(d.name) + "</h3>" + priceHTML(d) +
       '<p class="pz-out">Next drop soon. Check back for more!</p>' +
       '<button class="pz-btn" type="button" disabled>Next drop soon</button></div></' + tag + ">";
