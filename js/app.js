@@ -192,12 +192,15 @@ var COMPASS = (function () {
   /* the row of section buttons under the banner (sticks with the header on every page) */
   var QUICK = [["index.html", "The Market", "cornucopia"], ["produce.html", "Local Produce", "mango"], ["nursery.html", "Nursery", "pot"], ["pantry.html", "The Pantry", "pantry"], ["craft.html", "Arts &amp; Crafts", "easel"]];
   var QUICK_SOON = ["pantry.html", "craft.html"];
+  var QUICK_SHOP = ["produce.html", "nursery.html"];
   function quickBar() {
     return '<nav class="quick" aria-label="Sections"><div class="wrap"><div class="quick-row">' + QUICK.map(function (n) {
       var on = page === n[0].replace(".html", "");
       /* shops not open yet get a "Coming soon" in bold red above the name */
       var soon = QUICK_SOON.indexOf(n[0]) > -1;
-      return '<a class="qb' + (on ? " on" : "") + (soon ? " soon" : "") + (n[0] === "index.html" ? " mk" : "") + '" href="' + n[0] + '"' + (on ? ' aria-current="page"' : "") + '><span class="qi" aria-hidden="true">' + (ART[n[2]] || "") + "</span>" + (soon ? '<span class="qb-t"><span class="qb-soon">Coming soon</span>' + n[1] + "</span>" : n[1]) + "</a>";
+      /* open shops get "Shop" in the same bold red above the name (15 Nov 2026, from Mo) */
+      var shop = QUICK_SHOP.indexOf(n[0]) > -1;
+      return '<a class="qb' + (on ? " on" : "") + (soon ? " soon" : "") + (shop ? " shop" : "") + (n[0] === "index.html" ? " mk" : "") + '" href="' + n[0] + '"' + (on ? ' aria-current="page"' : "") + '><span class="qi" aria-hidden="true">' + (ART[n[2]] || "") + "</span>" + (soon ? '<span class="qb-t"><span class="qb-soon">Coming soon</span>' + n[1] + "</span>" : shop ? '<span class="qb-t"><span class="qb-soon qb-shop">Shop</span>' + n[1] + "</span>" : n[1]) + "</a>";
     }).join("") + '<a class="qb next" href="' + M.nextDoor + '" target="_blank" rel="noopener"><span class="qi" aria-hidden="true">' + ART.fish + "</span>Food next door <span aria-hidden=\"true\">↗</span></a></div></div></nav>";
   }
   function nextMarketStripe() {
