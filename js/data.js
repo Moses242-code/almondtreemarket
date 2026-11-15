@@ -252,6 +252,8 @@ window.PLANTS = [
     text: "Fruits within a year. Green for cooking, ripe for breakfast.", care: "Full sun, good drainage." },
   { id: "pineapple", img: "/img/plants/pineapple.jpg", name: "Pineapple", latin: "Ananas comosus", cat: "Fruit plants & vines", art: "pineapple", sizes: [{ pot: "1 gal", price: 0, qty: 0 }],
     text: "Eleuthera-style sweet pineapple from a crown or slip.", care: "Full sun, sandy soil, very little water." },
+  { id: "eleutherapineapple", img: "/img/plants/eleuthera-pineapple-slip.jpg", name: "Native Eleuthera pineapple slip", latin: "Ananas comosus", cat: "Fruit plants & vines", art: "pineapple", sizes: [{ pot: "Slip", price: 20, qty: 0 }], aliases: ["Eleuthera pineapple slip", "Eleuthera pineapple slips", "Native Eleuthera pineapple", "pineapple slip", "pineapple slips"],
+    text: "A slip (young shoot) from our own native Eleuthera pineapples, ready to plant.", care: "Full sun, sandy soil, very little water." },
   { id: "passionfruit", img: "/img/plants/passionfruit.jpg", name: "Passion fruit", latin: "Passiflora edulis", cat: "Fruit plants & vines", art: "passionfruit", sizes: [{ pot: "3 gal", price: 0, qty: 0 }, { pot: "25 gal", price: 0, qty: 0 }],
     text: "Climbing vine with purple fruit for juice and big lacy flowers.", care: "Full sun, give it a fence or trellis." },
   { id: "persianlime", img: "/img/plants/persianlime.jpg", name: "Persian lime", latin: "Citrus × latifolia", cat: "Citrus", art: "citrus", sizes: [{ pot: "3 gal", price: 0, qty: 0 }, { pot: "25 gal", price: 0, qty: 0 }],

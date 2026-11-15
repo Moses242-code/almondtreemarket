@@ -180,7 +180,11 @@ var COMPASS = (function () {
       '<ul id="navlist">' + NAV.map(function (n) {
         return '<li><a href="' + n[0] + '"' + (page === n[0].replace(".html", "") ? ' aria-current="page"' : "") + ">" + n[1] + "</a></li>";
       }).join("") + '<li><a class="next" href="' + M.nextDoor + '" target="_blank" rel="noopener">Food next door ↗</a></li>' +
-      "</ul></div>" + quickBar() + '</header>' +
+      "</ul></div>" + quickBar() +
+      /* a little tab hanging from the top right of the header (15 Nov 2026, from Mo): "Back to market" on every other page,
+         "Back to top" on the home page once you have scrolled down */
+      (page === "home" || page === "" || page === "index" ? '<a class="hang-tab ht-top" href="#main" data-top aria-label="Back to the top">&#8963; Back to top</a>' : '<a class="hang-tab" href="index.html">&#8249; Back to market</a>') +
+      '</header>' +
       /* phones and tablets: the farmer call-out sits just under the header (scrolls away) */
       '<div class="farmer-m">' + FARMER_CTA + COCO_CTA + '</div>' +
       '<div class="grain" aria-hidden="true"></div>';
@@ -472,6 +476,9 @@ var COMPASS = (function () {
    Tablets: A in the empty space right of the nursery sign arrow, B beside the headline if there is room.
    Phones: A at the top right of the sky, B at the top left. */
 (function () {
+  /* turned off for now (15 Nov 2026, from Mo). Set LEAF_ON to true to bring the leaf back. */
+  var LEAF_ON = false;
+  if (!LEAF_ON) return;
   var hero = document.querySelector(".hero"), h1 = document.querySelector(".hero h1");
   if (!hero || !h1 || !document.querySelector("#plant-window")) return;
   var leaf = document.createElement("div");
@@ -509,11 +516,17 @@ var COMPASS = (function () {
       if (L && NS) {
         /* with the Nursery | Produce split (15 Nov 2026) the free space is in the left column, between the coordinates badge
            (or the blurb, when the badge is up in the top bar) and the Native Nursery sign, over the palm */
-        var G = hero.querySelector(".duo .geo-badge"), gR = G && G.offsetParent ? rel(G.getBoundingClientRect()) : null;
+        var G = hero.querySelector(".nursery-intro") || hero.querySelector(".duo .geo-badge"), gR = G && G.offsetParent ? rel(G.getBoundingClientRect()) : null;
         var lR = gR && gR.b > rel(L.getBoundingClientRect()).b ? gR : rel(L.getBoundingClientRect()), sR2 = rel(NS.getBoundingClientRect());
         var BD = NS.querySelector(".ns-board"), bR = BD ? rel(BD.getBoundingClientRect()) : sR2;
         var xA = hero.querySelector(".duo") ? bR.l + (bR.w - w) / 2 : T.r - w - 30;
         if (sR2.t - lR.b >= lh + 16) cands.unshift([xA, lR.b + (sR2.t - lR.b - lh) / 2 + (wide ? 14 : 12)]);
+      }
+      /* narrow headline (15 Nov 2026): the open space between "Grown here…" and the Hungry sign comes first */
+      var HD = hero.querySelector(".rt2 h1"), SG = hero.querySelector(".rt2 .nd-sign");
+      if (HD && SG) {
+        var hR = rel(HD.getBoundingClientRect()), gR2 = rel(SG.getBoundingClientRect());
+        if (gR2.l - hR.r >= w + 30) cands.unshift([hR.r + (gR2.l - hR.r - w) / 2, gR2.t + (gR2.h - lh) / 2 + 14]);
       }
       if (!cands.length) cands.push([T.r - w, C.t - lh - 14]);
     } else {
@@ -529,7 +542,7 @@ var COMPASS = (function () {
     /* land a little higher than the spot itself, then keep nudging up until the resting leaf
        is clear of every line of text (the chips, the headline, the paragraph) on any screen */
     var TR = [];
-    [hero.querySelector(".chips"), h1, hero.querySelector(".lead"), hero.querySelector(".duo-intro"), hero.querySelector(".nd-sign")].forEach(function (el) {
+    [hero.querySelector(".chips"), h1, hero.querySelector(".lead"), hero.querySelector(".duo-produce .duo-intro"), hero.querySelector(".nursery-intro"), hero.querySelector(".nd-sign")].forEach(function (el) {
       if (!el) return; var rg = document.createRange(); rg.selectNodeContents(el);
       [].forEach.call(rg.getClientRects(), function (r) { if (r.width > 2 && r.height > 2) TR.push(rel(r)); });
     });
@@ -613,3 +626,64 @@ Array.prototype.forEach.call(document.querySelectorAll(".ns-tree:not(.ns-scene)"
     $$(".reveal").forEach(function (el) { io.observe(el); });
   } else { $$(".reveal").forEach(function (el) { el.classList.add("in"); }); }
 })();
+/* "Back to top" tab on the home page: shows after scrolling down 500px, takes you back up (15 Nov 2026) */
+(function () {
+  var t = document.querySelector(".hang-tab.ht-top"); if (!t) return;
+  var still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var on = function () { t.classList.toggle("show", window.scrollY > 500); };
+  window.addEventListener("scroll", on, { passive: true }); on();
+  t.addEventListener("click", function (e) { e.preventDefault(); window.scrollTo({ top: 0, behavior: still ? "auto" : "smooth" }); t.blur(); });
+})();
+/* home page: the market photo's top lines up with the top of the Big Bird / Make things by hand cards (15 Nov 2026) */
+(function () {
+  var ph = document.querySelector(".rt2 .film-pair") || document.querySelector(".rt2 .film-photo"), bb = document.querySelector(".nc-pair.under .bb-ad");
+  if (!ph || !bb) return;
+  var mq = matchMedia("(min-width: 760px)");
+  var line = function () {
+    var pair = bb.parentNode, imgs = ph.querySelectorAll("img");
+    ph.style.marginTop = ""; pair.style.rowGap = "";
+    [].forEach.call(imgs, function (im) { im.style.height = ""; });
+    if (!mq.matches) return;
+    /* the photos are as tall as the Big Bird card: photo height = card height minus the white frame and caption */
+    var fig = ph.querySelector(".film-photo");
+    if (fig && imgs.length) {
+      var extra = fig.getBoundingClientRect().height - imgs[0].getBoundingClientRect().height;
+      var h = Math.max(90, Math.round(bb.getBoundingClientRect().height - extra));
+      [].forEach.call(imgs, function (im) { im.style.height = h + "px"; });
+    }
+    var m = parseFloat(getComputedStyle(ph).marginTop) || 0, gap = bb.getBoundingClientRect().top - ph.getBoundingClientRect().top;
+    if (gap > -m) ph.style.marginTop = Math.round(m + gap) + "px";
+    else { /* the photo can't come up any higher (the blurb is in the way), so the bottom two cards step down to meet it */
+      ph.style.marginTop = "0px";
+      var g2 = ph.getBoundingClientRect().top - bb.getBoundingClientRect().top, rg = parseFloat(getComputedStyle(pair).rowGap) || 0;
+      if (g2 > 0) pair.style.rowGap = Math.round(rg + g2) + "px";
+    }
+  };
+  var t; var later = function () { clearTimeout(t); t = setTimeout(line, 120); };
+  window.addEventListener("resize", later); window.addEventListener("load", line);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(line);
+  [].forEach.call(document.querySelectorAll(".nc-pair.under img, .rt2 img"), function (im) { if (!im.complete) im.addEventListener("load", later); });
+  line(); setTimeout(line, 700);
+})();
+/* the four shop cards on the home page (nursery, produce, pantry, crafts) all the same size (15 Nov 2026, from Mo):
+   their headings get the height of the tallest one, so the photos and buttons line up too */
+(function () {
+  var wins = [].slice.call(document.querySelectorAll(".duo .plant-window"));
+  if (wins.length < 2) return;
+  var even = function () {
+    var heads = wins.map(function (w) { return w.children[1]; }).filter(Boolean);
+    heads.forEach(function (h) { h.style.minHeight = ""; });
+    wins.forEach(function (w) { w.style.minHeight = ""; });
+    var hMax = Math.max.apply(null, heads.map(function (h) { return h.getBoundingClientRect().height; }));
+    heads.forEach(function (h) { h.style.minHeight = Math.ceil(hMax) + "px"; });
+    var wMax = Math.max.apply(null, wins.map(function (w) { return w.getBoundingClientRect().height; }));
+    wins.forEach(function (w) { w.style.minHeight = Math.ceil(wMax) + "px"; });
+  };
+  var t; var later = function () { clearTimeout(t); t = setTimeout(even, 150); };
+  window.addEventListener("resize", later); window.addEventListener("load", even);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(even);
+  /* the cards are filled in by the shop script, so check again once their contents change */
+  if (window.MutationObserver) wins.forEach(function (w) { new MutationObserver(later).observe(w, { childList: true, subtree: true }); });
+  setTimeout(even, 400); setTimeout(even, 1500);
+})();
+

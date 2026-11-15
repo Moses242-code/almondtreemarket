@@ -1768,3 +1768,262 @@ header.nav .brand b .dotcom { display: block; position: absolute; right: -.06em;
   .duo .geo-badge, .hero .hero-text > .geo-badge { display: none; }
 }
 @media (min-width: 1241px) { .farmer-m { max-width: 1240px; margin-inline: auto; } }
+
+/* hero top (15 Nov 2026, from Mo): the December and yard fruit cards back near their old shape (photo on top, full text and
+   button); instead of squeezing them, the blurb on the left drops down so its last line sits level with the cards' bottom */
+@media (min-width: 760px) {
+  .row-top.rt2 { align-items: stretch; }
+  .rt2 .rt-left { justify-content: space-between; }
+  .rt2 .rt-right { contain: none; height: auto; }
+  .nc-pair.under.two { flex: none; }
+  .nc-pair.under.two .nc-half { grid-template-rows: auto 1fr; }
+  .nc-pair.under.two .nc-half .nc-photo { height: 100px; }
+  .nc-pair.under.two .nc-half .nc-text { grid-template-rows: auto auto 1fr; padding: .6rem .7rem .7rem; }
+  .nc-pair.under.two .nc-half .nc-go { align-self: end; }
+}
+@media (min-width: 760px) and (max-width: 960px) {
+  .nc-pair.under.two .nc-half .nc-photo { height: 88px; }
+  .nc-pair.under.two .nc-half b { font-size: .86rem; }
+  .nc-pair.under.two .nc-half .nc-sub { font-size: .68rem; }
+  .nc-pair.under.two .nc-half .nc-go { font-size: .62rem; }
+}
+
+/* headline squeezed to the left wall, a word or two per line, like "Eat fresh. Buy local." on underthealmondtree.market
+   (15 Nov 2026, from Mo): the left column is only as wide as its longest word, the sign and cards get the rest */
+@media (min-width: 760px) {
+  .row-top.rt2 { grid-template-columns: auto minmax(0, 1fr); column-gap: clamp(1.2rem, 3vw, 2.4rem); }
+  .rt2 h1 { width: min-content; max-width: none; }
+  .rt2 h1 em { display: inline; }
+  .rt2 .lead { max-width: 24ch; }
+  .rt2 .rt-right { align-items: center; }
+  .nc-pair.under.two { max-width: 470px; }
+}
+@media (min-width: 760px) {
+  .rt2 .nd-sign { width: max-content; max-width: 100%; }
+  .rt2 .lead { width: 0; min-width: 100%; max-width: none; }
+  .rt2 .rt-right { contain: size; height: 100%; }
+  .nc-pair.under.two { flex: 1 1 0; min-height: 0; }
+  .nc-pair.under.two .nc-half { grid-template-rows: minmax(90px, 1fr) auto; }
+  .nc-pair.under.two .nc-half .nc-photo { height: auto; }
+}
+@media (min-width: 760px) { .rt2 h1 { font-size: clamp(2.3rem, 4vw, 3.3rem); } }
+
+/* Native Nursery heading over the nursery sign (same look as "Island fruit, hand picked"), 15 Nov 2026 */
+.nursery-intro .chips { margin: 0; }
+.nursery-intro h2 { font-size: clamp(1.8rem, 3.2vw, 2.8rem); max-width: 17ch; margin: 0; }
+.nursery-intro h2 em { font-style: normal; color: var(--mango); }
+.nursery-intro h2 .lf { color: var(--leaf); }
+.nursery-intro .lead { margin: 0; font-size: .98rem; max-width: 46ch; }
+@media (min-width: 761px) {
+  .duo { grid-template-areas: "nintro intro" "nsign psign" "nwin pwin" "geo ."; }
+  .nursery-intro { grid-area: nintro; }
+}
+/* the Native Nursery and Local Produce sign arrows point down and to the left, at the cards under them */
+.duo .ns-arrow svg { transform: rotate(135deg); }
+.duo .ns-arrow { animation: nudge-dl 1.2s ease-in-out infinite, ring 1.8s ease-out infinite; }
+@keyframes nudge-dl { 0%, 100% { translate: 0 0; } 50% { translate: -6px 6px; } }
+@media (prefers-reduced-motion: reduce) { .duo .ns-arrow { animation: none !important; } }
+/* the two signs in the split on narrow screens: same sizes as the old phone signs, kept inside the screen */
+@media (max-width: 960px) {
+  .duo .nursery-sign { align-items: flex-end; padding-top: 0; gap: .6rem; max-width: 100%; min-width: 0; }
+  .duo .ns-tree { width: clamp(96px, 13vw, 124px); flex: none; margin: 0 -1.3rem -4px -.4rem; }
+  .duo .ns-board { min-width: 0; flex: 1 1 auto; padding: .75rem .9rem .85rem; }
+  .duo .ns-board b { font-size: clamp(1.2rem, 3.2vw, 1.7rem); }
+  .duo .ns-top { font-size: .6rem; letter-spacing: .12em; }
+  .duo .ns-sub { font-size: .76rem; }
+  .duo .ns-arrow { width: 46px; height: 46px; align-self: center; }
+  .duo .ns-arrow svg { width: 22px; height: 22px; }
+}
+@media (max-width: 480px) {
+  .duo .nursery-sign { gap: .45rem; align-self: stretch; }
+  .duo .ns-tree { width: 96px; margin-right: -1.2rem; }
+  .duo .ns-board { padding: .65rem .8rem .75rem; }
+  .duo .ns-board b { font-size: 1.2rem; }
+  .duo .ns-top { font-size: .56rem; letter-spacing: .1em; }
+  .duo .ns-sub { font-size: .72rem; }
+  .duo .ns-arrow { width: 40px; height: 40px; }
+  .duo .ns-arrow svg { width: 20px; height: 20px; }
+}
+
+/* ---- tab hanging from the top right of the header, under the section buttons (15 Nov 2026, from Mo) ----
+   "‹ Back to market" on every page but the home page; "⌃ Back to top" on the home page once you've scrolled down.
+   The header is sticky, so the tab stays put while you scroll. Same idea as the Back / Top tab on underthealmondtree.market. */
+header.nav > .hang-tab { position: absolute; right: 16px; top: calc(100% + 1px); z-index: 24; display: inline-flex; align-items: center; gap: .3rem;
+  padding: .4rem .95rem .48rem .8rem; border-radius: 0 0 12px 12px; background: var(--leaf); color: #04230f; text-decoration: none;
+  font: 700 .84rem/1 var(--body, inherit); letter-spacing: .02em; box-shadow: 0 6px 14px rgba(0,0,0,.4), 0 0 14px rgba(107,229,156,.35); }
+header.nav > .hang-tab:hover, header.nav > .hang-tab:focus-visible { background: var(--mango); color: #241300; outline: none; }
+@media (min-width: 1300px) { header.nav > .hang-tab { right: calc((100vw - 1240px) / 2 + 16px); } }
+@media (max-width: 760px) { header.nav > .hang-tab { right: 10px; font-size: .78rem; padding: .36rem .8rem .42rem .7rem; } }
+header.nav > .hang-tab.ht-top { opacity: 0; visibility: hidden; transform: translateY(-6px); transition: opacity .2s, transform .2s, visibility 0s .2s; }
+header.nav > .hang-tab.ht-top.show { opacity: 1; visibility: visible; transform: none; transition: opacity .2s, transform .2s; }
+@media (prefers-reduced-motion: reduce) { header.nav > .hang-tab.ht-top, header.nav > .hang-tab.ht-top.show { transition: none; transform: none; } }
+/* room above the "Sell your product!" / "We buy Coconuts!" row for the Back to market tab, so it never covers the signs */
+body:not([data-page="index"]) .farmer-m { padding-top: 2.1rem !important; }
+@media (max-width: 760px) { body:not([data-page="index"]) .farmer-m { padding-top: 1.9rem !important; } }
+
+/* ---- hero top right (15 Nov 2026, from Mo): Hungry sign at the very top right; under it three even cards in a row:
+   December spaces, Got fruit in the yard?, Big Bird Chicken Thursday (moved up from The Pantry). Normal card shapes, no
+   stretching; the blurb on the left drops to end level with the cards when they are the taller side. ---- */
+.bb-ad:hover .nc-photo img { transform: scale(1.06); } /* the farm logo stays level */
+@media (min-width: 760px) {
+  .rt2 .rt-right { contain: none; height: auto; align-items: flex-end; gap: 1.7rem; }
+  .rt2 .nd-sign { align-self: flex-end; }
+  .nc-pair.under.two.three { flex: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; width: 100%; max-width: 620px; }
+  .nc-pair.under.three .nc-half { grid-template-rows: auto 1fr; }
+  .nc-pair.under.three .nc-half .nc-photo, .nc-pair.under.three .bb-ad .nc-photo { height: 108px; }
+  .nc-pair.under.three .bb-ad .nc-photo img { width: 92px; height: 92px; }
+  .nc-pair.under.three .nc-half .nc-text { grid-template-rows: auto auto 1fr; padding: .6rem .7rem .7rem; }
+  .nc-pair.under.three .nc-half b { font-size: .9rem; }
+  .nc-pair.under.three .nc-half .nc-sub { font-size: .7rem; }
+  .nc-pair.under.three .nc-half .nc-go { align-self: end; white-space: normal; font-size: .64rem; line-height: 1.2; }
+  .nc-pair.under.three .nc-half .nc-go svg { flex: none; }
+}
+@media (min-width: 760px) and (max-width: 960px) {
+  .nc-pair.under.three .nc-half .nc-photo, .nc-pair.under.three .bb-ad .nc-photo { height: 84px; }
+  .nc-pair.under.three .bb-ad .nc-photo img { width: 72px; height: 72px; }
+  .nc-pair.under.three .nc-half b { font-size: .8rem; }
+  .nc-pair.under.three .nc-half .nc-sub { font-size: .64rem; }
+}
+/* phones: December and yard fruit side by side, Big Bird across the full width under them (logo left, words right) */
+@media (max-width: 759px) {
+  .nc-pair.under.three { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nc-pair.under.three .bb-ad { grid-column: 1 / -1; grid-template-columns: 38% 1fr; grid-template-rows: auto; }
+  .nc-pair.under.three .bb-ad .nc-photo { height: 100%; min-height: 120px; border-radius: 18px 0 0 18px; }
+  .nc-pair.under.three .bb-ad .nc-photo img { width: 96px; height: 96px; }
+}
+/* The Pantry: its Big Bird card moved up to the top of the page, so on tablets the pantry window has the row to itself */
+@media (min-width: 600px) and (max-width: 960px) {
+  .hero-pantry .hero-side:not(:has(.next-card)) { grid-template-columns: minmax(0, 1fr); max-width: 560px; }
+  .hero-pantry .hero-side:not(:has(.next-card)) .plant-window { grid-column: 1; }
+}
+
+/* ---- The Pantry | Arts & Crafts split (15 Nov 2026, from Mo): same layout as Native Nursery | Local Produce ---- */
+.hero-duo2 .wrap.has-window { padding-top: clamp(40px, 6vw, 72px); padding-bottom: clamp(48px, 6vw, 80px); }
+.hero-duo2 .duo { margin-top: 0; }
+
+/* ---- four cards under the Hungry sign: December, yard fruit, Big Bird, Make things by hand (15 Nov 2026) ---- */
+@media (min-width: 760px) {
+  .nc-pair.under.four { grid-template-columns: repeat(4, minmax(0, 1fr)); max-width: 800px; gap: 10px; }
+  .nc-pair.under.four .nc-half .nc-photo, .nc-pair.under.four .bb-ad .nc-photo { height: 96px; }
+  .nc-pair.under.four .bb-ad .nc-photo img { width: 80px; height: 80px; }
+  .nc-pair.under.four .nc-half .nc-text { padding: .55rem .6rem .65rem; }
+  .nc-pair.under.four .nc-half b { font-size: .84rem; }
+  .nc-pair.under.four .nc-half .nc-sub { font-size: .66rem; }
+  .nc-pair.under.four .nc-half .nc-go { font-size: .6rem; padding: .42em .6em; }
+  .nc-pair.under.four .nc-half .nc-tag { font-size: .5rem; letter-spacing: .08em; left: 8px; top: 8px; }
+}
+@media (min-width: 760px) and (max-width: 1100px) {
+  .nc-pair.under.four .nc-half .nc-photo, .nc-pair.under.four .bb-ad .nc-photo { height: 76px; }
+  .nc-pair.under.four .bb-ad .nc-photo img { width: 64px; height: 64px; }
+  .nc-pair.under.four .nc-half b { font-size: .76rem; }
+  .nc-pair.under.four .nc-half .nc-sub { font-size: .6rem; }
+  .nc-pair.under.four .nc-half .nc-go { font-size: .56rem; }
+}
+/* phones: two by two */
+@media (max-width: 759px) {
+  .nc-pair.under.four .bb-ad { grid-column: auto; grid-template-columns: none; grid-template-rows: auto 1fr; }
+  .nc-pair.under.four .bb-ad .nc-photo { height: 84px; min-height: 0; border-radius: 18px 18px 0 0; }
+  .nc-pair.under.four .bb-ad .nc-photo img { width: 70px; height: 70px; }
+}
+@media (min-width: 760px) { .nc-pair.under.two.three.four { grid-template-columns: repeat(4, minmax(0, 1fr)); max-width: 800px; gap: 10px; } }
+@media (max-width: 759px) { .nc-pair.under.two.three.four { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 759px) {
+  .nc-pair.under.four .nc-half, .nc-pair.under.four .nc-half .nc-text { min-width: 0; }
+  .nc-pair.under.four .nc-half .nc-text { grid-template-columns: minmax(0, 1fr); }
+  .nc-pair.under.four .nc-half .nc-go { white-space: normal; line-height: 1.2; max-width: 100%; }
+}
+/* the four top cards two by two on every screen (15 Nov 2026, from Mo): December and yard fruit on top,
+   Big Bird and Make things by hand underneath */
+@media (min-width: 760px) {
+  .nc-pair.under.two.three.four { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 440px; gap: 12px; }
+  .nc-pair.under.four .nc-half .nc-photo, .nc-pair.under.four .bb-ad .nc-photo { height: 100px; }
+  .nc-pair.under.four .bb-ad .nc-photo img { width: 84px; height: 84px; }
+  .nc-pair.under.four .nc-half b { font-size: .88rem; }
+  .nc-pair.under.four .nc-half .nc-sub { font-size: .7rem; }
+  .nc-pair.under.four .nc-half .nc-go { font-size: .64rem; }
+}
+@media (min-width: 760px) and (max-width: 1100px) { .nc-pair.under.two.three.four { max-width: 380px; } .nc-pair.under.four .nc-half .nc-photo, .nc-pair.under.four .bb-ad .nc-photo { height: 86px; } }
+
+/* ---- 15 Nov 2026, from Mo: "Grown here. Made here. Sold Under the Almond Tree." back to its original style (a phrase per
+   line, big, beside the sign); the narrow left-hugging style moves to the section headings below instead ---- */
+@media (min-width: 760px) {
+  .row-top.rt2 { grid-template-columns: minmax(0, 1fr) auto; }
+  .rt2 h1 { width: auto; max-width: 13ch; font-size: clamp(2.1rem, 5.2vw, 4.6rem); line-height: .95; }
+  .rt2 h1 em { display: block; }
+  .rt2 .lead { width: auto; min-width: 0; max-width: 34ch; }
+}
+@media (min-width: 760px) and (max-width: 960px) { .rt2 h1 { font-size: clamp(2rem, 5vw, 2.7rem); max-width: none; } }
+
+/* section headings ("Plant something that belongs here.", "Island fruit, hand picked.", the Pantry and Arts & Crafts ones):
+   squeezed to the left, a word or two per line, with the paragraph beside them on the right */
+@media (min-width: 761px) {
+  .duo-intro { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: clamp(1rem, 2vw, 1.6rem); row-gap: .7rem; align-items: end; }
+  .duo-intro .chips { grid-column: 1 / -1; }
+  .duo-intro h2 { width: min-content; max-width: none; line-height: .98; }
+  .duo-intro h2 em { display: inline; }
+  .duo-intro .lead { grid-column: 2; align-self: end; max-width: none; font-size: .92rem; line-height: 1.45; }
+}
+/* 15 Nov 2026, from Mo: section headings back to title on top, paragraph underneath, but narrower (title and paragraph about
+   the same width), with more space between the left and right sections */
+@media (min-width: 761px) {
+  .duo-intro { display: flex; flex-direction: column; align-items: flex-start; gap: .8rem; }
+  .duo-intro h2 { width: auto; max-width: 12ch; line-height: 1.02; }
+  .duo-intro .lead { max-width: 34ch; font-size: .95rem; }
+  .duo { column-gap: clamp(2.5rem, 6vw, 5.5rem); }
+}
+@media (min-width: 761px) { .duo-intro .lead { align-self: flex-start; grid-column: auto; } }
+@media (min-width: 761px) { .duo-intro { margin-bottom: 3.6rem; } }
+
+/* ---- "A native market for Abaco…" right under the headline, wider and a little bolder and bigger, like a subheading;
+   under it a photo of the market in a film-strip frame (15 Nov 2026, from Mo) ---- */
+@media (min-width: 760px) {
+  .rt2 .rt-left { justify-content: flex-start; gap: 1.1rem; }
+  .rt2 .lead { max-width: 40ch; font-size: clamp(1.05rem, 1.5vw, 1.25rem); font-weight: 400; line-height: 1.45; color: #e8f0ea; }
+}
+.film-photo { position: relative; margin: .4rem 0 0; width: 100%; max-width: 380px; padding: 24px 14px; background: #0c0c0b; border-radius: 6px;
+  box-shadow: 0 14px 30px rgba(0,0,0,.5), inset 0 0 0 1px rgba(255,255,255,.06); }
+.film-photo img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 2px; }
+/* the sprocket holes along the top and bottom edges */
+.film-photo::before, .film-photo::after { content: ""; position: absolute; left: 12px; right: 12px; height: 9px;
+  background: repeating-linear-gradient(90deg, rgba(244,240,226,.88) 0 10px, transparent 10px 22px); border-radius: 2px; }
+.film-photo::before { top: 7px; } .film-photo::after { bottom: 7px; }
+@media (min-width: 760px) and (max-width: 960px) { .film-photo { max-width: 300px; padding: 20px 11px; } .film-photo::before, .film-photo::after { height: 7px; } .film-photo::before { top: 6px; } .film-photo::after { bottom: 6px; } }
+/* phones: no room beside the sign, so the photo waits for the bigger screens */
+@media (max-width: 759px) { .film-photo { display: none; } }
+
+/* 15 Nov 2026, from Mo: the blurb and the photo centred under the headline; the photo as an instant-camera print
+   (white frame, deeper strip at the bottom with a caption) instead of a strip of movie film; kept level */
+@media (min-width: 760px) {
+  .rt2 .rt-left { align-items: stretch; }
+  .rt2 .lead { align-self: center; text-align: center; }
+}
+.film-photo { align-self: center; max-width: 330px; padding: 14px 14px 0; background: #f7f3ea; border-radius: 3px;
+  box-shadow: 0 16px 32px rgba(0,0,0,.55), 0 2px 6px rgba(0,0,0,.35); }
+.film-photo::before, .film-photo::after { content: none; }
+.film-photo img { aspect-ratio: 1 / 1; border-radius: 1px; filter: saturate(1.05) contrast(1.03); }
+.film-photo figcaption { display: block; padding: .9rem .4rem 1.1rem; text-align: center; font: 600 .82rem/1.2 var(--display); letter-spacing: .02em; color: #3a3a34; }
+@media (min-width: 760px) and (max-width: 960px) { .film-photo { max-width: 260px; padding: 11px 11px 0; } .film-photo figcaption { font-size: .72rem; padding: .7rem .3rem .9rem; } }
+
+/* 15 Nov 2026, from Mo: the "Open Mon–Sat · Marsh Harbour · Bahamian-made" line is gone from the top of the home page,
+   so the headline and the Hungry sign start right at the top with no empty band above them */
+.hero.sign-below:not(.hero-produce) > .wrap.has-window { padding-top: 26px; }
+@media (min-width: 961px) { .hero.sign-below:not(.hero-produce) > .wrap.has-window { padding-top: 34px; } }
+/* the blurb under the headline: wider, bolder */
+@media (min-width: 760px) {
+  .rt2 .lead { max-width: 52ch; font-weight: 500; font-size: clamp(1.02rem, 1.4vw, 1.2rem); line-height: 1.42; }
+}
+@media (min-width: 760px) { .rt2 .lead { max-width: none; align-self: stretch; } .rt2 .rt-left { gap: .9rem; } }
+@media (min-width: 961px) { .rt2 h1 { font-size: clamp(2.1rem, 5vw, 4rem); } }
+
+/* two smaller instant-camera photos side by side, as tall as the bottom pair of cards and level with them (15 Nov 2026) */
+.film-pair { display: flex; justify-content: center; gap: 14px; width: 100%; align-self: center; }
+.film-pair .film-photo { flex: 1 1 0; min-width: 0; max-width: 210px; margin: 0; padding: 9px 9px 0; align-self: flex-start; }
+.film-pair .film-photo img { aspect-ratio: auto; height: 170px; object-fit: cover; }
+.film-pair .film-photo figcaption { padding: .55rem .3rem .7rem; font-size: .68rem; }
+@media (max-width: 759px) { .film-pair { display: none; } }
+/* less empty space between the top of the page and the Native Nursery | Local Produce headings */
+.hero.sign-below:not(.hero-produce) > .wrap.has-window { row-gap: 1.2rem; }
+.hero.sign-below:not(.hero-produce) .duo { margin-top: .4rem; }
+/* shop cards: when a card is stretched to match the others, the extra room goes above the button, not under it */
+.duo .plant-window { align-content: start; grid-template-rows: auto auto auto 1fr; }
+.duo .plant-window .pw-go { align-self: end; }
