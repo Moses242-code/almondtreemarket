@@ -501,28 +501,35 @@ var COMPASS = (function () {
     var start, cands = [];
     if (wide) {
       start = [H.w / 2 - w / 2, top0];
-      var T = rel(document.querySelector(".hero-text").getBoundingClientRect());
-      cands = h1Spots(T.r + 8, w, lh);
+      var T = rel((hero.querySelector(".rt-left") || hero.querySelector(".hero-text")).getBoundingClientRect());
+      var ND = document.querySelector(".hero .nd-sign"), ndL = ND ? rel(ND.getBoundingClientRect()).l - 10 : Infinity; /* never land on the next-door sign */
+      cands = h1Spots(Math.min(T.r + 8, ndL), w, lh);
       /* first landing (14 Nov 2026): the empty space over the mango, between the paragraph and the hanging nursery sign, at the right of the text column */
-      var L = document.querySelector(".hero-text .lead"), NS = document.querySelector(".hero-text .nursery-sign");
+      var L = hero.querySelector(".rt-left .lead") || hero.querySelector(".lead"), NS = hero.querySelector(".nursery-sign");
       if (L && NS) {
-        var lR = rel(L.getBoundingClientRect()), sR2 = rel(NS.getBoundingClientRect());
-        if (sR2.t - lR.b >= lh + 16) cands.unshift([T.r - w - 30, lR.b + (sR2.t - lR.b - lh) / 2 + (wide ? 14 : 12)]);
+        /* with the Nursery | Produce split (15 Nov 2026) the free space is in the left column, between the coordinates badge
+           (or the blurb, when the badge is up in the top bar) and the Native Nursery sign, over the palm */
+        var G = hero.querySelector(".duo .geo-badge"), gR = G && G.offsetParent ? rel(G.getBoundingClientRect()) : null;
+        var lR = gR && gR.b > rel(L.getBoundingClientRect()).b ? gR : rel(L.getBoundingClientRect()), sR2 = rel(NS.getBoundingClientRect());
+        var BD = NS.querySelector(".ns-board"), bR = BD ? rel(BD.getBoundingClientRect()) : sR2;
+        var xA = hero.querySelector(".duo") ? bR.l + (bR.w - w) / 2 : T.r - w - 30;
+        if (sR2.t - lR.b >= lh + 16) cands.unshift([xA, lR.b + (sR2.t - lR.b - lh) / 2 + (wide ? 14 : 12)]);
       }
       if (!cands.length) cands.push([T.r - w, C.t - lh - 14]);
     } else {
       start = [H.w * .22, top0];
-      var A = document.querySelector(".hero-side .ns-arrow"), S = document.querySelector(".hero-side");
+      var A = hero.querySelector(".ns-arrow"), S = hero.querySelector(".duo-nursery") || hero.querySelector(".hero-side");
       var aR = A ? rel(A.getBoundingClientRect()) : null, sR = S ? rel(S.getBoundingClientRect()) : null;
       var room = aR && sR ? Math.min(sR.r, H.w - 12) - aR.r : 0;
       if (aR && room >= w + 20) cands.push([aR.r + (room - w) / 2, aR.t + aR.h / 2 - lh / 2]);
-      cands = cands.concat(h1Spots(H.w - 12, w, lh));
+      var ND2 = document.querySelector(".hero .nd-sign");
+      cands = cands.concat(h1Spots(ND2 ? rel(ND2.getBoundingClientRect()).l - 10 : H.w - 12, w, lh));
       if (!cands.length) { start = [16, top0]; cands.push([H.w - w - 16, Math.max(top0 + 30, C.t - lh - 18)]); }
     }
     /* land a little higher than the spot itself, then keep nudging up until the resting leaf
        is clear of every line of text (the chips, the headline, the paragraph) on any screen */
     var TR = [];
-    [document.querySelector(".hero .chips"), h1, document.querySelector(".hero-text .lead, .hero .lead")].forEach(function (el) {
+    [hero.querySelector(".chips"), h1, hero.querySelector(".lead"), hero.querySelector(".duo-intro"), hero.querySelector(".nd-sign")].forEach(function (el) {
       if (!el) return; var rg = document.createRange(); rg.selectNodeContents(el);
       [].forEach.call(rg.getClientRects(), function (r) { if (r.width > 2 && r.height > 2) TR.push(rel(r)); });
     });

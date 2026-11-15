@@ -1540,3 +1540,231 @@ header.nav .brand b .dotcom { display: block; position: absolute; right: -.06em;
 .xm-hat { position: absolute; left: -52px; top: -30px; width: 88px; height: auto; z-index: 3; pointer-events: none; transform: scaleX(-1) rotate(40deg); transform-origin: 60% 75%; filter: drop-shadow(0 4px 5px rgba(0,0,0,.45)); }
 @media (prefers-reduced-motion: reduce) { .xm-lights rect { animation: none !important; } }
 @media (max-width: 599px) { .xm-hat { left: -22px; top: -16px; width: 50px; } }
+
+/* ---- home hero: headline + "Hungry? Check out next door" sign in one row (15 Nov 2026, from Mo) ----
+   A copy of the "Check out the market next door" sign on underthealmondtree.market: same size, flashing green neon border,
+   flashing red line, gentle sway. The chips and this row span the whole hero; the text and the right column sit under them. */
+.hero .wrap.has-window > .chips, .hero .wrap.has-window > .row-top { grid-column: 1 / -1; }
+.hero .wrap.has-window > .chips { margin-bottom: -.4rem; }
+.row-top { display: flex; justify-content: space-between; align-items: center; gap: .9rem; min-width: 0; }
+.row-top h1 { flex: 1 1 auto; min-width: 0; margin: 0; max-width: 13ch; font-size: clamp(2.1rem, 5.2vw, 4.6rem); line-height: .95; letter-spacing: -.035em; }
+.nd-sign { flex: 0 0 auto; align-self: center; display: grid; justify-items: center; gap: .38rem; width: max-content; max-width: 100%; padding: .9rem 1.5rem .95rem;
+  border-radius: 16px; border: 2px solid var(--leaf); background: rgba(6,18,12,.82); color: #f4f0e2; text-decoration: none; text-align: center;
+  transform-origin: 50% 0; animation: nd-neon 2.4s ease-in-out infinite, nd-flash 1.6s ease-in-out infinite, nd-swing 5s ease-in-out infinite;
+  -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); position: relative; z-index: 3; transition: border-color .15s; }
+.nd-sign:hover, .nd-sign:focus-visible { border-color: var(--mango); animation-play-state: running, paused, running; outline: none; }
+.nd-top { display: flex; align-items: center; gap: .45rem; font: 600 .68rem/1 var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--leaf); }
+.nd-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--leaf); box-shadow: 0 0 10px 2px rgba(107,229,156,.8); animation: nd-blink 1.1s steps(2, start) infinite; }
+.nd-sign b { font: 800 1.4rem/1.1 var(--display); letter-spacing: -.01em; color: #f4f0e2; text-shadow: 0 0 14px rgba(107,229,156,.4); max-width: 16ch; text-wrap: balance; }
+.nd-shop { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .2rem .55rem; margin-top: .2rem; padding-top: .35rem; border-top: 1px dashed rgba(107,229,156,.35);
+  font: 800 .95rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: #ff4b4b; animation: nd-red 1.3s ease-in-out infinite; }
+.nd-bullet { width: 10px; height: 10px; flex: none; border-radius: 50%; background: currentColor; box-shadow: 0 0 8px currentColor; }
+.nd-more { font: 800 .9rem/1.15 var(--display); letter-spacing: .01em; color: #8fd99a; text-shadow: 0 0 12px rgba(120,205,135,.45); }
+@keyframes nd-neon { 0%, 100% { box-shadow: 0 0 0 1px rgba(107,229,156,.25), 0 0 22px rgba(107,229,156,.45), inset 0 0 14px rgba(107,229,156,.15); }
+  50% { box-shadow: 0 0 0 1px rgba(107,229,156,.15), 0 0 8px rgba(107,229,156,.2), inset 0 0 6px rgba(107,229,156,.08); } }
+@keyframes nd-flash { 0%, 100% { border-color: #6be59c; } 50% { border-color: rgba(107,229,156,.35); } }
+@keyframes nd-swing { 0%, 100% { transform: rotate(-1.6deg); } 50% { transform: rotate(1.6deg); } }
+@keyframes nd-blink { to { visibility: hidden; } }
+@keyframes nd-red { 0%, 100% { color: #ff4b4b; text-shadow: 0 0 6px rgba(255,75,75,.9), 0 0 16px rgba(255,75,75,.7), 0 0 28px rgba(255,40,40,.5); }
+  45% { color: #ff9a9a; text-shadow: 0 0 2px rgba(255,75,75,.4); } 50% { color: #8a2a2a; text-shadow: none; } 55% { color: #ff4b4b; text-shadow: 0 0 6px rgba(255,75,75,.9), 0 0 16px rgba(255,75,75,.7); } }
+@media (prefers-reduced-motion: reduce) { .nd-sign, .nd-dot, .nd-shop { animation: none; } }
+@media (max-width: 899px) { .nd-sign b { font-size: 1.2rem; } .nd-shop { font-size: .82rem; } .nd-more { font-size: .8rem; } }
+/* phones: headline and sign share the row, like underthealmondtree.market */
+@media (max-width: 559px) {
+  .row-top { gap: .5rem; align-items: stretch; }
+  .row-top h1 { flex: 1 1 0; font-size: 1.32rem; line-height: 1; letter-spacing: -.02em; max-width: none; align-self: center; }
+  .nd-sign { flex: 0 0 41%; padding: .55rem .6rem .6rem; gap: .22rem; }
+  .nd-top { font-size: .48rem; letter-spacing: .08em; gap: .3rem; }
+  .nd-dot { width: 6px; height: 6px; }
+  .nd-sign b { font-size: .88rem; }
+  .nd-shop { font-size: .58rem; letter-spacing: .08em; gap: .15rem .35rem; }
+  .nd-bullet { width: 6px; height: 6px; }
+  .nd-more { font-size: .6rem; }
+}
+@media (max-width: 380px) { .row-top h1 { font-size: 1.2rem; } }
+/* the Christmas card on its own, under the Native Nursery window: photo on the left, words on the right */
+.hero:not(.hero-produce) .hero-side .nc-pair.solo { order: 0; grid-template-columns: 1fr; }
+.nc-pair.solo .nc-xmas { grid-template-columns: 40% 1fr; grid-template-rows: auto; }
+.nc-pair.solo .nc-xmas .nc-photo { height: 100%; min-height: 130px; border-radius: 20px 0 0 20px; }
+.nc-pair.solo .nc-xmas .nc-text { padding: .8rem .9rem .85rem; }
+.nc-pair.solo .nc-xmas b { font-size: 1.08rem; }
+.nc-pair.solo .nc-xmas .nc-sub { font-size: .8rem; }
+.row-top h1 em { display: block; }
+/* tablets: a narrower sign so the headline keeps room for three or four lines */
+@media (min-width: 560px) and (max-width: 960px) {
+  .row-top h1 { font-size: clamp(2rem, 5vw, 2.7rem); max-width: none; }
+  .nd-sign { flex: 0 0 auto; max-width: 46%; padding: .75rem 1rem .8rem; }
+  .nd-sign b { max-width: 11ch; }
+  .nd-shop { letter-spacing: .1em; }
+}
+@media (min-width: 600px) and (max-width: 960px) {
+  .nc-pair.solo .nc-xmas { grid-template-columns: 1fr; grid-template-rows: 45% 1fr; }
+  .nc-pair.solo .nc-xmas .nc-photo { border-radius: 20px 20px 0 0; min-height: 0; }
+}
+/* the next-door sign, a little smaller (15 Nov 2026, from Mo) */
+.nd-sign { padding: .75rem 1.2rem .8rem; gap: .3rem; }
+.nd-top { font-size: .6rem; }
+.nd-sign b { font-size: 1.2rem; }
+.nd-shop { font-size: .82rem; }
+.nd-bullet { width: 8px; height: 8px; }
+.nd-more { font-size: .78rem; }
+@media (max-width: 899px) { .nd-sign b { font-size: 1.05rem; } .nd-shop { font-size: .72rem; } .nd-more { font-size: .7rem; } }
+@media (max-width: 559px) {
+  .nd-sign { flex-basis: 37%; padding: .45rem .5rem .5rem; gap: .18rem; }
+  .nd-top { font-size: .42rem; }
+  .nd-sign b { font-size: .78rem; }
+  .nd-shop { font-size: .5rem; }
+  .nd-bullet { width: 5px; height: 5px; }
+  .nd-more { font-size: .54rem; }
+}
+.nd-more { text-wrap: balance; }
+
+/* hero top (15 Nov 2026, from Mo): left = headline with the shop blurb tucked under it (smaller);
+   right = the next-door sign with the December spaces card (old half-square size) under it */
+.row-top.rt2 { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; column-gap: 1.4rem; }
+.rt-left { display: flex; flex-direction: column; gap: 1rem; min-width: 0; }
+.rt-right { display: flex; flex-direction: column; align-items: center; gap: 2.2rem; min-width: 0; }
+.rt2 .lead { margin: 0; max-width: 34ch; font-size: .98rem; line-height: 1.45; }
+.rt2 .nd-sign { align-self: center; }
+.nc-pair.under { display: block; width: 158px; }
+.nc-pair.under .nc-xmas { grid-template-columns: none; grid-template-rows: auto 1fr; }
+.nc-pair.under .nc-xmas .nc-photo { height: 92px; border-radius: 20px 20px 0 0; }
+.nc-pair.under .nc-xmas .nc-text { padding: .65rem .75rem .75rem; }
+.nc-pair.under .nc-xmas b { font-size: .98rem; }
+.nc-pair.under .nc-xmas .nc-sub { font-size: .76rem; }
+@media (min-width: 560px) and (max-width: 960px) { .rt2 .lead { font-size: .9rem; } }
+@media (max-width: 559px) {
+  .row-top.rt2 { grid-template-columns: minmax(0, 1fr) 37%; column-gap: .5rem; }
+  .rt-left { gap: .6rem; }
+  .rt-right { gap: 1.6rem; }
+  .rt2 .nd-sign { width: 100%; }
+  .rt2 .lead { font-size: .74rem; line-height: 1.4; max-width: none; }
+  .nc-pair.under { width: 100%; }
+  .nc-pair.under .nc-xmas .nc-photo { height: 70px; }
+  .nc-pair.under .nc-xmas .nc-text { padding: .5rem .55rem .6rem; }
+  .nc-pair.under .nc-xmas b { font-size: .8rem; }
+  .nc-pair.under .nc-xmas .nc-sub { font-size: .64rem; }
+  .nc-pair.under .nc-xmas .nc-go { font-size: .62rem; padding: .45em .65em; }
+}
+.row-top h1 { text-wrap: wrap; }
+@media (min-width: 560px) and (max-width: 960px) {
+  .row-top.rt2 { grid-template-columns: minmax(0, 1fr) 40%; }
+  .rt2 .nd-sign { width: 100%; max-width: none; }
+}
+/* top bar coordinates on narrower screens too (15 Nov 2026, from Mo): a compact badge in the empty space
+   between the shop name and the Cart button; the home hero copy hides wherever this one shows */
+@media (min-width: 850px) and (max-width: 1019px) {
+  header.nav .hdr-geo { display: inline-flex; margin: 0 .6rem 0 auto; padding: .28rem .7rem .28rem .28rem; gap: .5rem; }
+  header.nav .hdr-geo .gb-compass { width: 30px; height: 30px; }
+  header.nav .hdr-geo .gb-text b { font-size: .66rem; }
+  header.nav .hdr-geo .gb-text small { font-size: .46rem; letter-spacing: .1em; }
+  header.nav .hdr-geo .gb-flag .bs-flag { width: 24px; height: 12px; }
+  .hero .hero-text > .geo-badge { display: none; }
+}
+@media (min-width: 850px) and (max-width: 919px) { header.nav .hdr-geo .gb-flag { display: none; } }
+@media (min-width: 850px) and (max-width: 1019px) { header.nav .hdr-geo { margin-right: .15rem; } header.nav .cart-btn, header.nav .menu-btn { flex: none; } }
+
+/* hero top right (15 Nov 2026, from Mo): the December card and "Got fruit in the yard?" side by side under the next-door sign,
+   the same size, squeezed so their bottoms line up with the bottom of the blurb on the left */
+.nc-pair.under.two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; width: 100%; }
+.nc-pair.under.two .nc-half { display: grid; grid-template-rows: minmax(36px, 1fr) auto; min-height: 0; border-radius: 18px; }
+.nc-pair.under.two .nc-half .nc-photo { height: auto; min-height: 0; border-radius: 18px 18px 0 0; }
+.nc-pair.under.two .nc-half .nc-text { padding: .55rem .65rem .65rem; gap: .2rem; grid-template-rows: auto auto auto; }
+.nc-pair.under.two .nc-half b { font-size: .9rem; line-height: 1.1; }
+.nc-pair.under.two .nc-half .nc-sub { font-size: .7rem; line-height: 1.25; }
+.nc-pair.under.two .nc-half .nc-go { margin-top: .2rem; font-size: .66rem; padding: .42em .7em; }
+.nc-pair.under.two .grow-card .nc-tag { font-size: .54rem; left: 9px; top: 9px; }
+@media (min-width: 961px) {
+  .row-top.rt2 { grid-template-columns: minmax(0, 1fr) 360px; align-items: stretch; }
+  .rt2 .rt-right { contain: size; height: 100%; justify-content: flex-start; gap: 1.6rem; }
+  .rt2 .nd-sign { flex: none; }
+  .nc-pair.under.two { flex: 1 1 0; min-height: 0; }
+}
+/* phones and tablets: no room beside the headline, so the two cards sit side by side under the row */
+@media (max-width: 960px) {
+  .rt2 .rt-right { display: contents; }
+  .rt2 .rt-left { grid-row: 1; grid-column: 1; }
+  .rt2 .nd-sign { grid-row: 1; grid-column: 2; align-self: start; }
+  .nc-pair.under.two { grid-column: 1 / -1; grid-row: 2; margin-top: 2rem; max-width: 520px; justify-self: center; }
+  .nc-pair.under.two .nc-half .nc-photo { height: 110px; }
+  .nc-pair.under.two .nc-half { grid-template-rows: auto 1fr; }
+}
+@media (max-width: 559px) {
+  .nc-pair.under.two { margin-top: 1.7rem; gap: 10px; }
+  .nc-pair.under.two .nc-half .nc-photo { height: 84px; }
+  .nc-pair.under.two .nc-half b { font-size: .84rem; }
+  .nc-pair.under.two .nc-half .nc-sub { font-size: .68rem; }
+}
+/* the lined-up layout holds down to 760px wide (the cards just get smaller) */
+@media (min-width: 760px) and (max-width: 960px) {
+  .row-top.rt2 { grid-template-columns: minmax(0, 1fr) 42%; align-items: stretch; }
+  .rt2 .rt-right { display: flex; flex-direction: column; align-items: center; contain: size; height: 100%; gap: 1.4rem; }
+  .rt2 .nd-sign { grid-row: auto; grid-column: auto; flex: none; align-self: center; }
+  .nc-pair.under.two { grid-column: auto; grid-row: auto; margin-top: 0; max-width: none; flex: 1 1 0; min-height: 0; gap: 10px; }
+  .nc-pair.under.two .nc-half { grid-template-rows: minmax(30px, 1fr) auto; }
+  .nc-pair.under.two .nc-half .nc-photo { height: auto; }
+  .nc-pair.under.two .nc-half .nc-text { padding: .45rem .55rem .55rem; gap: .15rem; }
+  .nc-pair.under.two .nc-half b { font-size: .8rem; }
+  .nc-pair.under.two .nc-half .nc-sub { font-size: .64rem; }
+  .nc-pair.under.two .nc-half .nc-go { font-size: .6rem; }
+}
+@media (max-width: 559px) {
+  .row-top.rt2 { grid-template-columns: minmax(0, 1fr) 40%; }
+  .nd-top { font-size: .4rem; letter-spacing: .03em; gap: .25rem; }
+  .nd-sign { padding-inline: .4rem; overflow: hidden; }
+}
+/* Local Produce: its "Got fruit in the yard?" card moved up to the top of the page, so on tablets the produce window has the row to itself */
+@media (min-width: 600px) and (max-width: 960px) {
+  .hero-produce:not(.hero-pantry):not(.hero-crafts) .hero-side:not(:has(.next-card)) { grid-template-columns: minmax(0, 1fr); max-width: 560px; }
+  .hero-produce:not(.hero-pantry):not(.hero-crafts) .hero-side:not(:has(.next-card)) .plant-window { grid-column: 1; }
+}
+
+/* ---- Native Nursery | Local Produce side by side in the first hero (15 Nov 2026, from Mo) ----
+   left: the palm-tree Native Nursery sign, the nursery card under it; right: "Island fruit, hand picked", the mango-tree
+   Local Produce sign, the produce card. One column on phones and small tablets. */
+.hero .wrap.has-window > .duo { grid-column: 1 / -1; }
+.duo { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.5rem, 3.5vw, 3rem); align-items: start; margin-top: 1.4rem; }
+.duo-col { display: flex; flex-direction: column; gap: 1.1rem; min-width: 0; }
+.duo .nursery-sign { align-self: flex-start; margin: 0; }
+.duo .plant-window { max-width: none; width: 100%; }
+.duo .geo-badge { align-self: flex-start; margin-top: .4rem; }
+.duo-produce .chips { margin: 0; }
+.duo-produce h2 { font-size: clamp(1.8rem, 3.2vw, 2.8rem); max-width: 17ch; margin: 0; }
+.duo-produce h2 em { font-style: normal; color: var(--mango); }
+.duo-produce h2 .lf { color: var(--leaf); }
+.duo-produce .lead { margin: 0; font-size: .98rem; max-width: 46ch; }
+.duo-produce .cta { margin: 0; }
+/* desktop/tablet: one grid so both signs sit on one line and both cards on the next */
+@media (min-width: 761px) {
+  .duo { grid-template-areas: "geo intro" "nsign psign" "nwin pwin" ". cta"; row-gap: 1.1rem; }
+  .duo-col { display: contents; }
+  .duo .geo-badge { grid-area: geo; align-self: start; margin-top: 0; }
+  .duo-intro { grid-area: intro; }
+  .duo-nursery .nursery-sign { grid-area: nsign; align-self: end; }
+  .duo-produce .nursery-sign { grid-area: psign; align-self: end; }
+  .duo-nursery .plant-window { grid-area: nwin; }
+  .duo-produce .plant-window { grid-area: pwin; }
+  .duo-produce .cta { grid-area: cta; }
+}
+.duo-intro { display: flex; flex-direction: column; gap: .8rem; min-width: 0; }
+/* the coordinates badge is in the top bar from 850px to 1240px wide, so the copy in the split hides there */
+@media (min-width: 850px) and (max-width: 1240px) { .duo .geo-badge { display: none; } }
+/* phones and small tablets: Native Nursery first, then Local Produce, one column */
+@media (max-width: 760px) {
+  .duo { grid-template-columns: minmax(0, 1fr); row-gap: 2.6rem; }
+  .duo .nursery-sign { align-self: stretch; }
+}
+/* wide screens (1241px and up), 15 Nov 2026 from Mo: keep the same layout as smaller screens. The coordinates badge stays
+   in the top bar, the "Sell your product!" and "We buy Coconuts!" signs stay in their own row under it, and the copy of
+   the badge in the Nursery | Produce split stays hidden */
+@media (min-width: 1241px) {
+  .hdr-ctas { display: none !important; }
+  header.nav .hdr-geo { display: inline-flex; margin: 0 1rem 0 auto; }
+  .hdr-ctas ~ .cart-btn { margin-left: 0; }
+  .farmer-m { display: flex !important; gap: .5rem; align-items: stretch; position: relative; z-index: 5; padding: .6rem max(16px, env(safe-area-inset-right, 0px)) .2rem max(16px, env(safe-area-inset-left, 0px)); }
+  .farmer-m .farmer-cta, .farmer-m .coco-cta { flex: 1 1 0; min-width: 0; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; column-gap: .7rem; row-gap: .15rem; margin: 0; padding: .55rem .9rem; }
+  .farmer-m .coco-cta { flex-wrap: nowrap; }
+  .farmer-m .farmer-cta b { font-size: .95rem; }
+  .duo .geo-badge, .hero .hero-text > .geo-badge { display: none; }
+}
+@media (min-width: 1241px) { .farmer-m { max-width: 1240px; margin-inline: auto; } }
