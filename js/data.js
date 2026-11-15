@@ -113,22 +113,23 @@ pre:    true marks the plant as pre-order (growing on, ready soon)
            longan · jackfruit · breadfruit · cherry · passionfruit · ackee · guinep · starapple · mamey · canistel · plum ·
            redplum · goldplum · loquat · berry · cashew · noni · malayapple · roseapple · gooseberry · almond · natal · jujube · neem ·
            tree · palm · seagrape · hibiscus · herb · aloe · pot
-   featured: true shows it in the window on the home page (first 4 are used)
+   featured: true shows it in the window on the home page (first 4 are used); a number (1-4) puts it in that spot.
+   Nursery card now (15 Nov 2026, from Mo): soursop, native Eleuthera pineapple slip, key lime, lignum vitae.
 
    ALL PRICES AND QUANTITIES ARE 0. Real counts come from the POS register (kind Plant); set them there.
    -------------------------------------------------------------------------- */
 window.PLANT_CATS = ["Fruit trees", "Exotics", "Citrus", "Fruit plants & vines", "Native trees", "Palms", "Hedges & shrubs", "Flowering", "Bush medicine & herbs"];
 
 window.PLANTS = [
-  { id: "soursop", img: "/img/plants/soursop.jpg", name: "Soursop", latin: "Annona muricata", cat: "Fruit trees", art: "soursop", sizes: [{ pot: "3 gal", price: 0, qty: 0 }, { pot: "25 gal", price: 0, qty: 0 }], featured: true,
+  { id: "soursop", featured: 1, img: "/img/plants/soursop.jpg", name: "Soursop", latin: "Annona muricata", cat: "Fruit trees", art: "soursop", sizes: [{ pot: "3 gal", price: 0, qty: 0 }, { pot: "25 gal", price: 0, qty: 0 }],
     text: "The big spiky green fruit for juice, ice cream and soursop leaf tea.", care: "Full sun, well-drained soil. Fruits in 3 to 4 years." },
-  { id: "sugarapple", img: "/img/plants/sugarapple.jpg", name: "Sugar apple", latin: "Annona squamosa", cat: "Fruit trees", art: "sugarapple", sizes: [{ pot: "3 gal", price: 0, qty: 0 }, { pot: "25 gal", price: 0, qty: 0 }], featured: true,
+  { id: "sugarapple", img: "/img/plants/sugarapple.jpg", name: "Sugar apple", latin: "Annona squamosa", cat: "Fruit trees", art: "sugarapple", sizes: [{ pot: "3 gal", price: 0, qty: 0 }, { pot: "25 gal", price: 0, qty: 0 }],
     text: "Sweet and custardy, a yard favourite across the islands.", care: "Full sun, handles rocky soil. Fruits in 2 to 3 years." },
   { id: "blackberryjam", img: "/img/plants/blackberryjam.jpg", name: "Blackberry jam fruit tree", latin: "Randia formosa", cat: "Exotics", art: "tree", sizes: [{ pot: "25 gal", price: 250, qty: 1 }], aliases: ["Blackberry jam fruit", "Blackberry jam tree", "Rosenbergiodendron formosum"],
     text: "A rare small tree whose ripe yellow fruit has a dark, sweet pulp that tastes like blackberry jam. Fragrant white flowers too.", care: "Sun to part shade, well-drained soil. Happy in a big pot." },
-  { id: "keylime", img: "/img/plants/keylime.jpg", name: "Key lime", latin: "Citrus aurantiifolia", cat: "Citrus", art: "citrus", sizes: [{ pot: "3 gal", price: 0, qty: 0 }, { pot: "25 gal", price: 0, qty: 0 }], featured: true,
+  { id: "keylime", featured: 3, img: "/img/plants/keylime.jpg", name: "Key lime", latin: "Citrus aurantiifolia", cat: "Citrus", art: "citrus", sizes: [{ pot: "3 gal", price: 0, qty: 0 }, { pot: "25 gal", price: 0, qty: 0 }],
     text: "For conch salad, souse and pie. Happy in a big pot.", care: "Full sun, water weekly while young." },
-  { id: "lignum", img: "/img/plants/lignum.jpg", name: "Lignum vitae", latin: "Guaiacum sanctum", cat: "Native trees", art: "tree", sizes: [{ pot: "3 gal", price: 0, qty: 0 }, { pot: "25 gal", price: 0, qty: 0 }], featured: true,
+  { id: "lignum", featured: 4, img: "/img/plants/lignum.jpg", name: "Lignum vitae", latin: "Guaiacum sanctum", cat: "Native trees", art: "tree", sizes: [{ pot: "3 gal", price: 0, qty: 0 }, { pot: "25 gal", price: 0, qty: 0 }],
     text: "National tree of The Bahamas. Blue flowers, slow-growing, nearly indestructible.", care: "Full sun, drought-tough once settled." },
   { id: "sourorange", img: "/img/plants/sourorange-tree.jpg", name: "Sour orange", latin: "Citrus aurantium", cat: "Citrus", art: "citrus", sizes: [{ pot: "3 gal", price: 0, qty: 0 }, { pot: "25 gal", price: 180, qty: 1 }], aliases: ["Sour orange tree", "Seville orange", "Bitter orange"],
     text: "The Bahamian seasoning orange for fish, chicken and souse.", care: "Full sun, hardy and productive." },
@@ -252,7 +253,7 @@ window.PLANTS = [
     text: "Fruits within a year. Green for cooking, ripe for breakfast.", care: "Full sun, good drainage." },
   { id: "pineapple", img: "/img/plants/pineapple.jpg", name: "Pineapple", latin: "Ananas comosus", cat: "Fruit plants & vines", art: "pineapple", sizes: [{ pot: "1 gal", price: 0, qty: 0 }],
     text: "Eleuthera-style sweet pineapple from a crown or slip.", care: "Full sun, sandy soil, very little water." },
-  { id: "eleutherapineapple", img: "/img/plants/eleuthera-pineapple-slip.jpg", name: "Native Eleuthera pineapple slip", latin: "Ananas comosus", cat: "Fruit plants & vines", art: "pineapple", sizes: [{ pot: "Slip", price: 20, qty: 0 }], aliases: ["Eleuthera pineapple slip", "Eleuthera pineapple slips", "Native Eleuthera pineapple", "pineapple slip", "pineapple slips"],
+  { id: "eleutherapineapple", featured: 2, img: "/img/plants/eleuthera-pineapple-slip.jpg", name: "Native Eleuthera pineapple slip", latin: "Ananas comosus", cat: "Fruit plants & vines", art: "pineapple", sizes: [{ pot: "Slip", price: 20, qty: 0 }], aliases: ["Eleuthera pineapple slip", "Eleuthera pineapple slips", "Native Eleuthera pineapple", "pineapple slip", "pineapple slips"],
     text: "A slip (young shoot) from our own native Eleuthera pineapples, ready to plant.", care: "Full sun, sandy soil, very little water." },
   { id: "passionfruit", img: "/img/plants/passionfruit.jpg", name: "Passion fruit", latin: "Passiflora edulis", cat: "Fruit plants & vines", art: "passionfruit", sizes: [{ pot: "3 gal", price: 0, qty: 0 }, { pot: "25 gal", price: 0, qty: 0 }],
     text: "Climbing vine with purple fruit for juice and big lacy flowers.", care: "Full sun, give it a fence or trellis." },
@@ -301,6 +302,7 @@ window.PLANTS = [
    care:   shown as "Season" in the details
    seasonMonths: [first, last] month it is in season (6 = June). Out of season AND out of stock shows a red
            "June through September · Seasonal" band across the picture.
+   seasonOnly: true  can't be bought out of season at all, even if the register has stock (pineapple: June and July, from Mo 15 Nov 2026)
    art:    the cartoon (also the mouse pointer over the photo), same set as the nursery
    aliases: other names people search for (and the names your register might use)
 
@@ -462,7 +464,7 @@ window.PRODUCE = [
     text: "Green for chips, yellow-black for sweet fried plantain.", care: "All year." },
   { id: "coconut", img: "/img/produce/coconut.jpg", name: "Coconut", latin: "Cocos nucifera", cat: "Bananas, coconuts & pineapples", art: "coconut", sizes: [{ pot: "Jelly", price: 0, qty: 0 }, { pot: "Dry", price: 0, qty: 0 }], aliases: ["jelly coconut", "dry coconut", "green coconut"],
     text: "Green jelly coconuts for the water and jelly, or dry coconuts for grating.", care: "All year." },
-  { id: "pineapple", featured: true, img: "/img/produce/pineapple.jpg", name: "Pineapple", latin: "Ananas comosus", cat: "Bananas, coconuts & pineapples", art: "pineapple", sizes: [{ pot: "Each", price: 0, qty: 0 }, { pot: "Case", price: 0, qty: 0 }], aliases: ["eleuthera pineapple", "sugarloaf"],
+  { id: "pineapple", featured: true, seasonMonths: [6, 7], seasonOnly: true, img: "/img/produce/pineapple.jpg", name: "Pineapple", latin: "Ananas comosus", cat: "Bananas, coconuts & pineapples", art: "pineapple", sizes: [{ pot: "Each", price: 0, qty: 0 }, { pot: "Case", price: 0, qty: 0 }], aliases: ["eleuthera pineapple", "sugarloaf"],
     text: "Sweet Bahamian pineapple, the Eleuthera kind.", care: "Spring into summer." },
 
   /* Wild & native fruit */

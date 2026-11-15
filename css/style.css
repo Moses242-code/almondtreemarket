@@ -2027,3 +2027,33 @@ body:not([data-page="index"]) .farmer-m { padding-top: 2.1rem !important; }
 /* shop cards: when a card is stretched to match the others, the extra room goes above the button, not under it */
 .duo .plant-window { align-content: start; grid-template-rows: auto auto auto 1fr; }
 .duo .plant-window .pw-go { align-self: end; }
+
+/* ---- 15 Nov 2026, from Mo: no compass coordinates badge (top bar or home page); the coordinates are a small line centred
+   under "Marsh Harbour · Abaco · The Bahamas" in the shop name instead. The compass badge code stays for later. ---- */
+header.nav .hdr-geo, .hero .geo-badge, .duo .geo-badge { display: none !important; }
+header.nav .hdr-ctas ~ .cart-btn, header.nav .cart-btn { margin-left: auto; }
+header.nav .brand > span { display: inline-grid; grid-template-columns: auto 1fr; align-items: start; }
+header.nav .brand > span > b { grid-column: 1 / -1; }
+header.nav .brand > span > small { grid-column: 1; }
+header.nav .brand .brand-geo { grid-column: 1; display: block; justify-self: stretch; text-align: center; margin-top: .18rem;
+  font: 500 .58rem/1 var(--mono); letter-spacing: .14em; color: var(--leaf); white-space: nowrap; }
+@media (max-width: 480px) { header.nav .brand .brand-geo { font-size: .44rem; letter-spacing: .06em; margin-top: .12rem; } }
+
+/* the four top cards: bigger, bolder writing so they read easily, especially on phones (15 Nov 2026, from Mo) */
+.nc-pair.under.four .nc-half b { font-size: 1.02rem; line-height: 1.12; }
+.nc-pair.under.four .nc-half .nc-sub { font-size: .84rem; line-height: 1.32; font-weight: 500; }
+.nc-pair.under.four .nc-half .nc-go { font-size: .76rem; font-weight: 700; padding: .5em .85em; }
+.nc-pair.under.four .nc-half .nc-tag { font-size: .6rem; }
+.nc-pair.under.four .nc-xmas .nc-sub { color: #fff; }
+.nc-pair.under.four .nc-half:not(.nc-xmas) .nc-sub { color: #2a1700; }
+@media (min-width: 760px) and (max-width: 1100px) {
+  .nc-pair.under.four .nc-half b { font-size: .96rem; }
+  .nc-pair.under.four .nc-half .nc-sub { font-size: .8rem; }
+  .nc-pair.under.four .nc-half .nc-go { font-size: .72rem; }
+}
+@media (max-width: 759px) {
+  .nc-pair.under.four .nc-half b { font-size: 1.05rem; }
+  .nc-pair.under.four .nc-half .nc-sub { font-size: .86rem; }
+  .nc-pair.under.four .nc-half .nc-go { font-size: .78rem; }
+  .nc-pair.under.four .nc-half .nc-text { padding: .65rem .7rem .75rem; }
+}

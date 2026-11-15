@@ -166,7 +166,7 @@ var COMPASS = (function () {
       '<a class="go" href="vendor.html#register">Reserve a slot →</a></div></div>' : "";
     return stripe +
       '<a class="skip" href="#main">Skip to content</a>' +
-      '<header class="nav"><div class="wrap"><a class="brand" href="index.html" aria-label="Almond Tree Market home">' + BRAND + "<span><b><span class=\"atn\">Almond Tree</span> <span class=\"mkt\">Market<i class=\"dotcom\">.com</i></span></b><small>" + FLAG + "Marsh Harbour · Abaco · The Bahamas</small></span>" + HOMEMADE + "</a>" +
+      '<header class="nav"><div class="wrap"><a class="brand" href="index.html" aria-label="Almond Tree Market home">' + BRAND + "<span><b><span class=\"atn\">Almond Tree</span> <span class=\"mkt\">Market<i class=\"dotcom\">.com</i></span></b><small>" + FLAG + "Marsh Harbour · Abaco · The Bahamas</small><small class=\"brand-geo\">26.5373° N · 77.0606° W</small></span>" + HOMEMADE + "</a>" +
       /* compass + coordinates badge in the empty space next to the shop name (14 Nov 2026); hidden where it does not fit */
       '<div class="geo-badge hdr-geo" aria-label="26.5373 N, 77.0606 W, Marsh Harbour, Abaco, The Bahamas"><span class="gb-compass" aria-hidden="true">' + COMPASS + '</span><span class="gb-text" aria-hidden="true"><b>26.5373° N · 77.0606° W</b><small>Marsh Harbour · Abaco · The Bahamas</small></span><span class="gb-flag" aria-hidden="true">' + FLAG + "</span></div>" +
       /* flashing call-out for growers, centred in the gap between the shop name and the Cart button */

@@ -25,6 +25,19 @@ window.ATM_SHOP = function (cfg) {
     });
   }
   var PLANTS = fromData();
+  /* numbered home-page spots from data.js, read now, before the register's live data can change "featured" (15 Nov 2026) */
+  var spot = {}; PLANTS.forEach(function (d) { if (typeof d.featured === "number") spot[d.id] = d.featured; });
+  /* seasonOnly: true = can't be bought out of season, even if the register shows stock (pineapple, 15 Nov 2026):
+     its counts read 0 outside its seasonMonths, so it shows the red "Seasonal" band and no Add to cart */
+  function seasonLock() {
+    var m = new Date().getMonth() + 1;
+    PLANTS.forEach(function (p) {
+      var s = p.seasonMonths; if (!p.seasonOnly || !s || s.length < 2) return;
+      var out = s[0] <= s[1] ? (m < s[0] || m > s[1]) : (m < s[0] && m > s[1]);
+      if (out) p.sizes.forEach(function (z) { z.qty = 0; if (z.onsite != null) z.onsite = 0; });
+    });
+  }
+  seasonLock();
   var byId = {}; PLANTS.forEach(function (p) { byId[p.id] = p; });
 
   /* ---------- live stock from the Plant Collective register (POS) ----------
@@ -89,6 +102,7 @@ window.ATM_SHOP = function (cfg) {
         text: cfg.moreText, care: "" });
     });
     if (Object.keys(extras).length && CATS.indexOf(cfg.moreCat) < 0) CATS.push(cfg.moreCat);
+    seasonLock();
     byId = {}; PLANTS.forEach(function (p) { byId[p.id] = p; });
     LIVE = true;
     return true;
@@ -224,7 +238,13 @@ window.ATM_SHOP = function (cfg) {
     var kindWord = cfg.countWord ? cfg.countWord[kinds === 1 ? 0 : 1] : W.many;
     Array.prototype.forEach.call(document.querySelectorAll("[" + cfg.countAttr + "-word]"), function (el) { el.textContent = kindWord; });
     if (!win) return;
-    var feat = PLANTS.filter(function (p) { return p.featured; }).concat(PLANTS.filter(function (p) { return !p.featured; })).slice(0, 4);
+    /* featured first (a number puts it in that spot, true keeps list order), then the rest */
+    /* a numbered spot set in data.js wins over the register's own "featured" marks (15 Nov 2026) */
+    var rank = function (p) { return spot[p.id] || (typeof p.featured === "number" ? p.featured : 50); };
+    var hasSpots = Object.keys(spot).length > 0;
+    var feat = PLANTS.map(function (p, i) { return { p: p, i: i }; }).filter(function (o) { return hasSpots ? spot[o.p.id] : o.p.featured; })
+      .sort(function (a, b) { return rank(a.p) - rank(b.p) || a.i - b.i; }).map(function (o) { return o.p; })
+      .concat(PLANTS.filter(function (p) { return hasSpots ? !spot[p.id] : !p.featured; })).slice(0, 4);
     win.innerHTML = '<div class="pw-head"><span class="eyebrow">' + esc(cfg.winEyebrow) + '</span><span class="pw-count">' + kinds + " " + esc(kindWord) + "</span></div>" +
       "<h3>" + esc(cfg.winHead) + " " + esc(N.daysText) + ".</h3>" +
       '<div class="pw-grid">' + feat.map(function (p) {
