@@ -75,6 +75,8 @@
   /* ---------- the cards ---------- */
   function priceHTML(d) {
     return d.price_cents ? '<span class="pz-price">' + money(d.price_cents) + " web price" + (d.regular_cents > d.price_cents ? "<s>" + money(d.regular_cents) + "</s>" : "") + "</span>"
+      /* a free full loyalty card is a coupon: "FREE $5 coupon", not a crossed-out price (from Mo, 15 Nov 2026) */
+      : /loyalty card/i.test(d.name || "") && d.regular_cents ? '<span class="pz-price">FREE ' + money(d.regular_cents) + " coupon</span>"
       : '<span class="pz-price">FREE' + (d.regular_cents ? "<s>" + money(d.regular_cents) + "</s>" : "") + "</span>";
   }
   function idleHTML(d, tag) {
