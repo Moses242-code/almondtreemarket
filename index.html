@@ -80,9 +80,9 @@
 </g>
 </g>
 <g class="wind" fill="none" stroke="#dff7e8" stroke-linecap="round" stroke-width="2"><path d="M-30 52 q22 -6 44 0 t40 0"/><path d="M-50 104 q20 -5 40 0 t36 0"/><path d="M-20 150 q18 -5 36 0"/></g>
-<filter id="atm-blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2"/></filter><clipPath id="atm-ground"><rect x="-200" y="-200" width="700" height="446"/></clipPath>
+<filter id="atm-blur" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.2"/></filter><filter id="atm-line" x="-50%" y="-50%" width="200%" height="200%"><feMorphology in="SourceAlpha" operator="dilate" radius="2.2" result="fat"/><feGaussianBlur in="fat" stdDeviation=".6" result="soft"/><feFlood flood-color="#ffd23f"/><feComposite in2="soft" operator="in" result="ring"/><feGaussianBlur in="SourceGraphic" stdDeviation="1.1" result="body"/><feComponentTransfer in="body" result="dim"><feFuncA type="linear" slope=".82"/></feComponentTransfer><feMerge><feMergeNode in="ring"/><feMergeNode in="dim"/></feMerge></filter><clipPath id="atm-ground"><rect x="-200" y="-200" width="700" height="446"/></clipPath>
   <ellipse class="shade-hole" cx="105" cy="244" rx="15" ry="3.2" fill="#000" filter="url(#atm-blur)"/>
-  <g clip-path="url(#atm-ground)"><g class="shade"><g class="shade-body" fill="#000" opacity=".72" filter="url(#atm-blur)">
+  <g clip-path="url(#atm-ground)"><g class="shade"><g class="shade-body" fill="#000" filter="url(#atm-line)">
     <g class="leg leg-a"><path d="M97 219 L98 244 L104 244 L106 222Z"/></g>
     <g class="leg leg-b"><path d="M104 222 L106 244 L112 244 L113 219Z"/></g>
     <path d="M97 196 L92 218 L96 219 L100 199Z"/>
@@ -125,7 +125,7 @@
 <g class="wind" fill="none" stroke="#dff7e8" stroke-linecap="round" stroke-width="2"><path d="M-30 52 q22 -6 44 0 t40 0"/><path d="M-50 104 q20 -5 40 0 t36 0"/><path d="M-20 150 q18 -5 36 0"/></g>
 
   <ellipse class="shade-hole" cx="105" cy="244" rx="15" ry="3.2" fill="#000" filter="url(#atm-blur)"/>
-  <g clip-path="url(#atm-ground)"><g class="shade"><g class="shade-body" fill="#000" opacity=".72" filter="url(#atm-blur)">
+  <g clip-path="url(#atm-ground)"><g class="shade"><g class="shade-body" fill="#000" filter="url(#atm-line)">
     <g class="leg leg-a"><path d="M97 219 L98 244 L104 244 L106 222Z"/></g>
     <g class="leg leg-b"><path d="M104 222 L106 244 L112 244 L113 219Z"/></g>
     <path d="M97 196 L92 218 L96 219 L100 199Z"/>
@@ -355,9 +355,9 @@
 <footer id="site-foot"></footer>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script src="/js/data.js?v=198"></script>
-<script src="/js/cart.js?v=195"></script>
+<script src="/js/cart.js?v=196"></script>
 <script src="/js/shop.js?v=200"></script>
-<script src="/js/app.js?v=218"></script>
+<script src="/js/app.js?v=219"></script>
 <script src="/js/promo.js?v=196"></script>
 <!-- Cloudflare Web Analytics --><script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "99baac2e2224442688c7bb3dd6deed12"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
