@@ -21,7 +21,7 @@ window.ATM_SHOP = function (cfg) {
     return (cfg.items() || []).map(function (p) {
       var sizes = (p.sizes && p.sizes.length ? p.sizes : [{ pot: p.size || cfg.defaultSize, price: p.price || 0, qty: p.stock === "out" ? 0 : 1 }])
         .map(function (s) { return { pot: String(s.pot), price: +s.price || 0, qty: Math.max(0, parseInt(s.qty, 10) || 0) }; });
-      return Object.assign({}, p, { sizes: sizes });
+      return Object.assign({}, p, { sizes: sizes, siteImg: p.img || "" }); /* siteImg: the website's own photo, kept when the register's photo replaces it */
     });
   }
   var PLANTS = fromData();
@@ -196,8 +196,12 @@ window.ATM_SHOP = function (cfg) {
     if ((box.getAttribute("data-ph") || "") === want) return;
     /* no photo of the picked size yet (16 Nov 2026, from Mo): the main photo stays, with the size on it and a note,
        so switching sizes still shows which one is picked */
+    /* a size with no photo of its own in the register shows the website's own photo, the same one the inventory app
+       shows for it (16 Nov 2026, from Mo); only a size with neither says "coming soon" */
     if (!ph) {
-      box.innerHTML = media(p) + (want ? '<span class="size-tag">' + esc(z.pot) + "</span>" + (z.photo ? "" : '<span class="size-soon">Photo of the ' + esc(z.pot) + " coming soon</span>") : "");
+      var own = z && !z.photo && p.siteImg && p.siteImg !== p.img ? p.siteImg : "";
+      box.innerHTML = (own ? '<img src="' + esc(own) + '" alt="' + esc(p.name + ", " + z.pot) + '"><span class="fruit-badge" aria-hidden="true">' + (A.ART[p.art] || "") + "</span>" : media(p)) +
+        (want ? '<span class="size-tag">' + esc(z.pot) + "</span>" + (z.photo || own || p.siteImg ? "" : '<span class="size-soon">Photo of the ' + esc(z.pot) + " coming soon</span>") : "");
       box.setAttribute("data-ph", want); return;
     }
     var put = function () {
