@@ -144,7 +144,7 @@ var COMPASS = (function () {
   function art(key) { return '<div class="art-bg ' + (TONE[key] || "") + '">' + (ART[key] || ART.sugarapple) + "</div>"; }
 
   /* ---------- shared header + footer ---------- */
-  var NAV = [["index.html", "The Market"], ["produce.html", "Local Produce"], ["nursery.html", "Nursery"], ["pantry.html", "The Pantry"], ["craft.html", "Arts &amp; Crafts"]];
+  var NAV = [["index.html", "The Market"], ["produce.html", "Local Produce"], ["nursery.html", "Nursery"], ["pantry.html", "The Pantry"], ["craft.html", "Arts &amp; Crafts"], ["shop.html", "Shop all"]];
   /* "We buy coconuts" sign: same flashing neon box as the farmer sign, links to the Farmers page sell form */
   var COCO_ICON = '<svg class="cc-ico" viewBox="0 0 40 40" width="30" height="30" aria-hidden="true">' +
     '<path d="M22 8c3-5 9-6 13-4-2 4-7 6-11 6" fill="#6be59c"/><path d="M21 9c-1-4-5-7-10-7 1 4 4 7 9 8" fill="#2fbf6f"/>' +
@@ -157,6 +157,12 @@ var COMPASS = (function () {
     '<path d="M11 13c1.5-2.6 4-4.3 7-4.8" stroke="#fff3c4" stroke-width="1.8" fill="none" stroke-linecap="round" opacity=".8"/></svg>';
   var FARMER_CTA = '<a class="farmer-cta farmer-ico" href="join.html#sell">' + DOLLAR_ICON + '<span class="cc-txt"><span class="fc-top"><i class="ns-dot" aria-hidden="true"></i>Farmer? Gardener? Yard fruit?</span><b>Sell your product!</b></span></a>';
   var COCO_CTA = '<a class="farmer-cta coco-cta" href="join.html?sell=Coconuts#sell">' + COCO_ICON + '<span class="cc-txt"><span class="fc-top"><i class="ns-dot" aria-hidden="true"></i>We buy</span><b>Coconuts!</b></span></a>';
+  /* "Shop all products" sign beside We buy coconuts: opens shop.html, every item from every shop (15 Nov 2026) */
+  var BASKET_ICON = '<svg class="cc-ico" viewBox="0 0 40 40" width="30" height="30" aria-hidden="true">' +
+    '<path d="M12 17c0-6 3.6-10 8-10s8 4 8 10" stroke="#c9922a" stroke-width="2.6" fill="none" stroke-linecap="round"/>' +
+    '<circle cx="15" cy="15" r="4.2" fill="#ffb23f"/><circle cx="22" cy="13.5" r="4" fill="#ff5f7e"/><circle cx="27" cy="16" r="3.6" fill="#6be59c"/>' +
+    '<path d="M6 17h28l-3.4 15.2a2.4 2.4 0 0 1-2.3 1.8H11.7a2.4 2.4 0 0 1-2.3-1.8Z" fill="#d79a4e"/><path d="M10 22h20M11 27h18" stroke="#a8692c" stroke-width="1.8"/></svg>';
+  var SHOP_CTA = '<a class="farmer-cta coco-cta all-cta" href="shop.html">' + BASKET_ICON + '<span class="cc-txt"><span class="fc-top"><i class="ns-dot" aria-hidden="true"></i>Shop all</span><b>Products!</b></span></a>';
   function header() {
     var items = M.comingSoon ? M.stripe : nextMarketStripe();
     var run = items.map(function (s) { return "<span>" + esc(s) + "</span>"; }).join("");
@@ -170,7 +176,7 @@ var COMPASS = (function () {
       /* compass + coordinates badge in the empty space next to the shop name (14 Nov 2026); hidden where it does not fit */
       '<div class="geo-badge hdr-geo" aria-label="26.5373 N, 77.0606 W, Marsh Harbour, Abaco, The Bahamas"><span class="gb-compass" aria-hidden="true">' + COMPASS + '</span><span class="gb-text" aria-hidden="true"><b>26.5373° N · 77.0606° W</b><small>Marsh Harbour · Abaco · The Bahamas</small></span><span class="gb-flag" aria-hidden="true">' + FLAG + "</span></div>" +
       /* flashing call-out for growers, centred in the gap between the shop name and the Cart button */
-      '<div class="hdr-ctas">' + FARMER_CTA + COCO_CTA + '</div>' +
+      '<div class="hdr-ctas">' + FARMER_CTA + COCO_CTA + SHOP_CTA + '</div>' +
       '<button class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="navlist">' + '<svg class="hb-ico" viewBox="0 0 28 28" width="24" height="24" aria-hidden="true">' +
         '<path d="M14 5.5C11 3.6 7.5 3.2 3.5 3.8v19.4c4-.6 7.5-.2 10.5 1.7Z" fill="#2fbf6f"/>' +
         '<path d="M14 5.5c3-1.9 6.5-2.3 10.5-1.7v19.4c-4-.6-7.5-.2-10.5 1.7Z" fill="#f5ecd7"/>' +
@@ -186,7 +192,7 @@ var COMPASS = (function () {
       (page === "home" || page === "" || page === "index" ? '<a class="hang-tab ht-top" href="#main" data-top aria-label="Back to the top">&#8963; Back to top</a>' : '<a class="hang-tab" href="index.html">&#8249; Back to market</a>') +
       '</header>' +
       /* phones and tablets: the farmer call-out sits just under the header (scrolls away) */
-      '<div class="farmer-m">' + FARMER_CTA + COCO_CTA + '</div>' +
+      '<div class="farmer-m">' + FARMER_CTA + COCO_CTA + SHOP_CTA + '</div>' +
       '<div class="grain" aria-hidden="true"></div>';
   }
   /* the row of section buttons under the banner (sticks with the header on every page) */
@@ -201,7 +207,8 @@ var COMPASS = (function () {
       /* open shops get "Shop" in the same bold red above the name (15 Nov 2026, from Mo) */
       var shop = QUICK_SHOP.indexOf(n[0]) > -1;
       return '<a class="qb' + (on ? " on" : "") + (soon ? " soon" : "") + (shop ? " shop" : "") + (n[0] === "index.html" ? " mk" : "") + '" href="' + n[0] + '"' + (on ? ' aria-current="page"' : "") + '><span class="qi" aria-hidden="true">' + (ART[n[2]] || "") + "</span>" + (soon ? '<span class="qb-t"><span class="qb-soon">Coming soon</span>' + n[1] + "</span>" : shop ? '<span class="qb-t"><span class="qb-soon qb-shop">Shop</span>' + n[1] + "</span>" : n[1]) + "</a>";
-    }).join("") + '<a class="qb next" href="' + M.nextDoor + '" target="_blank" rel="noopener"><span class="qi" aria-hidden="true">' + ART.fish + "</span>Food next door <span aria-hidden=\"true\">↗</span></a></div></div></nav>";
+    }).join("") + '<a class="qb shop all' + (page === "shop" ? " on" : "") + '" href="shop.html"' + (page === "shop" ? ' aria-current="page"' : "") + '><span class="qi" aria-hidden="true">' + ART.cornucopia + '</span><span class="qb-t"><span class="qb-soon qb-shop">Shop</span>All Items</span></a>' +
+      '<a class="qb next" href="' + M.nextDoor + '" target="_blank" rel="noopener"><span class="qi" aria-hidden="true">' + ART.fish + "</span>Food next door <span aria-hidden=\"true\">↗</span></a></div></div></nav>";
   }
   function nextMarketStripe() {
     var n = upcoming(1)[0];
@@ -620,7 +627,9 @@ Array.prototype.forEach.call(document.querySelectorAll(".ns-tree:not(.ns-scene)"
 });
   /* home page: logos in the taken market squares (placeholder drawings until the real logos are in) */
   Array.prototype.forEach.call(document.querySelectorAll("[data-sq-art]"), function (el) { el.innerHTML = ART[el.getAttribute("data-sq-art")] || ""; });
-  if (window.ATM_SHOP) { window.ATM_SHOP(window.ATM_SHOP.NURSERY); window.ATM_SHOP(window.ATM_SHOP.PRODUCE); window.ATM_SHOP(window.ATM_SHOP.PANTRY); window.ATM_SHOP(window.ATM_SHOP.CRAFT); }
+  /* every shop set up in shop.js (any ATM_SHOP.X with a page) runs on every page; the Shop all page lists them all */
+  if (window.ATM_SHOP) Object.keys(window.ATM_SHOP).forEach(function (k) { var c = window.ATM_SHOP[k]; if (c && typeof c === "object" && c.page) window.ATM_SHOP(c); });
+  if (window.ATM_ALL) window.ATM_ALL();
   if (window.ATM_CART) window.ATM_CART.mount();
 
   /* ---------- reveal on scroll ---------- */

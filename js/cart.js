@@ -100,7 +100,7 @@ window.ATM_CART = (function () {
     if (navWrap && !$("#cart-btn")) {
       var b = document.createElement("button");
       b.id = "cart-btn"; b.className = "cart-btn"; b.type = "button"; b.setAttribute("aria-label", "Open your cart");
-      b.innerHTML = BASKET + '<span class="hb-l">Cart</span><span class="cart-n" id="cart-n" hidden>0</span>';
+      b.innerHTML = BASKET + '<span class="hb-l">Cart</span><span class="cart-n empty" id="cart-n">0</span>';
       if (mb) navWrap.insertBefore(b, mb); else navWrap.appendChild(b);
       b.addEventListener("click", function () { open("cart"); });
     }
@@ -130,7 +130,7 @@ window.ATM_CART = (function () {
   function close() { drawer.classList.remove("open"); drawer.setAttribute("aria-hidden", "true"); document.body.classList.remove("lock"); if (view === "done") view = "cart"; paintBadge(); }
   function paintBadge() {
     var n = count(), b = $("#cart-n");
-    if (b) { b.textContent = n > 99 ? "99+" : n; b.hidden = !n; }
+    if (b) { b.textContent = n > 99 ? "99+" : n; b.hidden = false; b.classList.toggle("empty", !n); }
     if (fab) {
       fab.hidden = !n || isOpen() || !!page;
       $("#cart-fab-n").textContent = n; $("#cart-fab-w").textContent = n === 1 ? "item" : "items";

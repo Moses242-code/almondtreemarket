@@ -2294,3 +2294,22 @@ body .rt2 .nd-sign .nd-shop span { overflow-wrap: anywhere; }
 .season-band.oos-band { background: rgba(212,42,42,.32); border-block-color: rgba(255,255,255,.55); box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
 .season-band.oos-band b { text-shadow: 0 1px 3px rgba(0,0,0,.7), 0 0 8px rgba(160,20,20,.6); }
 .season-band.oos-band { background: rgba(212,42,42,.18); border-block-color: rgba(255,255,255,.4); }
+
+/* cart badge always shows; an empty cart shows a mango "0" (15 Nov 2026) */
+.cart-btn .cart-n.empty { background: var(--mango); color: #241300; }
+
+/* Shop all products (15 Nov 2026): third sign beside We buy coconuts, same size; "Shop All Items" in the quick bar; shop.html */
+body .farmer-m.farmer-m { grid-template-columns: repeat(3, minmax(0, 1fr)); width: max-content; max-width: min(100%, 940px); }
+.hdr-ctas { grid-template-columns: repeat(3, 1fr); }
+body .farmer-m.farmer-m .all-cta .cc-txt { display: grid; gap: .2rem; justify-items: start; }
+@media (max-width: 600px) {
+  body .farmer-m.farmer-m a.farmer-cta b, body .farmer-m.farmer-m a.coco-cta b { white-space: normal; line-height: 1.1; text-align: center; }
+  body .farmer-m.farmer-m .all-cta .cc-txt { justify-items: center; }
+}
+.all-shops { margin-bottom: .2rem; }
+.all-shops button[aria-pressed="true"] { background: var(--mango); border-color: var(--mango); color: #241300; }
+.all-cats { margin-top: .5rem; }
+.all-card .pcat .all-shop { color: var(--mango); font-weight: 700; }
+.all-card a.pname { color: inherit; text-decoration: none; text-align: left; }
+.all-card a.pmedia { display: block; }
+.all-none { grid-column: 1 / -1; padding: 2rem 0; text-align: center; }

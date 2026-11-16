@@ -232,7 +232,13 @@ window.ATM_SHOP = function (cfg) {
   function inBasket(id) { return C() ? C().qtyFor(cfg.page, id) : 0; }
   function inCartSize(id, pot) { return C() ? C().inCart(cfg.page, id, pot) : 0; }
   window.ATM_SHOPS = window.ATM_SHOPS || {};
-  window.ATM_SHOPS[cfg.page] = { cfg: cfg, byId: function (id) { return byId[id]; }, sizeOf: function (p, pot) { return sizeOf(p, pot); }, whenNote: whenNote, media: function (p) { return media(p); } };
+  /* the "Shop all" page (shop.html, js/all.js) reads every shop through this, so a new shop shows up there by itself (15 Nov 2026) */
+  var updHooks = [];
+  function upd() { updHooks.forEach(function (f) { try { f(); } catch (e) {} }); }
+  window.ATM_SHOPS[cfg.page] = { cfg: cfg, byId: function (id) { return byId[id]; }, sizeOf: function (p, pot) { return sizeOf(p, pot); }, whenNote: whenNote, media: function (p) { return media(p); },
+    items: function () { return PLANTS; }, cats: function () { return CATS; }, avail: avail, status: status, fromPrice: fromPrice, sortPrice: sortPrice,
+    onlySize: function (p) { var z = p.sizes.filter(function (s) { return s.qty > 0; }); return z.length === 1 ? z[0] : null; },
+    onUpdate: function (f) { updHooks.push(f); } };
 
   /* ---------- home page window ---------- */
   var win = $(cfg.windowSel);
@@ -262,7 +268,7 @@ window.ATM_SHOP = function (cfg) {
 
   /* ---------- shop page ---------- */
   var grid = $("#shop-grid");
-  if (!grid || document.body.getAttribute("data-page") !== cfg.page) { onFeed(function (ok) { if (!ok) return; drawWindow(); if (C()) C().refresh(); loadPhotos().then(function (got) { if (got) { drawWindow(); if (C()) C().refresh(); } }); }); return; }
+  if (!grid || document.body.getAttribute("data-page") !== cfg.page) { onFeed(function (ok) { if (!ok) return; drawWindow(); if (C()) C().refresh(); upd(); loadPhotos().then(function (got) { if (got) { drawWindow(); if (C()) C().refresh(); upd(); } }); }); return; }
   var state = { cat: "", q: "", sort: "featured", instock: false };
   function drawCats() {
     var cats = CATS.filter(function (c) { return (SECTIONS && SECTIONS[c]) || PLANTS.some(function (p) { return p.cat === c; }); });
@@ -463,7 +469,7 @@ window.ATM_SHOP = function (cfg) {
 
 /* ---------- the two shops ---------- */
 window.ATM_SHOP.NURSERY = {
-  page: "nursery", items: function () { return window.PLANTS; }, cats: function () { return window.PLANT_CATS; },
+  page: "nursery", label: "Native Nursery", items: function () { return window.PLANTS; }, cats: function () { return window.PLANT_CATS; },
   rpc: "pos_web_plants", feedCache: "atm-pos-feed", basketKey: "atm-basket", lastResKey: "atm-last-res", codePrefix: "ATM", hash: "plant-",
   defaultSize: "Pot", moreCat: "More plants", moreArt: "pot", moreText: "At the nursery now. Tap Interested for a current photo or more about it.",
   windowSel: "#plant-window", countAttr: "data-plant-count", countWord: ["plant type", "plant types"], winEyebrow: "Native nursery · now online", winHead: "Buy a tree online. Pick it up any day,", winGo: "Shop the nursery",
@@ -475,7 +481,7 @@ window.ATM_SHOP.NURSERY = {
     askHint: "e.g. Is it fruiting yet? Can you deliver to Hope Town?", notesHint: "e.g. I need help loading" }
 };
 window.ATM_SHOP.PRODUCE = {
-  page: "produce", sameDay: true, noPrice: "", items: function () { return window.PRODUCE; }, cats: function () { return window.PRODUCE_CATS; },
+  page: "produce", label: "Local Produce", sameDay: true, noPrice: "", items: function () { return window.PRODUCE; }, cats: function () { return window.PRODUCE_CATS; },
   rpc: "pos_web_produce", feedCache: "atm-pos-produce", basketKey: "atm-basket-produce", lastResKey: "atm-last-res-produce", codePrefix: "ATF", hash: "fruit-",
   defaultSize: "Each", moreCat: "More produce", moreArt: "mango", moreText: "At the market now. Tap Interested for a current photo or more about it.",
   windowSel: "#produce-window", countAttr: "data-produce-count", countWord: ["fruit", "fruits"], winEyebrow: "Local produce · now online", winHead: "Buy island fruit online. Pick it up any day,", winGo: "Shop local produce",
@@ -487,7 +493,7 @@ window.ATM_SHOP.PRODUCE = {
     askHint: "e.g. Can I get two dozen mangoes for Saturday?", notesHint: "e.g. Pick ripe ones for this weekend" }
 };
 window.ATM_SHOP.PANTRY = {
-  page: "pantry", sameDay: true, noPrice: "", items: function () { return window.PANTRY; }, cats: function () { return window.PANTRY_CATS; }, sections: function () { return window.PANTRY_SECTIONS; },
+  page: "pantry", label: "The Pantry", sameDay: true, noPrice: "", items: function () { return window.PANTRY; }, cats: function () { return window.PANTRY_CATS; }, sections: function () { return window.PANTRY_SECTIONS; },
   rpc: "pos_web_pantry", feedCache: "atm-pos-pantry", basketKey: "atm-basket-pantry", lastResKey: "atm-last-res-pantry", codePrefix: "ATP", hash: "jar-",
   defaultSize: "Jar", moreCat: "More from the pantry", moreArt: "jar", moreText: "On the pantry shelf now. Tap Interested for a current photo or more about it.",
   windowSel: "#pantry-window", countAttr: "data-pantry-count", winEyebrow: "The Pantry · coming soon online", winHead: "Jams, jellies and pickles. Pick them up any day,", winGo: "Shop the pantry",
@@ -500,7 +506,7 @@ window.ATM_SHOP.PANTRY = {
 };
 /* Arts & Crafts (craft.html): register items of kind "Art" and kind "Craft" on one page, one section per maker */
 window.ATM_SHOP.CRAFT = {
-  page: "craft", sameDay: true, noPrice: "",
+  page: "craft", label: "Arts & Crafts", sameDay: true, noPrice: "",
   items: function () { return (window.ARTWORK || []).concat(window.CRAFT || []); },
   cats: function () { return (window.ARTWORK_CATS || []).concat(window.CRAFT_CATS || [], window.CRAFTS_MORE_CATS || []); },
   sections: function () { return Object.assign({}, window.ARTWORK_SECTIONS, window.CRAFT_SECTIONS, window.CRAFTS_MORE_SECTIONS); },
