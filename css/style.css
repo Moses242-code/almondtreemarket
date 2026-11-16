@@ -2332,3 +2332,6 @@ body .farmer-m.farmer-m .all-cta .cc-txt { display: grid; gap: .2rem; justify-it
 
 /* yellow prices a little thinner and easier to read (16 Nov 2026, from Mo): same font, one weight lighter, letters not squeezed */
 .pprice:not(.tba) { font-weight: 700; letter-spacing: 0; }
+
+/* no Buy buttons on the cards (16 Nov 2026, from Mo): Add to cart takes the whole row; the item window has Go to cart instead of Buy now */
+.pbuy { grid-template-columns: 1fr; }

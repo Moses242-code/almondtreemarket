@@ -335,7 +335,7 @@ window.ATM_SHOP = function (cfg) {
       '<p class="pdesc">' + esc(p.text) + '</p><div class="pfoot pfoot2"><span class="pprice' + (sortPrice(p) === Infinity ? " tba" : "") + '">' + esc(fromPrice(p)) + '</span><span class="pchips">' + p.sizes.map(function (z) { return '<i class="' + (z.qty ? "" : "none") + '">' + esc(z.pot) + " · " + z.qty + "</i>"; }).join("") + "</span></div>" +
       '<div class="pacts">' + (out ? '<button class="btn small add" disabled>' + esc(st[0] === "soon" ? "Coming soon" : W.out) + "</button>" :
         '<div class="pbuy"><button class="btn small add" data-quickadd="' + p.id + '">' + CART_ICON + "<span>" + (p.pre ? "Pre-order" : "Add to cart") + "</span>" + (n ? '<i class="incart">' + n + "</i>" : "") + "</button>" +
-        '<button class="btn small buy1" data-quickbuy="' + p.id + '">Buy</button></div>') +
+        "</div>") + /* no Buy button on cards: everything goes to the cart (16 Nov 2026, from Mo) */
       '<button class="btn small ghost int" data-interest="' + p.id + '">Interested</button></div></div></article>';
   }
   function secHead(c, s) {
@@ -404,7 +404,7 @@ window.ATM_SHOP = function (cfg) {
         "<small>" + (have ? have + " already in your cart · " : "") + z.qty + " " + esc(z.pot) + " available</small></div>" : "") +
       '<div class="dacts"><button class="btn primary" type="button" data-addpick' + (z && left > 0 ? "" : " disabled") + ">" +
       (z && left <= 0 ? "All " + esc(z.pot) + " are in your cart" : !z ? esc(W.out) : "Add to cart · " + esc(z.pot) + (z.price ? " · " + money(z.price * pick.n) : "")) + "</button>" +
-      (z && left > 0 ? '<button class="btn buynow" type="button" data-buynow>Buy now</button>' : "") +
+      '<button class="btn buynow gocart" type="button" data-gocart>Go to cart</button>' +
       '<button class="btn ghost" type="button" data-interest="' + p.id + '">Interested? Ask us</button></div></div>';
   }
   function openPlant(id) {
@@ -436,6 +436,7 @@ window.ATM_SHOP = function (cfg) {
       if (C() && C().add(cfg.page, pick.id, pick.pot, pick.n)) closeDlg();
       return;
     }
+    if (e.target.closest("[data-gocart]")) { closeDlg(); if (C()) C().open("cart"); return; }
     if (e.target.closest("[data-buynow]")) {
       if (C() && C().add(cfg.page, pick.id, pick.pot, pick.n)) { closeDlg(); C().open("checkout"); }
     }

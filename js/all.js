@@ -47,7 +47,7 @@ window.ATM_ALL = function () {
       '<p class="pdesc">' + esc(p.text || "") + '</p><div class="pfoot pfoot2"><span class="pprice' + (s.sortPrice(p) === Infinity ? " tba" : "") + '">' + esc(s.fromPrice(p)) + '</span><span class="pchips">' + p.sizes.map(function (z) { return '<i class="' + (z.qty ? "" : "none") + '">' + esc(z.pot) + " · " + z.qty + "</i>"; }).join("") + "</span></div>" +
       '<div class="pacts">' + (out ? '<button class="btn small add" disabled>' + esc(st[0] === "soon" ? "Coming soon" : st[1]) + "</button>" :
         '<div class="pbuy"><button class="btn small add" data-all-add="' + esc(s.cfg.page) + "|" + esc(p.id) + '">' + CART_ICON + "<span>" + (p.pre ? "Pre-order" : "Add to cart") + "</span>" + (n ? '<i class="incart">' + n + "</i>" : "") + "</button>" +
-        '<button class="btn small buy1" data-all-buy="' + esc(s.cfg.page) + "|" + esc(p.id) + '">Buy</button></div>') +
+        "</div>") +
       '<a class="btn small ghost int" href="' + esc(link(o)) + '">See it</a></div></div></article>';
   }
 
