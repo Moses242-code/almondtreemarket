@@ -118,7 +118,9 @@
       var row = $(".pz-shop-slots");
       if (!list.length) { if (row) row.remove(); }
       else {
-        if (!row) { row = document.createElement("div"); row.className = "pz-slots pz-shop-slots"; row.setAttribute("aria-label", "Promotion"); grid.parentNode.insertBefore(row, grid); }
+        /* in the empty top-right corner of the shop's heading when there is one (15 Nov 2026, from Mo), else above the list */
+        var hero = $(".shop-hero .wrap");
+        if (!row) { row = document.createElement("div"); row.className = "pz-slots pz-shop-slots" + (hero ? " pz-hero-slots" : ""); row.setAttribute("aria-label", "Promotion"); if (hero) hero.appendChild(row); else grid.parentNode.insertBefore(row, grid); }
         var tiles = list.map(function (d) { return cardHTML(d, "div"); }).join("");
         if (row.innerHTML !== tiles) row.innerHTML = tiles;
       }

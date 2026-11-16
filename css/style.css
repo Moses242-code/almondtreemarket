@@ -2313,3 +2313,12 @@ body .farmer-m.farmer-m .all-cta .cc-txt { display: grid; gap: .2rem; justify-it
 .all-card a.pname { color: inherit; text-decoration: none; text-align: left; }
 .all-card a.pmedia { display: block; }
 .all-none { grid-column: 1 / -1; padding: 2rem 0; text-align: center; }
+
+/* shop pages (15 Nov 2026, from Mo): the promotion card sits in the empty top-right corner of the heading on wide screens;
+   on phones and tablets it sits under the heading text, above the list */
+.shop-hero .pz-hero-slots { margin: 1.4rem 0 0; }
+@media (min-width: 961px) {
+  .shop-hero .wrap { position: relative; }
+  .shop-hero .pz-hero-slots { position: absolute; top: 0; right: max(16px, env(safe-area-inset-right, 0px)); margin: 0; width: 263px; grid-template-columns: 1fr; }
+  .shop-hero .wrap:has(.pz-hero-slots) > :not(.pz-hero-slots) { max-width: calc(100% - 282px); }
+}
