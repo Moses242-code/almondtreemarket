@@ -637,38 +637,28 @@ Array.prototype.forEach.call(document.querySelectorAll(".ns-tree:not(.ns-scene)"
   window.addEventListener("scroll", on, { passive: true }); on();
   t.addEventListener("click", function (e) { e.preventDefault(); window.scrollTo({ top: 0, behavior: still ? "auto" : "smooth" }); t.blur(); });
 })();
-/* home page: the market photo's top lines up with the top of the Big Bird / Make things by hand cards (15 Nov 2026) */
+/* home page (15 Nov 2026, from Mo): the Almond Tree Market photo sits level with the December spaces and yard fruit
+   cards beside it. The photo keeps its own 4:3 shape; its width is set so its frame is exactly as tall as the cards */
 (function () {
-  var ph = document.querySelector(".rt2 .film-pair") || document.querySelector(".rt2 .film-photo"), bb = document.querySelector(".nc-pair.under .bb-ad");
-  if (!ph || !bb) return;
-  var mq = matchMedia("(min-width: 760px)");
+  var fig = document.querySelector(".rt2 .film-photo"), pair = document.querySelector(".rt2 .nc-pair.under");
+  if (!fig || !pair) return;
+  var img = fig.querySelector("img"), mq = matchMedia("(min-width: 760px)");
   var line = function () {
-    var pair = bb.parentNode, imgs = ph.querySelectorAll("img");
-    ph.style.marginTop = ""; pair.style.rowGap = "";
-    [].forEach.call(imgs, function (im) { im.style.height = ""; });
-    if (!mq.matches) return;
-    /* photos stacked one under the other right below the blurb (15 Nov 2026, from Mo): no lining up with the cards */
-    if (ph.classList.contains("stack")) return;
-    /* the photos are as tall as the Big Bird card: photo height = card height minus the white frame and caption */
-    var fig = ph.querySelector(".film-photo");
-    /* one photo (15 Nov 2026, from Mo): it keeps its own shape, not squeezed to the card height */
-    if (fig && imgs.length > 1) {
-      var extra = fig.getBoundingClientRect().height - imgs[0].getBoundingClientRect().height;
-      var h = Math.max(90, Math.round(bb.getBoundingClientRect().height - extra));
-      [].forEach.call(imgs, function (im) { im.style.height = h + "px"; });
-    }
-    var m = parseFloat(getComputedStyle(ph).marginTop) || 0, gap = bb.getBoundingClientRect().top - ph.getBoundingClientRect().top;
-    if (gap > -m) ph.style.marginTop = Math.round(m + gap) + "px";
-    else { /* the photo can't come up any higher (the blurb is in the way), so the bottom two cards step down to meet it */
-      ph.style.marginTop = "0px";
-      var g2 = ph.getBoundingClientRect().top - bb.getBoundingClientRect().top, rg = parseFloat(getComputedStyle(pair).rowGap) || 0;
-      if (g2 > 0) pair.style.rowGap = Math.round(rg + g2) + "px";
-    }
+    fig.style.width = ""; fig.style.maxWidth = "";
+    if (img) { img.style.removeProperty("height"); img.style.aspectRatio = ""; img.style.objectFit = ""; }
+    if (!mq.matches || !img) return;
+    var H = pair.getBoundingClientRect().height, col = fig.parentNode.getBoundingClientRect().width;
+    var cs = getComputedStyle(fig), padX = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
+    var extra = fig.getBoundingClientRect().height - img.getBoundingClientRect().height; /* frame top + caption */
+    var w = Math.round((H - extra) * 4 / 3 + padX);
+    fig.style.maxWidth = "none"; fig.style.width = Math.max(160, Math.min(col, w)) + "px";
+    /* narrow screens: the column can't fit the full-width photo, so it is trimmed a little top and bottom to stay level */
+    if (w > col) { img.style.aspectRatio = "auto"; img.style.objectFit = "cover"; img.style.setProperty("height", Math.round(H - extra) + "px", "important"); }
   };
   var t; var later = function () { clearTimeout(t); t = setTimeout(line, 120); };
   window.addEventListener("resize", later); window.addEventListener("load", line);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(line);
-  [].forEach.call(document.querySelectorAll(".nc-pair.under img, .rt2 img"), function (im) { if (!im.complete) im.addEventListener("load", later); });
+  [].forEach.call(document.querySelectorAll(".rt2 img"), function (im) { if (!im.complete) im.addEventListener("load", later); });
   line(); setTimeout(line, 700);
 })();
 /* the four shop cards on the home page (nursery, produce, pantry, crafts) all the same size (15 Nov 2026, from Mo):

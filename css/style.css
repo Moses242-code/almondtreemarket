@@ -2212,3 +2212,49 @@ header.nav .brand b .dotcom { position: absolute; left: 100%; bottom: 0; margin:
 /* ".com" sits on MARKET's line (same baseline) but takes no width, so the centring ignores it */
 header.nav .brand b .mkt { position: static; display: inline; }
 header.nav .brand b .dotcom { position: static; display: inline-block; width: 0; overflow: visible; white-space: nowrap; margin: 0; padding-left: .04em; }
+
+/* "Hungry? Check out next door" sign as a square with bigger writing; the "Food vendors on the main row" line is gone
+   (15 Nov 2026, from Mo) */
+body .rt2 .nd-sign { aspect-ratio: 1 / 1; height: auto; align-content: center; justify-content: center; gap: .55rem; padding: .8rem; box-sizing: border-box; }
+body .rt2 .nd-sign .nd-top { font-size: .6rem; letter-spacing: .06em; gap: .35rem; }
+body .rt2 .nd-sign b { font-size: 1.7rem; line-height: 1.05; max-width: 9ch; }
+body .rt2 .nd-sign .nd-shop { font-size: .9rem; letter-spacing: .08em; flex-direction: column; gap: .25rem; padding-top: .5rem; }
+body .rt2 .nd-sign .nd-shop .nd-bullet { display: none; }
+@media (min-width: 760px) {
+  body .row-top.rt2 { --sw: 230px; }
+  body .rt2 .nd-sign { align-self: start; }
+}
+@media (min-width: 1101px) {
+  body .row-top.rt2 { --sw: 270px; }
+  body .rt2 .nd-sign b { font-size: 2.05rem; }
+  body .rt2 .nd-sign .nd-top { font-size: .68rem; }
+  body .rt2 .nd-sign .nd-shop { font-size: 1.02rem; }
+}
+@media (max-width: 759px) {
+  body .rt2 .nd-sign { width: clamp(140px, 40vw, 220px); max-width: none; flex: none; padding: .55rem; gap: .35rem; align-self: flex-start; }
+  body .rt2 .nd-sign .nd-top { font-size: .42rem; letter-spacing: .02em; gap: .2rem; }
+  body .rt2 .nd-sign .nd-top .nd-dot { width: 5px; height: 5px; }
+  body .rt2 .nd-sign b { font-size: 1.2rem; }
+  body .rt2 .nd-sign .nd-shop { font-size: .66rem; padding-top: .35rem; }
+}
+
+/* top of Home (15 Nov 2026, from Mo): headline and blurb beside the square sign, then the Almond Tree Market photo level
+   with the December spaces and yard fruit cards. "Make things by hand?" and Big Bird moved under Pantry / Arts & Crafts */
+@media (min-width: 760px) {
+  body .row-top.rt2 { grid-template-areas: "h h sign" "lead lead sign" "film cards cards"; grid-template-rows: auto auto auto; row-gap: 1.4rem; }
+  body .rt2 .lead { align-self: start; max-width: 62ch; text-align: left; }
+  body .rt2 .nd-sign { align-self: start; }
+  body .rt2 .film-pair.stack { align-self: start; justify-content: flex-start; align-items: center; }
+  body .rt2 .film-pair.stack .film-photo { margin: 0; }
+  body .rt2 .nc-pair.under { align-self: start; }
+}
+.bottom-ads { position: relative; z-index: 2; max-width: var(--max, 1240px); margin: 0 auto; padding: 0 max(16px, env(safe-area-inset-left, 0px)) clamp(28px, 5vw, 56px); }
+.bottom-ads .nc-pair.under.bottom-pair { max-width: 760px; margin: 0 auto; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 559px) { .bottom-ads .nc-pair.under.bottom-pair { grid-template-columns: minmax(0, 1fr); } }
+.bottom-ads .nc-pair.under.two.three.four.bottom-pair { max-width: 900px; gap: 22px; }
+@media (max-width: 559px) { .bottom-ads .nc-pair.under.two.three.four.bottom-pair { max-width: 100%; gap: 18px; } }
+/* "Native & International dishes!" (15 Nov 2026, from Mo): same flashing red, sized to fit the square sign */
+body .rt2 .nd-sign .nd-shop { letter-spacing: .04em; text-align: center; }
+body .rt2 .nd-sign .nd-shop span { overflow-wrap: anywhere; }
+@media (min-width: 760px) and (max-width: 1100px) { body .rt2 .nd-sign .nd-shop { font-size: .8rem; } }
+@media (max-width: 759px) { body .rt2 .nd-sign .nd-shop { font-size: .58rem; letter-spacing: .02em; } }
