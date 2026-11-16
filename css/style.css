@@ -2258,3 +2258,15 @@ body .rt2 .nd-sign .nd-shop { letter-spacing: .04em; text-align: center; }
 body .rt2 .nd-sign .nd-shop span { overflow-wrap: anywhere; }
 @media (min-width: 760px) and (max-width: 1100px) { body .rt2 .nd-sign .nd-shop { font-size: .8rem; } }
 @media (max-width: 759px) { body .rt2 .nd-sign .nd-shop { font-size: .58rem; letter-spacing: .02em; } }
+
+/* ---- phones: a bigger name (15 Nov 2026, from Mo: the title was too small on phones). The name block takes all the
+   room up to the Cart button and its text scales to fit it ---- */
+@media (max-width: 480px) {
+  header.nav .wrap { gap: .4rem !important; }
+  header.nav .brand { flex: 1 1 auto !important; min-width: 0; gap: .4rem !important; }
+  header.nav .brand > span { flex: 1 1 auto; container-type: inline-size; justify-items: center; }
+  header.nav .brand b { font-size: min(1.05rem, 7.2cqw) !important; letter-spacing: .03em !important; }
+  header.nav .brand small { font-size: min(.62rem, 3.7cqw) !important; letter-spacing: .04em !important; }
+  header.nav .brand small .bs-flag { width: 15px !important; height: 8px !important; }
+  .nav .cart-btn, .nav .menu-btn { width: 42px !important; }
+}
