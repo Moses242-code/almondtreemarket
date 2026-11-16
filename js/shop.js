@@ -66,7 +66,7 @@ window.ATM_SHOP = function (cfg) {
       [p.id, p.name, p.name.replace(/\(.*?\)/g, ""), (p.name.match(/\((.*?)\)/) || [])[1], p.name.split(",")[0], p.latin].concat(p.aliases || [])
         .forEach(function (a) { var k = norm(a); if (k && !alias[k]) alias[k] = p; });
     });
-    var groups = {}, extras = {}, pics = {};
+    var groups = {}, extras = {}, pics = {}, cands = {};
     rows.forEach(function (r) {
       if (!r || !r.name || /^\s*test\b/i.test(r.name)) return; /* register test items never show on the site */
       var key = norm(baseName(r)), p = alias[key], pot = potLabel(r);
@@ -76,13 +76,27 @@ window.ATM_SHOP = function (cfg) {
         if (dm && alias[norm(dm[1])]) { p = alias[norm(dm[1])]; if (!String(r.size || "").trim()) pot = dm[2].trim(); }
       }
       var z = { pot: pot, price: Math.max(0, +r.price_cents || 0) / 100, qty: Math.max(0, parseInt(r.qty, 10) || 0), pid: r.id || null,
+        photo: r.photo_id ? { id: String(r.photo_id), at: r.photo_at || 0 } : null, /* this size's own photo, shown when it's picked */
         onsite: r.onsite_qty == null ? null : Math.max(0, parseInt(r.onsite_qty, 10) || 0) }; /* how many are at the market now; the rest are at home */
       var bucket = p ? (groups[p.id] = groups[p.id] || []) : (extras[key] = extras[key] || { name: baseName(r), sizes: [] }).sizes;
       /* the item's photo in the inventory app, if it has one (first one found wins) */
       var gk = p ? p.id : "pos-" + key;
-      if (r.photo_id && !pics[gk]) pics[gk] = { id: String(r.photo_id), at: r.photo_at || 0 };
+      /* photo candidates for the card; picked after the loop (see cardPic) */
+      var sized = /\s[–—-]\s/.test(String(r.name)); /* "Sour Sop – 3 gallon" is a size of "Sour Sop" */
+      (cands[gk] = cands[gk] || []).push({ id: r.photo_id ? String(r.photo_id) : "", at: r.photo_at || 0, main: !!r.photo_main, sized: sized });
       var same = bucket.filter(function (x) { return x.pot === z.pot; })[0];
-      if (same) { same.onsite = same.onsite == null || z.onsite == null ? null : same.onsite + z.onsite; same.qty += z.qty; if (!same.price) same.price = z.price; if (!same.pid) same.pid = z.pid; } else bucket.push(z);
+      if (same) { same.onsite = same.onsite == null || z.onsite == null ? null : same.onsite + z.onsite; same.qty += z.qty; if (!same.price) same.price = z.price; if (!same.pid) same.pid = z.pid; if (!same.photo) same.photo = z.photo; } else bucket.push(z);
+    });
+    /* The card's photo: the size starred ⭐ in the inventory app; else the main item's photo ("Sour Sop",
+       not "Sour Sop – 3 gallon"); else, when there is no main item (e.g. Ghost Pepper – Small bag / Gallon bag),
+       the first size with a photo. A size's own photo never replaces the card photo unless it's starred:
+       it shows when that size is picked in the open card. */
+    Object.keys(cands).forEach(function (gk) {
+      var c = cands[gk], hasMain = c.some(function (x) { return !x.sized; });
+      var best = c.filter(function (x) { return x.id && x.main; })[0] ||
+        c.filter(function (x) { return x.id && !x.sized; })[0] ||
+        (hasMain ? null : c.filter(function (x) { return x.id; })[0]);
+      if (best) pics[gk] = { id: best.id, at: best.at };
     });
     var bySize = function (a, b) { return gal(a.pot) - gal(b.pot) || a.pot.localeCompare(b.pot); };
     var mode = F.notInRegister || "keep";
@@ -163,12 +177,31 @@ window.ATM_SHOP = function (cfg) {
   function loadPhotos() {
     var need = applyPhotos().filter(function (k, i, a) { return a.indexOf(k) === i; });
     if (!need.length) return Promise.resolve(false);
-    return Promise.all(need.map(function (k) {
-      return fetch(F.url.replace(/\/$/, "") + "/rest/v1/rpc/pos_web_photo", { method: "POST", headers: { "Content-Type": "application/json", apikey: F.key }, body: JSON.stringify({ p_id: k.split("@")[0] }) })
-        .then(function (r) { return r.ok ? r.json() : null; })
-        .then(function (u) { if (typeof u === "string" && /^data:image\/(jpeg|png|webp);base64,/.test(u)) photoCache[k] = u; })
-        .catch(function () {});
-    })).then(function () { applyPhotos(); return true; });
+    return Promise.all(need.map(loadOne)).then(function () { applyPhotos(); return true; });
+  }
+  function loadOne(k) {
+    if (photoCache[k]) return Promise.resolve();
+    return fetch(F.url.replace(/\/$/, "") + "/rest/v1/rpc/pos_web_photo", { method: "POST", headers: { "Content-Type": "application/json", apikey: F.key }, body: JSON.stringify({ p_id: k.split("@")[0] }) })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (u) { if (typeof u === "string" && /^data:image\/(jpeg|png|webp);base64,/.test(u)) photoCache[k] = u; })
+      .catch(function () {});
+  }
+  /* In the open card: picking a size that has its own photo (taken in the inventory app) shows that photo,
+     with the size on it; a size with no photo of its own shows the card's main photo. The card in the grid
+     always keeps the main (⭐) photo. */
+  function showSizePhoto(p) {
+    var box = $(".dmedia", dlg); if (!box) return;
+    var z = sizeOf(p, pick.pot), ph = z && z.photo && !(p.posPhoto && p.posPhoto.id === z.photo.id && p.img) ? z.photo : null;
+    var want = ph ? ph.id + "@" + ph.at : "";
+    if ((box.getAttribute("data-ph") || "") === want) return;
+    if (!ph) { box.innerHTML = media(p); box.setAttribute("data-ph", ""); return; }
+    var put = function () {
+      if (!photoCache[want] || pick.id !== p.id || sizeOf(p, pick.pot) !== z) return;
+      box.innerHTML = '<img src="' + esc(photoCache[want]) + '" alt="' + esc(p.name + ", " + z.pot) + '">' +
+        '<span class="size-tag">' + esc(z.pot) + "</span>" + '<span class="fruit-badge" aria-hidden="true">' + (A.ART[p.art] || "") + "</span>";
+      box.setAttribute("data-ph", want);
+    };
+    if (photoCache[want]) put(); else loadOne(want).then(put);
   }
   function avail(p) { return p.sizes.reduce(function (s, z) { return s + z.qty; }, 0); }
   function sizeOf(p, pot) { return p.sizes.filter(function (z) { return z.pot === pot; })[0]; }
@@ -373,9 +406,10 @@ window.ATM_SHOP = function (cfg) {
       "<p>" + esc(p.text) + "</p>" + (p.care ? '<p class="care"><b>' + esc(W.careLabel) + ":</b> " + esc(p.care) + "</p>" : "") +
       '<div class="dpick-wrap">' + pickPanel(p) + "</div></div></div>";
     if (!dlg.open) { if (dlg.showModal) dlg.showModal(); else dlg.setAttribute("open", ""); }
+    showSizePhoto(p);
     try { history.replaceState(null, "", "#" + cfg.hash + id); } catch (e) {}
   }
-  function redrawPick() { var w = $(".dpick-wrap", dlg); if (w && byId[pick.id]) w.innerHTML = pickPanel(byId[pick.id]); }
+  function redrawPick() { var w = $(".dpick-wrap", dlg); if (w && byId[pick.id]) { w.innerHTML = pickPanel(byId[pick.id]); showSizePhoto(byId[pick.id]); } }
   function closeDlg() { dlg.close(); try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {} }
   dlg.addEventListener("click", function (e) {
     if (e.target === dlg || e.target.closest("[data-close]")) { closeDlg(); return; }
@@ -455,7 +489,7 @@ window.ATM_SHOP = function (cfg) {
     loadPhotos().then(function (got) {
       if (!got) return;
       refresh(); if (C()) C().refresh();
-      var dm = $(".dmedia", dlg); if (dlg.open && dm && byId[pick.id]) dm.innerHTML = media(byId[pick.id]);
+      var dm = $(".dmedia", dlg); if (dlg.open && dm && byId[pick.id]) { dm.innerHTML = media(byId[pick.id]); dm.removeAttribute("data-ph"); showSizePhoto(byId[pick.id]); }
     });
     if (dlg.open && pick.id && byId[pick.id] && $(".dpick-wrap", dlg)) {
       var p = byId[pick.id]; if (!sizeOf(p, pick.pot)) { var f = p.sizes.filter(function (z) { return z.qty > 0; })[0]; pick.pot = f ? f.pot : ""; pick.n = 1; }

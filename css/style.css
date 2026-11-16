@@ -2322,3 +2322,7 @@ body .farmer-m.farmer-m .all-cta .cc-txt { display: grid; gap: .2rem; justify-it
   .shop-hero .pz-hero-slots { position: absolute; top: 0; right: max(16px, env(safe-area-inset-right, 0px)); margin: 0; width: 263px; grid-template-columns: 1fr; }
   .shop-hero .wrap:has(.pz-hero-slots) > :not(.pz-hero-slots) { max-width: calc(100% - 282px); }
 }
+/* open card: the picked size's own photo carries its size (16 Nov 2026) */
+.size-tag { position: absolute; z-index: 3; left: 14px; top: 14px; pointer-events: none;
+  font: 700 .8rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; padding: .5em .85em; border-radius: 999px;
+  color: #3a2300; background: #ffcf4a; border: 1px solid #fff2c2; }
