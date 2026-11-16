@@ -2270,3 +2270,27 @@ body .rt2 .nd-sign .nd-shop span { overflow-wrap: anywhere; }
   header.nav .brand small .bs-flag { width: 15px !important; height: 8px !important; }
   .nav .cart-btn, .nav .menu-btn { width: 42px !important; }
 }
+
+/* ---- OUT OF STOCK: bold red see-through band across the picture of anything out of stock that has no season band
+   (from Mo 15 Nov 2026: it looked like you could still buy it). The card's picture and words fade; the band stays full strength ---- */
+.season-band.oos-band { background: rgba(212,42,42,.72); color: #fff; border-block: 2px solid rgba(255,255,255,.85); padding: .3rem 0 .34rem;
+  box-shadow: 0 4px 14px rgba(0,0,0,.3); backdrop-filter: blur(1px); -webkit-backdrop-filter: blur(1px); }
+.season-band.oos-band b { font: 900 1rem/1 var(--display); letter-spacing: .08em; text-transform: uppercase; color: #fff; white-space: nowrap;
+  text-shadow: 0 1px 3px rgba(0,0,0,.45); }
+.pmedia .season-band.oos-band b { font-size: 1rem; letter-spacing: .08em; }
+.dmedia .season-band.oos-band { padding: .5rem 0 .55rem; } .dmedia .season-band.oos-band b { font-size: 1.7rem; }
+.pw-card .season-band.oos-band { padding: .14rem 0 .16rem; } .pw-card .season-band.oos-band b { font-size: .62rem; }
+@media (max-width: 480px) { .pmedia .season-band.oos-band b { font-size: .7rem; letter-spacing: .06em; } .dmedia .season-band.oos-band b { font-size: 1.35rem; } }
+.pcard.is-out { opacity: 1; }
+.pcard.is-out .pbody, .pcard.is-out .pmedia > :not(.season-band) { opacity: .55; }
+/* a Rare tag drops to the bottom of the picture when the OUT OF STOCK band is there, so it never covers the words */
+.oos-band ~ .rare-tag { top: 86%; }
+/* the OUT OF STOCK words scale with the card so they always fit inside the picture */
+.pmedia, .dmedia { container-type: inline-size; }
+.pmedia .season-band.oos-band b { font-size: min(1rem, 7cqi) !important; letter-spacing: .06em; }
+.dmedia .season-band.oos-band b { font-size: min(1.7rem, 7.4cqi) !important; }
+/* a little more see-through (from Mo 15 Nov 2026) */
+.season-band.oos-band { background: rgba(212,42,42,.5); border-block-color: rgba(255,255,255,.7); box-shadow: 0 3px 10px rgba(0,0,0,.18); }
+.season-band.oos-band { background: rgba(212,42,42,.32); border-block-color: rgba(255,255,255,.55); box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; }
+.season-band.oos-band b { text-shadow: 0 1px 3px rgba(0,0,0,.7), 0 0 8px rgba(160,20,20,.6); }
+.season-band.oos-band { background: rgba(212,42,42,.18); border-block-color: rgba(255,255,255,.4); }

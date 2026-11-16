@@ -195,6 +195,11 @@ window.ATM_SHOP = function (cfg) {
     var s = p.seasonMonths;
     return '<span class="season-band" aria-label="Seasonal: ' + MONTHS[s[0] - 1] + " through " + MONTHS[s[1] - 1] + '"><b>' + MONTHS[s[0] - 1] + " – " + MONTHS[s[1] - 1] + "</b><i>Seasonal</i></span>";
   }
+  /* anything out of stock with no season band (and not a "Coming soon" table) gets a bold red OUT OF STOCK band across the picture (from Mo 15 Nov 2026) */
+  function stockBand(p) {
+    if (avail(p) || soon(p) || (outOfSeason(p) && p.seasonMonths)) return "";
+    return '<span class="season-band oos-band" aria-label="Out of stock"><b>Out of stock</b></span>';
+  }
   /* rare: true on an item = flashing "Rare" tag at the bottom middle of its picture */
   function rareTag(p) { return p.rare ? '<span class="rare-tag">Rare</span>' : ""; }
   /* maker sections (pantry, craft closet, art): each category is one maker's table; no maker named yet = "Coming soon" */
@@ -217,9 +222,9 @@ window.ATM_SHOP = function (cfg) {
   }
   function media(p) {
     /* same cartoon-fruit hover pointer whether the item has a photo yet or still shows its drawing */
-    if (!p.img) return A.art(p.art).replace("<div ", '<div style="cursor:' + esc(cursor(p.art)) + '" ') + seasonBand(p) + rareTag(p);
+    if (!p.img) return A.art(p.art).replace("<div ", '<div style="cursor:' + esc(cursor(p.art)) + '" ') + seasonBand(p) + stockBand(p) + rareTag(p);
     return '<img src="' + esc(p.img) + '" alt="' + esc(p.name) + '" loading="lazy" style="cursor:' + esc(cursor(p.art)) + '">' +
-      '<span class="fruit-badge" aria-hidden="true">' + (A.ART[p.art] || "") + "</span>" + seasonBand(p) + rareTag(p);
+      '<span class="fruit-badge" aria-hidden="true">' + (A.ART[p.art] || "") + "</span>" + seasonBand(p) + stockBand(p) + rareTag(p);
   }
 
   /* ---------- cart: ONE cart for the whole site (plants + produce), kept in js/cart.js ---------- */
