@@ -2326,3 +2326,9 @@ body .farmer-m.farmer-m .all-cta .cc-txt { display: grid; gap: .2rem; justify-it
 .size-tag { position: absolute; z-index: 3; left: 14px; top: 14px; pointer-events: none;
   font: 700 .8rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; padding: .5em .85em; border-radius: 999px;
   color: #3a2300; background: #ffcf4a; border: 1px solid #fff2c2; }
+/* item window: a size with no photo of its own yet shows the main photo, its size tag and this note (16 Nov 2026) */
+.size-soon { position: absolute; z-index: 3; left: 14px; bottom: 14px; max-width: calc(100% - 90px); pointer-events: none;
+  font: 600 .78rem/1.2 var(--body); padding: .45em .8em; border-radius: 10px; color: #fff; background: rgba(6,18,12,.78); border: 1px solid rgba(255,207,74,.6); }
+
+/* yellow prices a little thinner and easier to read (16 Nov 2026, from Mo): same font, one weight lighter, letters not squeezed */
+.pprice:not(.tba) { font-weight: 700; letter-spacing: 0; }

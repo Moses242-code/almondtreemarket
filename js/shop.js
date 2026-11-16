@@ -192,9 +192,14 @@ window.ATM_SHOP = function (cfg) {
   function showSizePhoto(p) {
     var box = $(".dmedia", dlg); if (!box) return;
     var z = sizeOf(p, pick.pot), ph = z && z.photo && !(p.posPhoto && p.posPhoto.id === z.photo.id && p.img) ? z.photo : null;
-    var want = ph ? ph.id + "@" + ph.at : "";
+    var want = ph ? ph.id + "@" + ph.at : z && p.sizes.length > 1 ? "none:" + z.pot : "";
     if ((box.getAttribute("data-ph") || "") === want) return;
-    if (!ph) { box.innerHTML = media(p); box.setAttribute("data-ph", ""); return; }
+    /* no photo of the picked size yet (16 Nov 2026, from Mo): the main photo stays, with the size on it and a note,
+       so switching sizes still shows which one is picked */
+    if (!ph) {
+      box.innerHTML = media(p) + (want ? '<span class="size-tag">' + esc(z.pot) + "</span>" + (z.photo ? "" : '<span class="size-soon">Photo of the ' + esc(z.pot) + " coming soon</span>") : "");
+      box.setAttribute("data-ph", want); return;
+    }
     var put = function () {
       if (!photoCache[want] || pick.id !== p.id || sizeOf(p, pick.pot) !== z) return;
       box.innerHTML = '<img src="' + esc(photoCache[want]) + '" alt="' + esc(p.name + ", " + z.pot) + '">' +
@@ -209,13 +214,16 @@ window.ATM_SHOP = function (cfg) {
   /* no price set: the nursery says "Price on request"; local produce shows nothing (no price means none in yet) */
   var NO_PRICE = cfg.noPrice != null ? cfg.noPrice : "Price on request";
   function priceTxt(n) { return n > 0 ? money(n) : NO_PRICE; }
+  /* price line (16 Nov 2026, from Mo): lowest to highest of the sizes in stock ("From $35 to $120"); one price = just "$35";
+     nothing in stock = the same over every size, so people still see what it costs */
   function fromPrice(p) {
-    var ps = p.sizes.map(function (z) { return z.price; }).filter(function (x) { return x > 0; });
+    var priced = p.sizes.filter(function (z) { return z.price > 0; }), have = priced.filter(function (z) { return z.qty > 0; });
+    var ps = (have.length ? have : priced).map(function (z) { return z.price; });
     if (!ps.length) return NO_PRICE;
-    var lo = Math.min.apply(null, ps);
-    return (p.sizes.length > 1 ? "From " : "") + money(lo);
+    var lo = Math.min.apply(null, ps), hi = Math.max.apply(null, ps);
+    return lo === hi ? money(lo) : "From " + money(lo) + " to " + money(hi);
   }
-  function sortPrice(p) { var ps = p.sizes.map(function (z) { return z.price; }).filter(function (x) { return x > 0; }); return ps.length ? Math.min.apply(null, ps) : Infinity; }
+  function sortPrice(p) { var pr = p.sizes.filter(function (z) { return z.price > 0; }), h = pr.filter(function (z) { return z.qty > 0; }), ps = (h.length ? h : pr).map(function (z) { return z.price; }); return ps.length ? Math.min.apply(null, ps) : Infinity; }
   /* seasonal items (seasonMonths: [first, last], e.g. [6, 9] = June to September) */
   var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   function outOfSeason(p) {
@@ -409,7 +417,12 @@ window.ATM_SHOP = function (cfg) {
     showSizePhoto(p);
     try { history.replaceState(null, "", "#" + cfg.hash + id); } catch (e) {}
   }
-  function redrawPick() { var w = $(".dpick-wrap", dlg); if (w && byId[pick.id]) { w.innerHTML = pickPanel(byId[pick.id]); showSizePhoto(byId[pick.id]); } }
+  function priceRow(p) { var st = status(p); return '<span class="pprice' + (sortPrice(p) === Infinity ? " tba" : "") + '">' + esc(fromPrice(p)) + '</span><span class="stock ' + st[0] + '">' + st[1] + "</span>"; }
+  function redrawPick() {
+    var w = $(".dpick-wrap", dlg), p = byId[pick.id]; if (!w || !p) return;
+    w.innerHTML = pickPanel(p); showSizePhoto(p);
+    var dp = $(".dprice", dlg), h = priceRow(p); if (dp && dp.innerHTML !== h) dp.innerHTML = h; /* live stock may arrive after the window opened */
+  }
   function closeDlg() { dlg.close(); try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {} }
   dlg.addEventListener("click", function (e) {
     if (e.target === dlg || e.target.closest("[data-close]")) { closeDlg(); return; }
