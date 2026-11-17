@@ -96,12 +96,12 @@ window.ATM_SHOP = function (cfg) {
       var best = c.filter(function (x) { return x.id && x.main; })[0] ||
         c.filter(function (x) { return x.id && !x.sized; })[0] ||
         (hasMain ? null : c.filter(function (x) { return x.id; })[0]);
-      if (best) pics[gk] = { id: best.id, at: best.at };
+      if (best) pics[gk] = { id: best.id, at: best.at, main: !!best.main };
     });
     var bySize = function (a, b) { return gal(a.pot) - gal(b.pot) || a.pot.localeCompare(b.pot); };
     var mode = F.notInRegister || "keep";
     PLANTS = PLANTS.filter(function (p) {
-      if (groups[p.id]) { p.sizes = groups[p.id].sort(bySize); p.live = true; if (pics[p.id] && !p.keepImg) p.posPhoto = pics[p.id]; return true; }
+      if (groups[p.id]) { p.sizes = groups[p.id].sort(bySize); p.live = true; if (pics[p.id] && (!p.keepImg || pics[p.id].main)) p.posPhoto = pics[p.id]; /* ⭐ in the app beats keepImg */ return true; }
       if (mode === "hide") return false;
       if (mode === "soldout") p.sizes = p.sizes.map(function (z) { return { pot: z.pot, price: z.price, qty: 0 }; });
       return true;
