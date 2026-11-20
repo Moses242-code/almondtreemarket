@@ -101,7 +101,11 @@ window.ATM_SHOP = function (cfg) {
     var bySize = function (a, b) { return gal(a.pot) - gal(b.pot) || a.pot.localeCompare(b.pot); };
     var mode = F.notInRegister || "keep";
     PLANTS = PLANTS.filter(function (p) {
-      if (groups[p.id]) { p.sizes = groups[p.id].sort(bySize); p.live = true; if (pics[p.id] && (!p.keepImg || pics[p.id].main)) p.posPhoto = pics[p.id]; /* ⭐ in the app beats keepImg */ return true; }
+      if (groups[p.id]) {
+        /* sizes keep the card's own order from data.js (Each, Case, Hand / Small bag, Gallon bag), then gallons smallest first */
+        var want = (p.sizes || []).map(function (z) { return norm(z.pot); });
+        var rank = function (z) { var k = norm(z.pot); if (/^half/.test(k)) return rank({ pot: k.slice(4) }) - 0.5; for (var i = 0; i < want.length; i++) if (want[i] === k || want[i].indexOf(k) === 0 || k.indexOf(want[i]) === 0) return i; return want.length; };
+        p.sizes = groups[p.id].sort(function (a, b) { return gal(a.pot) - gal(b.pot) || rank(a) - rank(b) || a.pot.localeCompare(b.pot); }); p.live = true; if (pics[p.id] && (!p.keepImg || pics[p.id].main)) p.posPhoto = pics[p.id]; /* ⭐ in the app beats keepImg */ return true; }
       if (mode === "hide") return false;
       if (mode === "soldout") p.sizes = p.sizes.map(function (z) { return { pot: z.pot, price: z.price, qty: 0 }; });
       return true;
