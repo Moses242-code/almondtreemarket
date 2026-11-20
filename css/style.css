@@ -2346,3 +2346,7 @@ header.nav .ord-btn { width: auto; min-width: 52px; padding: 0 .45rem; }
 body .rt2 a.nd-sign b { font-size: 1.32rem; line-height: 1.02; }
 @media (min-width: 1101px) { body .rt2 a.nd-sign b { font-size: 1.6rem; } }
 @media (max-width: 759px) { body .rt2 a.nd-sign b { font-size: .86rem; line-height: 1; } }
+
+/* checkout: a phone number that looks wrong flashes once (20 Nov 2026) */
+@keyframes chkFlash { 0%, 100% { box-shadow: 0 0 0 0 rgba(255,95,126,0); } 25%, 75% { box-shadow: 0 0 0 3px rgba(255,95,126,.85); } 50% { box-shadow: 0 0 0 1px rgba(255,95,126,.4); } }
+.chk-flash { animation: chkFlash 1.2s ease-in-out 2; border-color: #ff5f7e !important; }

@@ -314,6 +314,16 @@ window.ATM_CART = (function () {
     err.textContent = "";
     var name = String(d.get("name") || "").trim(), phone = String(d.get("phone") || "").trim();
     if (!name || !phone) { err.textContent = "Please add your name and phone number."; return; }
+    /* a phone number that looks garbled gets one "are you sure?" note; tapping Place order again sends it anyway,
+       so unusual foreign and second-home numbers still get through (20 Nov 2026, from Mo) */
+    var pd = phone.replace(/\D/g, ""), odd = pd.length < 7 || pd.length > 15 || /[a-z]{2,}/i.test(phone) || /^(\d)\1+$/.test(pd) ||
+      "01234567890".indexOf(pd) > -1 || "09876543210".indexOf(pd) > -1;
+    if (odd && f.getAttribute("data-phone-ok") !== phone) {
+      f.setAttribute("data-phone-ok", phone);
+      err.innerHTML = "<b>Are you sure this is the right number?</b> " + esc(phone) + " doesn&#39;t look like a phone number. Fix it, or tap the button again to use it anyway.";
+      var pi = $("#co-phone", root); if (pi) { pi.classList.remove("chk-flash"); void pi.offsetWidth; pi.classList.add("chk-flash"); pi.focus(); }
+      return;
+    }
     if (!d.get("agree")) { err.textContent = "Please tick the box: cash only, paid when you collect. Call for delivery information."; return; }
     clean();
     var ls = lines(); if (!ls.length) { err.textContent = "Your cart is empty."; return; }
