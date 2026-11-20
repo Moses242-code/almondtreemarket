@@ -2335,3 +2335,9 @@ body .farmer-m.farmer-m .all-cta .cc-txt { display: grid; gap: .2rem; justify-it
 
 /* no Buy buttons on the cards (16 Nov 2026, from Mo): Add to cart takes the whole row; the item window has Go to cart instead of Buy now */
 .pbuy { grid-template-columns: 1fr; }
+
+/* Purchases button left of Cart (20 Nov 2026): same look as Cart, its number is the orders saved on this phone */
+header.nav .wrap .ord-btn { margin-left: auto; }
+header.nav .wrap .ord-btn ~ .cart-btn { margin-left: 0; }
+.ord-btn .hb-l { font-size: .5rem; letter-spacing: .02em; }
+header.nav .ord-btn { width: auto; min-width: 52px; padding: 0 .45rem; }

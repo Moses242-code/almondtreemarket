@@ -94,6 +94,8 @@ window.ATM_CART = (function () {
     '<path d="M3.5 15h25l-2.8 10.2a1.5 1.5 0 0 1-1.4 1.1H7.7a1.5 1.5 0 0 1-1.4-1.1Z" fill="#c98a4b"/>' +
     '<path d="M5 18.5h22M6 22h20M11 15.5l1 10.5M16 15.5v10.5M21 15.5l-1 10.5" stroke="#8a5a2b" stroke-width="1.1" fill="none"/>' +
     '<rect x="2" y="12.8" width="28" height="3.2" rx="1.6" fill="#e0a86a"/></svg>';
+  var RECEIPT = '<svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true"><path d="M8 3h16v26l-2.7-2-2.6 2-2.7-2-2.7 2-2.6-2L8 29Z" fill="#fff6e0" stroke="#c98a4b" stroke-width="1.4" stroke-linejoin="round"/>' +
+    '<path d="M11.5 9h9M11.5 13h9M11.5 17h5.5" stroke="#8a5a2b" stroke-width="1.5" stroke-linecap="round"/><rect x="17.5" y="15.5" width="5" height="5" rx=".6" fill="#06120c"/><rect x="18.7" y="16.7" width="1.2" height="1.2" fill="#fff6e0"/><rect x="20.8" y="18.8" width="1" height="1" fill="#fff6e0"/></svg>';
   function mount() {
     A = window.ATM;
     var navWrap = document.querySelector("header.nav .wrap"), mb = navWrap && navWrap.querySelector(".menu-btn");
@@ -103,6 +105,15 @@ window.ATM_CART = (function () {
       b.innerHTML = BASKET + '<span class="hb-l">Cart</span><span class="cart-n empty" id="cart-n">0</span>';
       if (mb) navWrap.insertBefore(b, mb); else navWrap.appendChild(b);
       b.addEventListener("click", function () { open("cart"); });
+    }
+    /* "Purchases" button left of Cart (20 Nov 2026, from Mo): the orders placed on this phone, with their QR codes.
+       They stay in this browser (localStorage) until its data is cleared; the number shows how many are saved. */
+    if (navWrap && !$("#ord-btn") && $("#cart-btn")) {
+      var ob = document.createElement("button");
+      ob.id = "ord-btn"; ob.className = "cart-btn ord-btn"; ob.type = "button"; ob.setAttribute("aria-label", "Your purchases and QR codes");
+      ob.innerHTML = RECEIPT + '<span class="hb-l">Purchases</span><span class="cart-n empty" id="ord-n">0</span>';
+      navWrap.insertBefore(ob, $("#cart-btn"));
+      ob.addEventListener("click", function () { open("orders"); });
     }
     fab = document.createElement("button");
     fab.className = "basket-fab"; fab.id = "cart-fab"; fab.hidden = true; fab.type = "button";
@@ -129,6 +140,8 @@ window.ATM_CART = (function () {
   function open(v) { view = v || "cart"; drawer.classList.add("open"); drawer.setAttribute("aria-hidden", "false"); document.body.classList.add("lock"); render(); paintBadge(); }
   function close() { drawer.classList.remove("open"); drawer.setAttribute("aria-hidden", "true"); document.body.classList.remove("lock"); if (view === "done") view = "cart"; paintBadge(); }
   function paintBadge() {
+    var on = read(ORDERS, []).length, ob = $("#ord-n");
+    if (ob) { ob.textContent = on > 99 ? "99+" : on; ob.classList.toggle("empty", !on); }
     var n = count(), b = $("#cart-n");
     if (b) { b.textContent = n > 99 ? "99+" : n; b.hidden = false; b.classList.toggle("empty", !n); }
     if (fab) {
@@ -250,9 +263,9 @@ window.ATM_CART = (function () {
   function ordersHTML(full) {
     var orders = read(ORDERS, []);
     return '<div class="bhead"><button type="button" class="link" data-view="cart">← Back to cart</button>' + (full ? "" : '<button class="x" data-close-cart aria-label="Close">×</button>') + "</div>" +
-      '<h3 class="bh3">Your orders</h3>' + (orders.length ? '<ul class="blist">' + orders.map(function (o, i) {
+      '<h3 class="bh3">Your purchases</h3>' + (orders.length ? '<ul class="blist">' + orders.map(function (o, i) {
         return '<li><div class="binfo"><b>' + esc(o.code) + "</b><span>" + esc(o.day) + " · " + o.lines.length + (o.lines.length === 1 ? " line" : " lines") + " · " + esc(o.total) + '</span></div><div class="bline"><button type="button" class="btn small" data-showorder="' + i + '">Show QR</button></div></li>';
-      }).join("") + "</ul>" : '<p class="muted">No orders yet.</p>') + '<p class="note">Orders are kept on this phone so you can show the QR code at pickup.</p>';
+      }).join("") + "</ul>" : '<p class="muted">No orders yet.</p>') + '<p class="note">Your purchases stay saved in this browser so you can show the QR code at pickup. Clearing the browser&#39;s history or data removes them.</p>';
   }
   function render() {
     if (!panel) return;
@@ -325,7 +338,7 @@ window.ATM_CART = (function () {
       o.msg = ["*Almond Tree Market order " + c + "*", "", "Name: " + name, "Phone: " + phone, "Pickup: " + dayTxt, ""]
         .concat(olines.map(function (x) { return x.qty + " x " + x.name + " (" + x.size + ")" + (x.price ? " " + money(x.price * x.qty) : " price on request"); }),
           ["", "Total: " + o.total + " (cash at pickup)", "Notes: " + (payload.notes || "-"), "", "Cash only at pickup. Call for delivery information."]).join("\n");
-      var all = read(ORDERS, []); all.unshift(o); write(ORDERS, all.slice(0, 15));
+      var all = read(ORDERS, []); all.unshift(o); write(ORDERS, all.slice(0, 15)); paintBadge();
       lastOrder = justPlaced = o; cart = {}; changed();
       if (root === page) { pageView = "done"; renderPage(); window.scrollTo(0, page.offsetTop - 80); } else { view = "done"; render(); panel.scrollTop = 0; }
     };
