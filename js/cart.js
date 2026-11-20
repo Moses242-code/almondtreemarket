@@ -345,8 +345,18 @@ window.ATM_CART = (function () {
     if (F.url && F.key && window.fetch) {
       var ctl = window.AbortController ? new AbortController() : null, timer = setTimeout(function () { if (ctl) ctl.abort(); }, 12000);
       fetch(F.url.replace(/\/$/, "") + "/rest/v1/rpc/pos_web_order_create", { method: "POST", headers: { "Content-Type": "application/json", apikey: F.key }, body: JSON.stringify({ p_order: payload }), signal: ctl ? ctl.signal : undefined })
-        .then(function (r) { clearTimeout(timer); return r.ok ? r.json() : null; })
-        .then(function (j) { finish(j && j.code ? j : null); }, function () { clearTimeout(timer); finish(null); });
+        .then(function (r) { clearTimeout(timer); return r.ok ? r.json() : r.json().then(function (b) { return { _err: b }; }, function () { return null; }); })
+        .then(function (j) {
+          /* someone else is holding it (or it's gone): say so instead of giving a code we can't fill */
+          if (j && j._err && j._err.message === "sold_out") {
+            var left = parseInt(j._err.hint, 10);
+            err.textContent = "Sorry, " + (j._err.details || "one of your items") + (left > 0 ? " only has " + left + " left right now" : " just sold out") + ". Please change the amount in your cart and try again.";
+            btn.disabled = false; btn.innerHTML = "Place order &amp; get my QR code";
+            if (window.ATM_refreshStock) try { window.ATM_refreshStock(); } catch (e) {}
+            return;
+          }
+          finish(j && j.code ? j : null);
+        }, function () { clearTimeout(timer); finish(null); });
     } else finish(null);
   }
   function doneHTML(o, full) {
@@ -355,7 +365,7 @@ window.ATM_CART = (function () {
       '<div class="conf"><span class="eyebrow">Your pickup code</span><div class="ccode">' + esc(o.code) + '</div><div class="qr" data-qr aria-label="QR code for order ' + esc(o.code) + '"></div>' +
       '<p class="step1"><b>One QR code for your whole order.</b> Show it at the register at Almond Tree Market and we ring everything up together. Pickup: <b>' + esc(o.day) + "</b>. Total <b>" + esc(o.total) + "</b>, cash when you collect.</p>" +
       '<button class="btn ghost" type="button" data-saveqr>Save QR image</button>' +
-      (o.saved ? '<p class="step1">Your order is in our register. Come pick it up on your pickup day.</p><a class="btn wa" href="' + A.wa(o.msg) + '" target="_blank" rel="noopener">Also send it on WhatsApp (optional)</a>'
+      (o.saved ? '<p class="step1">Your order is in our register and <b>set aside for you</b> until 24 hours after your pickup day. Come pick it up on your pickup day.</p><a class="btn wa" href="' + A.wa(o.msg) + '" target="_blank" rel="noopener">Also send it on WhatsApp (optional)</a>'
         : '<p class="step1"><b>One more step:</b> send your order to us on WhatsApp so we can set it aside.</p><a class="btn wa" href="' + A.wa(o.msg) + '" target="_blank" rel="noopener">Send order on WhatsApp</a>') +
       cashNote() + fine(o.lines.some(function (x) { return x.shop === "nursery"; })) +
       '<ul class="clist">' + o.lines.map(function (x) { return "<li>" + x.qty + " × " + esc(x.name) + " (" + esc(x.size) + ")" + (x.price ? " · " + money(x.price * x.qty) : "") + "</li>"; }).join("") + "</ul>" +
