@@ -2350,3 +2350,9 @@ body .rt2 a.nd-sign b { font-size: 1.32rem; line-height: 1.02; }
 /* checkout: a phone number that looks wrong flashes once (20 Nov 2026) */
 @keyframes chkFlash { 0%, 100% { box-shadow: 0 0 0 0 rgba(255,95,126,0); } 25%, 75% { box-shadow: 0 0 0 3px rgba(255,95,126,.85); } 50% { box-shadow: 0 0 0 1px rgba(255,95,126,.4); } }
 .chk-flash { animation: chkFlash 1.2s ease-in-out 2; border-color: #ff5f7e !important; }
+
+/* checkout: "Ask about delivery to a mail boat or ferry" tick box, orders over $300 only (21 Nov 2026) */
+.bform .co-deliv { align-items: flex-start; gap: .55rem; padding: .6rem .7rem; border: 1px dashed rgba(127,216,255,.45); border-radius: 10px; background: rgba(127,216,255,.06); }
+.bform .co-deliv span { display: grid; gap: .2rem; }
+.bform .co-deliv b { font-weight: 700; color: #bfeaff; }
+.bform .co-deliv small { color: var(--mist); font-size: .78rem; line-height: 1.3; }

@@ -3,7 +3,7 @@
    - Checkout: name, phone, pickup day -> one order with ONE QR code for every item.
    - The order is saved in the Plant Collective register (pos_web_order_create). At the shop the register scans
      the QR code (or types the code) and rings it up as a cash sale.
-   - Cash only, pick up on site, pay when you collect. Call for delivery information.
+   - Cash only, pick up on site, pay when you collect. Delivery to the mail boat or ferry may be available for larger orders; just ask.
    Item data (names, sizes, prices, stock, photos) comes from the shop engine in js/shop.js (window.ATM_SHOPS). */
 window.ATM_CART = (function () {
   "use strict";
@@ -16,7 +16,8 @@ window.ATM_CART = (function () {
   var KEY = "atm-cart", SAVED = "atm-cart-saved", ORDERS = "atm-orders";
   var SHOP_NAME = { nursery: "Plants · Native Nursery", produce: "Local produce", pantry: "The Pantry", craft: "Arts & Crafts" };
   var SHOP_LIST = ["nursery", "produce", "pantry", "craft"];
-  var CASH = "Cash only. Pick up on site. Pay when you collect. Call for delivery information. Collect your order at Under the Almond Tree, Marsh Harbour.";
+  var DELIVERY_MIN = 300;   /* dollars: the delivery tick box shows only on orders over this */
+  var CASH = "Cash only. Pick up on site. Pay when you collect. Delivery to the mail boat or ferry may be available for larger orders; just ask. Collect your order at Under the Almond Tree, Marsh Harbour.";
 
   function read(k, d) { try { var v = JSON.parse(localStorage.getItem(k) || "null"); return v == null ? d : v; } catch (e) { return d; } }
   function write(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
@@ -256,7 +257,9 @@ window.ATM_CART = (function () {
       '<label>Phone / WhatsApp<input name="phone" id="co-phone" type="tel" autocomplete="tel" required maxlength="30"></label>' +
       '<label>Pickup day <small>(open ' + esc(N.daysText) + ", " + esc(N.closedText) + ')</small><select name="day" id="co-day">' + days.map(function (d) { return '<option value="' + d.iso + '">' + (d.today ? "Today, " : "") + esc(A.longDate(d.d)) + "</option>"; }).join("") + "</select></label>" +
       '<label>Notes <small>(optional)</small><input name="notes" id="co-notes" maxlength="200" placeholder="e.g. pick ripe mangoes for the weekend"></label>' +
-      '<label class="chk co-agree"><input type="checkbox" name="agree" id="co-agree"> I&#39;ll pay cash when I collect at Almond Tree Market. Call for delivery information.</label>' +
+      /* orders over $300 only (21 Nov 2026, from Mo): ask for delivery to a mail boat or ferry; not offered below that */
+      (total() > DELIVERY_MIN ? '<label class="chk co-deliv"><input type="checkbox" name="deliver" id="co-deliver"> <span><b>Ask about delivery to a mail boat or ferry</b><small>Larger orders only. Put the boat and island in the notes and we&#39;ll contact you with the details.</small></span></label>' : "") +
+      '<label class="chk co-agree"><input type="checkbox" name="agree" id="co-agree"> I&#39;ll pay cash when I collect at Almond Tree Market.</label>' +
       '<p class="err" id="co-err" role="alert"></p><button class="btn primary" type="submit" id="co-go">' + (count() >= BIG ? "Send my big order request" : "Place order &amp; get my QR code") + "</button>" +
       cashNote("small") + fine() + "</form>";
   }
@@ -324,12 +327,14 @@ window.ATM_CART = (function () {
       var pi = $("#co-phone", root); if (pi) { pi.classList.remove("chk-flash"); void pi.offsetWidth; pi.classList.add("chk-flash"); pi.focus(); }
       return;
     }
-    if (!d.get("agree")) { err.textContent = "Please tick the box: cash only, paid when you collect. Call for delivery information."; return; }
+    if (!d.get("agree")) { err.textContent = "Please tick the box: cash only, paid when you collect."; return; }
     clean();
     var ls = lines(); if (!ls.length) { err.textContent = "Your cart is empty."; return; }
     var dayIso = String(d.get("day") || ""), dayObj = pickupDays().filter(function (x) { return x.iso === dayIso; })[0];
     var dayTxt = dayObj ? A.longDate(dayObj.d) : dayIso;
-    var payload = { name: name, phone: phone, notes: String(d.get("notes") || "").trim(), pickup_day: dayIso,
+    var wantsDelivery = !!d.get("deliver") && total() > DELIVERY_MIN, noteTxt = String(d.get("notes") || "").trim();
+    if (wantsDelivery) noteTxt = ("DELIVERY: mail boat/ferry requested. " + noteTxt).slice(0, 200);
+    var payload = { name: name, phone: phone, notes: noteTxt, pickup_day: dayIso,
       lines: ls.map(function (l) { return { shop: l.shop, item_id: l.id, name: l.p.name, size: l.z.pot, qty: l.qty, product_id: l.z.pid || null }; }) };
     var items = ls.reduce(function (s, l) { return s + l.qty; }, 0);
     if (items >= BIG) { bigRequest(payload, root, btn, items); return; }
@@ -347,7 +352,7 @@ window.ATM_CART = (function () {
         .concat(olines.map(function (x) { return x.qty + " x " + x.name + " (" + x.size + ")"; }), ["Total: " + o.total + " - cash at pickup", "Show this code at the register."]).map(ascii).join("\n");
       o.msg = ["*Almond Tree Market order " + c + "*", "", "Name: " + name, "Phone: " + phone, "Pickup: " + dayTxt, ""]
         .concat(olines.map(function (x) { return x.qty + " x " + x.name + " (" + x.size + ")" + (x.price ? " " + money(x.price * x.qty) : " price on request"); }),
-          ["", "Total: " + o.total + " (cash at pickup)", "Notes: " + (payload.notes || "-"), "", "Cash only at pickup. Call for delivery information."]).join("\n");
+          ["", "Total: " + o.total + " (cash at pickup)", "Notes: " + (payload.notes || "-"), "", "Cash only at pickup."]).join("\n");
       var all = read(ORDERS, []); all.unshift(o); write(ORDERS, all.slice(0, 15)); paintBadge();
       lastOrder = justPlaced = o; cart = {}; changed();
       if (root === page) { pageView = "done"; renderPage(); window.scrollTo(0, page.offsetTop - 80); } else { view = "done"; render(); panel.scrollTop = 0; }
@@ -396,7 +401,7 @@ window.ATM_CART = (function () {
     g.fillStyle = "#06120c"; g.textAlign = "center"; g.font = "bold 28px sans-serif"; g.fillText(o.code, 160, 300);
     g.font = "14px sans-serif"; g.fillText("Almond Tree Market · pickup " + o.day.replace(/^\w+, /, ""), 160, 326);
     g.fillText("Total " + o.total.replace(" + items priced on request", "+"), 160, 348);
-    g.font = "12px sans-serif"; g.fillStyle = "#4a5a50"; g.fillText("Cash only at pickup. Call for delivery information.", 160, 378, 300); g.fillText("Same day unless notified. 24 hours to collect.", 160, 396);
+    g.font = "12px sans-serif"; g.fillStyle = "#4a5a50"; g.fillText("Cash only at pickup. Larger orders: ask about delivery.", 160, 378, 300); g.fillText("Same day unless notified. 24 hours to collect.", 160, 396);
     var a = document.createElement("a"); a.href = out.toDataURL("image/png"); a.download = "almond-tree-market-" + o.code + ".png"; document.body.appendChild(a); a.click(); a.remove();
   }
 

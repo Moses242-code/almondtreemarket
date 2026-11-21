@@ -534,7 +534,7 @@ window.ATM_SHOP.NURSERY = {
     empty: "No plants yet. Tap <b>Add to cart</b> on any plant (pick a pot size if it asks).",
     none: "No plants match that. Try another search, or tap Interested on a similar plant and ask us.",
     want: ["Send me a current photo", "Tell me the price", "Tell me when it's available", "I'd like a different size", "I have a question"],
-    askHint: "e.g. Is it fruiting yet? Can you deliver to Hope Town?", notesHint: "e.g. I need help loading" }
+    askHint: "e.g. Is it fruiting yet? Is there a bigger one?", notesHint: "e.g. I need help loading" }
 };
 window.ATM_SHOP.PRODUCE = {
   page: "produce", label: "Local Produce", sameDay: true, noPrice: "", items: function () { return window.PRODUCE; }, cats: function () { return window.PRODUCE_CATS; },
