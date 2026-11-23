@@ -2394,3 +2394,9 @@ body .rt2 a.nd-sign b { font-size: 1.32rem; line-height: 1.02; }
 .shop-hero .wrap.has-pic > .hero-pic img { position: absolute; inset: 0; }
 @media (max-width: 600px) { .shop-hero .wrap.has-pic > .hero-pic figcaption { font-size: .55rem; left: 6px; bottom: 6px; letter-spacing: .06em; } }
 @media (max-width: 600px) { .shop-hero .wrap.has-pic > h1 { font-size: min(2.6rem, 6.9vw); overflow-wrap: normal; } .shop-hero .wrap.has-pic > .lead { font-size: .95rem; } }
+
+/* phones (23 Nov 2026, from Mo): the item window shows the whole picture, not a cropped strip */
+@media (max-width: 640px) {
+  .dlg .dmedia:has(> img) { aspect-ratio: auto; background: #06120c; }
+  .dlg .dmedia > img { height: auto; max-height: 72vh; object-fit: contain; display: block; margin: 0 auto; }
+}
