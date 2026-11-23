@@ -206,9 +206,10 @@ window.ATM_SHOP = function (cfg) {
     /* a size with no photo of its own in the register shows the website's own photo, the same one the inventory app
        shows for it (16 Nov 2026, from Mo); only a size with neither says "coming soon" */
     if (!ph) {
-      var own = z && !z.photo && p.siteImg && p.siteImg !== p.img ? p.siteImg : "";
+      /* 23 Nov 2026 (from Mo): a size with no photo of its own shows the card's photo, never the old website picture */
+      var own = "";
       box.innerHTML = (own ? '<img src="' + esc(own) + '" alt="' + esc(p.name + ", " + z.pot) + '"><span class="fruit-badge" aria-hidden="true">' + (A.ART[p.art] || "") + "</span>" : media(p)) +
-        (want ? '<span class="size-tag">' + esc(z.pot) + "</span>" + (z.photo || own || p.siteImg ? "" : '<span class="size-soon">Photo of the ' + esc(z.pot) + " coming soon</span>") : "");
+        (want ? '<span class="size-tag">' + esc(z.pot) + "</span>" + (z.photo || p.img ? "" : '<span class="size-soon">Photo of the ' + esc(z.pot) + " coming soon</span>") : "");
       box.setAttribute("data-ph", want); return;
     }
     var put = function () {
