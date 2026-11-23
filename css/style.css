@@ -2356,3 +2356,31 @@ body .rt2 a.nd-sign b { font-size: 1.32rem; line-height: 1.02; }
 .bform .co-deliv span { display: grid; gap: .2rem; }
 .bform .co-deliv b { font-weight: 700; color: #bfeaff; }
 .bform .co-deliv small { color: var(--mist); font-size: .78rem; line-height: 1.3; }
+
+/* nursery page (23 Nov 2026, from Mo): heading text and the 01-02-03 steps on the left, a picture of the nursery on the right
+   (an ad for what's on site). The picture is a stand-in until Mo's nursery photo: swap the img in nursery.html and drop hero-pic-soon. */
+.hero-pic { margin: 1.4rem 0 0; position: relative; border-radius: 18px; overflow: hidden; border: 1px solid var(--line); background: var(--deep); aspect-ratio: 4 / 3; }
+.hero-pic img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.hero-pic figcaption { position: absolute; left: 12px; bottom: 12px; font: 500 .72rem/1 var(--mono); letter-spacing: .12em; text-transform: uppercase;
+  padding: .55em .8em; border-radius: 999px; background: rgba(6,18,12,.78); color: #f3efe2; border: 1px solid var(--line); }
+.hero-pic:not(.hero-pic-soon) figcaption { display: none; }
+@media (min-width: 961px) {
+  .shop-hero .wrap.has-pic { display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 32%); column-gap: clamp(20px, 2.4vw, 36px); align-items: start; }
+  .shop-hero .wrap.has-pic > * { grid-column: 1; }
+  .shop-hero .wrap.has-pic > .chips { grid-column: 1 / -1; }
+  .shop-hero .wrap.has-pic > .hero-pic { grid-column: 2; grid-row: 2 / span 4; margin: 1.1rem 0 0; aspect-ratio: auto; height: calc(100% - 1.1rem); min-height: 340px; }
+  .shop-hero .wrap.has-pic .how, .shop-hero .wrap.has-pic .how-fine { max-width: none; }
+}
+
+/* size chips: size · Qty n · price (23 Nov 2026, from Mo); one chip per line so the price sits on the right */
+.pchips { flex-direction: column; align-items: stretch; }
+.pchips i { display: flex; align-items: center; gap: .55em; }
+.pchips i .cq { color: var(--mist); }
+.pchips i .cp { margin-left: auto; padding-left: .6em; color: var(--mango); font-weight: 700; }
+.pchips i.none .cp { color: var(--mist); }
+
+/* big order: farm rate line in mango (23 Nov 2026) */
+.big-note .farm-line, .farm-rate b { display: block; margin-top: .35rem; color: var(--mango); font-weight: 700; }
+.big-done .btn + .btn { margin-top: .6rem; }
+.big-note .keep-line { display: block; margin-top: .45rem; }
+.big-done .btn { display: flex; justify-content: center; margin-top: .6rem; }

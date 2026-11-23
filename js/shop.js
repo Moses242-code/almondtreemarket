@@ -231,6 +231,13 @@ window.ATM_SHOP = function (cfg) {
     var lo = Math.min.apply(null, ps), hi = Math.max.apply(null, ps);
     return lo === hi ? money(lo) : "From " + money(lo) + " to " + money(hi);
   }
+/* size chips on the item cards (23 Nov 2026, from Mo): just the size and that size's own price on the right; how many are left shows inside the item window */
+function sizeChips(p) {
+  return p.sizes.map(function (z) {
+    return '<i class="' + (z.qty ? "" : "none") + '"><span class="cz">' + esc(z.pot) + "</span>" +
+      (z.price > 0 ? '<span class="cp">' + money(z.price) + "</span>" : "") + "</i>";
+  }).join("");
+}
   function sortPrice(p) { var pr = p.sizes.filter(function (z) { return z.price > 0; }), h = pr.filter(function (z) { return z.qty > 0; }), ps = (h.length ? h : pr).map(function (z) { return z.price; }); return ps.length ? Math.min.apply(null, ps) : Infinity; }
   /* seasonal items (seasonMonths: [first, last], e.g. [6, 9] = June to September) */
   var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -285,7 +292,7 @@ window.ATM_SHOP = function (cfg) {
   var updHooks = [];
   function upd() { updHooks.forEach(function (f) { try { f(); } catch (e) {} }); }
   window.ATM_SHOPS[cfg.page] = { cfg: cfg, byId: function (id) { return byId[id]; }, sizeOf: function (p, pot) { return sizeOf(p, pot); }, whenNote: whenNote, media: function (p) { return media(p); },
-    items: function () { return PLANTS; }, cats: function () { return CATS; }, avail: avail, status: status, fromPrice: fromPrice, sortPrice: sortPrice,
+    items: function () { return PLANTS; }, cats: function () { return CATS; }, avail: avail, status: status, fromPrice: fromPrice, sortPrice: sortPrice, sizeChips: sizeChips,
     onlySize: function (p) { var z = p.sizes.filter(function (s) { return s.qty > 0; }); return z.length === 1 ? z[0] : null; },
     onUpdate: function (f) { updHooks.push(f); } };
 
@@ -336,7 +343,7 @@ window.ATM_SHOP = function (cfg) {
     return '<article class="pcard' + (out && fade ? " is-out" : "") + '" data-id="' + p.id + '" id="' + cfg.hash + p.id + '">' +
       '<button class="pmedia" data-open="' + p.id + '" aria-label="More about ' + esc(p.name) + '">' + media(p) + '<span class="stock ' + st[0] + '">' + st[1] + "</span></button>" +
       '<div class="pbody"><span class="pcat">' + esc(p.cat) + '</span><button class="pname" data-open="' + p.id + '">' + esc(p.name) + '</button><span class="platin">' + esc(p.latin) + "</span>" +
-      '<p class="pdesc">' + esc(p.text) + '</p><div class="pfoot pfoot2"><span class="pprice' + (sortPrice(p) === Infinity ? " tba" : "") + '">' + esc(fromPrice(p)) + '</span><span class="pchips">' + p.sizes.map(function (z) { return '<i class="' + (z.qty ? "" : "none") + '">' + esc(z.pot) + " · " + z.qty + "</i>"; }).join("") + "</span></div>" +
+      '<p class="pdesc">' + esc(p.text) + '</p><div class="pfoot pfoot2"><span class="pprice' + (sortPrice(p) === Infinity ? " tba" : "") + '">' + esc(fromPrice(p)) + '</span><span class="pchips">' + sizeChips(p) + "</span></div>" +
       '<div class="pacts">' + (out ? '<button class="btn small add" disabled>' + esc(st[0] === "soon" ? "Coming soon" : W.out) + "</button>" :
         '<div class="pbuy"><button class="btn small add" data-quickadd="' + p.id + '">' + CART_ICON + "<span>" + (p.pre ? "Pre-order" : "Add to cart") + "</span>" + (n ? '<i class="incart">' + n + "</i>" : "") + "</button>" +
         "</div>") + /* no Buy button on cards: everything goes to the cart (16 Nov 2026, from Mo) */

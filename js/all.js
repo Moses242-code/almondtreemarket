@@ -44,7 +44,7 @@ window.ATM_ALL = function () {
     return '<article class="pcard all-card' + (out ? " is-out" : "") + '">' +
       '<a class="pmedia" href="' + esc(link(o)) + '" aria-label="More about ' + esc(p.name) + '">' + s.media(p) + '<span class="stock ' + st[0] + '">' + esc(st[1]) + "</span></a>" +
       '<div class="pbody"><span class="pcat"><b class="all-shop">' + esc(label(s)) + "</b> · " + esc(p.cat || "") + '</span><a class="pname" href="' + esc(link(o)) + '">' + esc(p.name) + '</a><span class="platin">' + esc(p.latin || "") + "</span>" +
-      '<p class="pdesc">' + esc(p.text || "") + '</p><div class="pfoot pfoot2"><span class="pprice' + (s.sortPrice(p) === Infinity ? " tba" : "") + '">' + esc(s.fromPrice(p)) + '</span><span class="pchips">' + p.sizes.map(function (z) { return '<i class="' + (z.qty ? "" : "none") + '">' + esc(z.pot) + " · " + z.qty + "</i>"; }).join("") + "</span></div>" +
+      '<p class="pdesc">' + esc(p.text || "") + '</p><div class="pfoot pfoot2"><span class="pprice' + (s.sortPrice(p) === Infinity ? " tba" : "") + '">' + esc(s.fromPrice(p)) + '</span><span class="pchips">' + s.sizeChips(p) + "</span></div>" +
       '<div class="pacts">' + (out ? '<button class="btn small add" disabled>' + esc(st[0] === "soon" ? "Coming soon" : st[1]) + "</button>" :
         '<div class="pbuy"><button class="btn small add" data-all-add="' + esc(s.cfg.page) + "|" + esc(p.id) + '">' + CART_ICON + "<span>" + (p.pre ? "Pre-order" : "Add to cart") + "</span>" + (n ? '<i class="incart">' + n + "</i>" : "") + "</button>" +
         "</div>") +

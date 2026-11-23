@@ -218,23 +218,34 @@ window.ATM_CART = (function () {
       '<div class="bfoot-links"><button type="button" class="link" data-clear>Empty cart</button>' + (full ? '<a class="link" href="/produce.html">Keep shopping</a>' : '<a class="link" href="/cart.html">Open the cart page</a><button type="button" class="link" data-close-cart>Keep shopping</button>') + "</div>" +
       savedHTML() + tail;
   }
-  /* ---------- big orders: 10 or more items are set up with us directly (no QR code) ---------- */
-  var BIG = 10, PHONE_TXT = (M && M.phoneDisplay) || "(242) 809-5667", PHONE_TEL = "+" + ((M && M.whatsapp) || "12428095667"), bigInfo = null;
-  function bigNote() {
-    return '<div class="big-note" role="note"><b>Whoa, that&#39;s a big order!</b> For ' + BIG + ' or more items we set it up with you directly. ' +
-      'Send it below and we&#39;ll contact you, or call or WhatsApp us at <a href="tel:' + PHONE_TEL + '">' + esc(PHONE_TXT) + "</a>.</div>";
-  }
-  function bigHTML(full) {
-    var b = bigInfo || {};
-    return '<div class="bhead"><button type="button" class="link" data-view="cart">← Back to cart</button>' + (full ? "" : '<button class="x" data-close-cart aria-label="Close">×</button>') + "</div>" +
-      '<div class="conf big-done"><h3 class="bh3">Whoa, that&#39;s a big order!</h3>' +
-      (b.saved ? '<p class="step1">Thanks, ' + esc(b.name) + ". We got your request for <b>" + b.items + " items</b> and will contact you at <b>" + esc(b.phone) + "</b> to set it up.</p>"
-        : '<p class="step1">Orders of ' + BIG + " or more items are set up with us directly. Please contact us and we&#39;ll get it ready.</p>") +
-      '<p class="step1">Call or WhatsApp us at <a href="tel:' + PHONE_TEL + '"><b>' + esc(PHONE_TXT) + "</b></a>.</p>" +
-      '<a class="btn wa" href="' + A.wa(b.msg || "Hi! I'd like to place a big order.") + '" target="_blank" rel="noopener">Send it on WhatsApp</a>' +
-      '<p class="note">No QR code is made for big orders: we confirm them with you first. Your cart is still here if you want to change it.</p>' +
-      '<button class="btn primary" type="button" data-view="cart">Back to my cart</button></div>';
-  }
+  /* ---------- big orders: over $150 with more than 12 items (13+) are set up with us directly, no QR code (limit 12 from Mo, 23 Nov 2026; the server's pos_web_order_create checks the same 13) ---------- */
+  var BIG = 13, BIG_CASH = 150, PHONE_TXT = (M && M.phoneDisplay) || "(242) 809-5667", PHONE_TEL = "+" + ((M && M.whatsapp) || "12428095667"), bigInfo = null;
+/* money first, then count (from Mo, 23 Nov 2026): an order of $150 or less always goes through online, however many items; over $150 AND 13+ items is a big order */
+  function isBig() { return total() > BIG_CASH && count() >= BIG; }
+var FARM_TXT = "Ask about our farm rate for bulk nursery purchases.";
+  /* the cart stays open after a big order request: nothing is placed until we talk (from Mo, 23 Nov 2026) */
+  var KEEP_TXT = "Your order isn&#39;t placed until we talk with you, so send us a message and keep shopping at your leisure: your cart stays open and you can keep adding to it. We&#39;ll get back to you as soon as possible to process your order.";
+function waLink(txt) { return '<a href="' + A.wa("Hi! I'd like to place a big order.") + '" target="_blank" rel="noopener">' + txt + "</a>"; }
+function bigNote() {
+  return '<div class="big-note" role="note"><b>Whoa, that&#39;s a big order!</b> For orders over $150 with more than 12 items, give us a call or WhatsApp us at ' +
+    '<a href="tel:' + PHONE_TEL + '">' + esc(PHONE_TXT) + "</a> (" + waLink("open WhatsApp") + ") and we&#39;ll process it right away. " +
+    "<span class=\"farm-line\">" + FARM_TXT + "</span> You can also send it below and we&#39;ll contact you.<span class=\"keep-line\">" + KEEP_TXT + "</span></div>";
+}
+function bigHTML(full) {
+  var b = bigInfo || {};
+  return '<div class="bhead"><button type="button" class="link" data-view="cart">← Back to cart</button>' + (full ? "" : '<button class="x" data-close-cart aria-label="Close">×</button>') + "</div>" +
+    '<div class="conf big-done"><h3 class="bh3">Whoa, that&#39;s a big order!</h3>' +
+    (b.saved ? '<p class="step1">Thanks, ' + esc(b.name) + ". We got your request for <b>" + b.items + " items</b> and will contact you at <b>" + esc(b.phone) + "</b>.</p>"
+      : '<p class="step1">For orders over $150 with more than 12 items, please contact us and we&#39;ll process it right away.</p>') +
+    '<p class="step1">Give us a call or WhatsApp us at <a href="tel:' + PHONE_TEL + '"><b>' + esc(PHONE_TXT) + "</b></a>.</p>" +
+    '<p class="step1 farm-rate"><b>' + FARM_TXT + "</b></p>" +
+    '<a class="btn wa" href="' + A.wa(b.msg || "Hi! I'd like to place a big order.") + '" target="_blank" rel="noopener">Send it on WhatsApp</a>' +
+    '<a class="btn" href="tel:' + PHONE_TEL + '">Call ' + esc(PHONE_TXT) + "</a>" +
+    '<p class="step1 keep-line">' + KEEP_TXT + "</p>" +
+    '<p class="note">No QR code is made for big orders: we confirm them with you first.</p>' +
+    '<button class="btn primary" type="button" data-view="cart">Back to my cart</button>' +
+    (full ? '<a class="btn" href="/nursery.html">Continue shopping</a>' : '<button class="btn" type="button" data-close-cart>Continue shopping</button>') + "</div>";
+}
   function bigRequest(payload, root, btn, items) {
     var msg = ["*Big order request (" + items + " items)*", "", "Name: " + payload.name, "Phone: " + payload.phone, ""]
       .concat(payload.lines.map(function (l) { return l.qty + " x " + l.name + " (" + l.size + ")"; }), ["", "Notes: " + (payload.notes || "-")]).join("\n");
@@ -252,7 +263,7 @@ window.ATM_CART = (function () {
     return '<div class="bhead"><button type="button" class="link" data-view="cart">← Back to cart</button>' + (full ? "" : '<button class="x" data-close-cart aria-label="Close">×</button>') + "</div>" +
       '<h3 class="bh3">Check out</h3><ul class="bsum">' + ls.map(function (l) { return "<li><span>" + l.qty + " × " + esc(l.p.name) + " <small>(" + esc(l.z.pot) + ")</small></span><b>" + esc(l.z.price ? money(l.z.price * l.qty) : "TBA") + "</b></li>"; }).join("") + "</ul>" +
       '<div class="btotal"><span>Total · pay cash at pickup</span><b' + (anyTBA() ? ' class="tba"' : "") + ">" + esc(totalTxt()) + "</b></div>" +
-      (count() >= BIG ? bigNote() : "") + '<form class="bform" id="co-form" novalidate><div class="eyebrow">Your details</div>' +
+      (isBig() ? bigNote() : "") + '<form class="bform" id="co-form" novalidate><div class="eyebrow">Your details</div>' +
       '<label>Your name<input name="name" id="co-name" autocomplete="name" required maxlength="60"></label>' +
       '<label>Phone / WhatsApp<input name="phone" id="co-phone" type="tel" autocomplete="tel" required maxlength="30"></label>' +
       '<label>Pickup day <small>(open ' + esc(N.daysText) + ", " + esc(N.closedText) + ')</small><select name="day" id="co-day">' + days.map(function (d) { return '<option value="' + d.iso + '">' + (d.today ? "Today, " : "") + esc(A.longDate(d.d)) + "</option>"; }).join("") + "</select></label>" +
@@ -260,7 +271,7 @@ window.ATM_CART = (function () {
       /* orders over $300 only (21 Nov 2026, from Mo): ask for delivery to a mail boat or ferry; not offered below that */
       (total() > DELIVERY_MIN ? '<label class="chk co-deliv"><input type="checkbox" name="deliver" id="co-deliver"> <span><b>Ask about delivery to a mail boat or ferry</b><small>Larger orders only. Put the boat and island in the notes and we&#39;ll contact you with the details.</small></span></label>' : "") +
       '<label class="chk co-agree"><input type="checkbox" name="agree" id="co-agree"> I&#39;ll pay cash when I collect at Almond Tree Market.</label>' +
-      '<p class="err" id="co-err" role="alert"></p><button class="btn primary" type="submit" id="co-go">' + (count() >= BIG ? "Send my big order request" : "Place order &amp; get my QR code") + "</button>" +
+      '<p class="err" id="co-err" role="alert"></p><button class="btn primary" type="submit" id="co-go">' + (isBig() ? "Send my big order request" : "Place order &amp; get my QR code") + "</button>" +
       cashNote("small") + fine() + "</form>";
   }
   function ordersHTML(full) {
@@ -337,7 +348,7 @@ window.ATM_CART = (function () {
     var payload = { name: name, phone: phone, notes: noteTxt, pickup_day: dayIso,
       lines: ls.map(function (l) { return { shop: l.shop, item_id: l.id, name: l.p.name, size: l.z.pot, qty: l.qty, product_id: l.z.pid || null }; }) };
     var items = ls.reduce(function (s, l) { return s + l.qty; }, 0);
-    if (items >= BIG) { bigRequest(payload, root, btn, items); return; }
+    if (isBig()) { bigRequest(payload, root, btn, items); return; }
     btn.disabled = true; btn.textContent = "Placing your order…";
     var finish = function (srv) {
       var c = srv && srv.code ? srv.code : code();
