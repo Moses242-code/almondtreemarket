@@ -2384,3 +2384,13 @@ body .rt2 a.nd-sign b { font-size: 1.32rem; line-height: 1.02; }
 .big-done .btn + .btn { margin-top: .6rem; }
 .big-note .keep-line { display: block; margin-top: .45rem; }
 .big-done .btn { display: flex; justify-content: center; margin-top: .6rem; }
+
+/* nursery picture (23 Nov 2026, from Mo): always on the right of the heading and text, at every width, and only as tall
+   as them, so it shrinks with the window and never pushes the plants further down the page */
+.shop-hero .wrap.has-pic { display: grid; grid-template-columns: minmax(0, 1fr) clamp(110px, 32%, 460px); column-gap: clamp(12px, 2.4vw, 36px); align-items: start; }
+.shop-hero .wrap.has-pic > * { grid-column: 1 / -1; }
+.shop-hero .wrap.has-pic > h1, .shop-hero .wrap.has-pic > .lead { grid-column: 1; }
+.shop-hero .wrap.has-pic > .hero-pic { grid-column: 2; grid-row: 2 / span 2; align-self: stretch; margin: .3rem 0 0; aspect-ratio: auto; height: auto; min-height: 0; }
+.shop-hero .wrap.has-pic > .hero-pic img { position: absolute; inset: 0; }
+@media (max-width: 600px) { .shop-hero .wrap.has-pic > .hero-pic figcaption { font-size: .55rem; left: 6px; bottom: 6px; letter-spacing: .06em; } }
+@media (max-width: 600px) { .shop-hero .wrap.has-pic > h1 { font-size: min(2.6rem, 6.9vw); overflow-wrap: normal; } .shop-hero .wrap.has-pic > .lead { font-size: .95rem; } }
