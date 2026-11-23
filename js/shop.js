@@ -73,7 +73,10 @@ window.ATM_SHOP = function (cfg) {
       /* "Star Fruit – Big": the part after a dash is the size when the part before it names an item here */
       if (!p) {
         var dm = /^(.*?)\s+[–—-]\s+(.+)$/.exec(String(r.name).trim());
-        if (dm && alias[norm(dm[1])]) { p = alias[norm(dm[1])]; if (!String(r.size || "").trim()) pot = dm[2].trim(); }
+        /* only when the part after the dash is a size ("Mango, grafted – 3 gallon") or the item has no size: a variety
+           ("Mango - Valencia pride (Grafted)") is never folded into the plain card, it gets its own (23 Nov 2026) */
+        var sz = String(r.size || "").trim(), tail = dm ? dm[2].trim() : "";
+        if (dm && alias[norm(dm[1])] && (!sz || SIZE_RE.test(tail) || norm(tail) === norm(sz))) { p = alias[norm(dm[1])]; if (!sz) pot = tail; }
       }
       var z = { pot: pot, price: Math.max(0, +r.price_cents || 0) / 100, qty: Math.max(0, parseInt(r.qty, 10) || 0), pid: r.id || null,
         photo: r.photo_id ? { id: String(r.photo_id), at: r.photo_at || 0 } : null, /* this size's own photo, shown when it's picked */
@@ -279,7 +282,8 @@ function sizeChips(p) {
   function media(p) {
     /* same cartoon-fruit hover pointer whether the item has a photo yet or still shows its drawing */
     if (!p.img) return A.art(p.art).replace("<div ", '<div style="cursor:' + esc(cursor(p.art)) + '" ') + seasonBand(p) + stockBand(p) + rareTag(p);
-    return '<img src="' + esc(p.img) + '" alt="' + esc(p.name) + '" loading="lazy" style="cursor:' + esc(cursor(p.art)) + '">' +
+    /* imgPos (data.js): which part of the photo to show, e.g. "center 85%" to bring the photo down */
+    return '<img src="' + esc(p.img) + '" alt="' + esc(p.name) + '" loading="lazy" style="cursor:' + esc(cursor(p.art)) + (p.imgPos ? ";object-position:" + esc(p.imgPos) : "") + '">' +
       '<span class="fruit-badge" aria-hidden="true">' + (A.ART[p.art] || "") + "</span>" + seasonBand(p) + stockBand(p) + rareTag(p);
   }
 
