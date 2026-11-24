@@ -480,12 +480,16 @@ window.PRODUCE = [
     text: "Native coppice fruit: small, dark and sweet.", care: "Fall into winter." },
 
   /* Peppers, peas & provisions */
+  { id: "mixedpeppers", img: "", name: "Mixed peppers", latin: "Capsicum", cat: "Peppers, peas & provisions", art: "pepper", sizes: [{ pot: "Bag", price: 6, qty: 0 }], aliases: ["mixed pepper", "mixed hot peppers", "pepper mix", "hot pepper mix"],
+    text: "Our standard $6 bag: a mix of the hot peppers off our trees: ghost, bird, goat and finger.", care: "All year." },
   { id: "goatpepper", img: "/img/produce/goatpepper.jpg", name: "Goat pepper", latin: "Capsicum chinense", cat: "Peppers, peas & provisions", art: "pepper", sizes: [{ pot: "Each", price: 0, qty: 0 }, { pot: "Case", price: 0, qty: 0 }, { pot: "Bag", price: 0, qty: 0 }], aliases: ["scotch bonnet", "hot pepper"],
     text: "The Bahamian hot pepper: fruity and fiery, for pepper sauce, souse and conch salad.", care: "All year." },
   { id: "ghostpepper", img: "/img/produce/ghostpepper.jpg", name: "Ghost pepper", latin: "Capsicum chinense 'Bhut Jolokia'", cat: "Peppers, peas & provisions", art: "pepper", sizes: [{ pot: "Small bag", price: 6, qty: 3 }, { pot: "Gallon bag", price: 20, qty: 0 }], aliases: ["ghost peppers", "bhut jolokia", "ghost chili", "ghost pepper"],
     text: "One of the hottest peppers in the world. A little goes a long way in pepper sauce.", care: "All year." },
-  { id: "birdpepper", img: "/img/produce/birdpepper.jpg", name: "Bird pepper", latin: "Capsicum frutescens", cat: "Peppers, peas & provisions", art: "pepper", sizes: [{ pot: "Bag", price: 0, qty: 0 }], aliases: ["birds eye pepper"],
+  { id: "birdpepper", img: "/img/produce/birdpepper.jpg", name: "Bird pepper", latin: "Capsicum frutescens", cat: "Peppers, peas & provisions", art: "pepper", sizes: [{ pot: "Bag", price: 6, qty: 0 }], aliases: ["birds eye pepper", "bird peppers"],
     text: "Tiny and very hot, for pepper vinegar and sauce.", care: "All year." },
+  { id: "fingerpepper", img: "", name: "Finger pepper", latin: "Capsicum annuum", cat: "Peppers, peas & provisions", art: "pepper", sizes: [{ pot: "Bag", price: 6, qty: 0 }], aliases: ["finger peppers", "finger hot pepper"],
+    text: "Long, slim hot peppers off our trees. $6 a bag.", care: "All year." },
   { id: "pigeonpeas", img: "/img/produce/pigeonpeas.jpg", name: "Pigeon peas", latin: "Cajanus cajan", cat: "Peppers, peas & provisions", art: "pod", sizes: [{ pot: "Bag", price: 0, qty: 0 }], aliases: ["peas", "gungo peas", "pigeon peas"],
     text: "Fresh green pigeon peas in the pod, for peas 'n' rice and peas soup.", care: "November to March." },
   { id: "sweetpotato", img: "/img/produce/sweetpotato.jpg", name: "Sweet potato", latin: "Ipomoea batatas", cat: "Peppers, peas & provisions", art: "root", sizes: [{ pot: "Each", price: 0, qty: 0 }, { pot: "Case", price: 0, qty: 0 }], aliases: ["potato"],
