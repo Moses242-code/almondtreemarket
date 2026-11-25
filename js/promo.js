@@ -34,7 +34,7 @@
   function qrLib(cb) {
     if (window.QRCode) return cb();
     var s = document.createElement("script");
-    s.src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js";
+    s.src = "https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"; s.integrity = "sha384-3zSEDfvllQohrq0PHL1fOXJuC/jSOO34H46t6UQfobFOmxE5BpjjaIJY5F2/bMnU"; s.crossOrigin = "anonymous";
     s.onload = cb; s.onerror = cb; document.head.appendChild(s);
   }
   function claimUrl(c) { return (c.redeem_url || (SITE === "atm" ? "https://almondtreemarket.com/cart.html" : "https://underthealmondtree.market/")) + "?claim=" + encodeURIComponent(c.code); }
