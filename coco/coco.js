@@ -41,7 +41,7 @@
   .fab{position:fixed;bottom:18px;width:74px;height:74px;border:0;background:none;cursor:pointer;z-index:2147483000;padding:0;animation:bob 3.2s ease-in-out infinite}
   .fab img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 4px 8px rgba(0,0,0,.35))}
   .fab .dot{position:absolute;top:4px;right:6px;width:14px;height:14px;border-radius:50%;background:#e53935;border:2px solid #fff;animation:pulse 1.6s infinite}
-  .tip{position:fixed;bottom:96px;max-width:220px;background:#fff;color:#123;border-radius:14px;padding:9px 12px;font-size:14px;line-height:1.3;box-shadow:0 6px 20px rgba(0,0,0,.2);z-index:2147483000;cursor:pointer;animation:pop .35s ease-out}
+  .tip{position:fixed;bottom:96px;max-width:240px;background:#fff;color:#123;border-radius:14px;padding:9px 12px;font-size:14px;line-height:1.3;box-shadow:0 6px 20px rgba(0,0,0,.2);z-index:2147483000;cursor:pointer;animation:pop .35s ease-out}
   .r .fab{right:16px}.l .fab{left:16px}.r .tip{right:22px}.l .tip{left:22px}
   .panel{position:fixed;bottom:16px;width:min(380px,calc(100vw - 24px));height:min(560px,calc(100vh - 32px));background:#fffdf7;color:#1b2a2a;border-radius:18px;box-shadow:0 12px 40px rgba(0,0,0,.3);display:none;flex-direction:column;overflow:hidden;z-index:2147483001}
   .r .panel{right:12px}.l .panel{left:12px}
@@ -53,7 +53,10 @@
   .mounted .panel{z-index:2147483001}
   .q .fab:hover{box-shadow:0 4px 16px rgba(0,0,0,.28)}
   .q .head img,.q.open .panel,.q .typing i{animation:none}
-  @media (max-width:480px){.open .panel{left:0;right:0;top:0;bottom:0;width:100vw;height:100dvh;border-radius:0}}
+  /* phones (Mo, 27 Nov 2026): a card over the bottom of the page, not the whole screen; the page stays visible above it,
+     dimmed a little, and a tap on it folds Coco away. With the keyboard up the card sits just above it. */
+  .bd{display:none;position:fixed;inset:0;background:rgba(10,30,40,.22);z-index:2147483000}.p .bd,.q .bd{z-index:44}
+  @media (max-width:600px){.open .panel{left:8px;right:8px;width:auto;top:var(--ct,auto);bottom:auto;height:var(--ch,60dvh);border-radius:18px}.open .bd{display:block}}
   .open .panel{display:flex;animation:pop .25s ease-out}.open .fab,.open .tip{display:none}
   .head{display:flex;align-items:center;gap:10px;padding:10px 12px;color:#fff;background:var(--c)}
   .head img{width:42px;height:42px;object-fit:contain;animation:bob 3.2s ease-in-out infinite}
@@ -145,7 +148,7 @@
     const fab = box.querySelector('.fab'), tip = box.querySelector('.tip'), host = box.host;
     const side = root.classList.contains('r') ? 'r' : 'l', extra = (tag && tag.dataset.avoid) || '', k = side === 'r' ? 'right' : 'left';
     const mine = (el) => el === host || host.contains(el);
-    const TW = 220, TH = 66;
+    const TW = 240, TH = 96;
     const boxes = (S, withTip) => (x, b) => { const y = innerHeight - b - S; return withTip ? [[x, y, S, S], [x + 4, y - 8 - TH, TW, TH]] : [[x, y, S, S]]; };
     let sig = '';
     const run = (force) => {
@@ -173,6 +176,7 @@
     sh.innerHTML = `<style>${CSS}</style><div class="w ${((tag && tag.dataset.side) || P.position) === 'left' ? 'l' : 'r'}${P.quiet ? ' q' : ''}${PERCH ? ' p' : ''}" style="--c:${esc(P.color || '#0b7a75')}">
       <button class="fab" type="button" aria-label="Chat with Coco the parrot"><img src="${PIC}" alt="">${P.quiet ? `<span>${esc(P.label || 'Ask Coco')}</span>` : '<span class="dot"></span>'}</button>
       <div class="tip" role="button" hidden></div>
+      <div class="bd" aria-hidden="true"></div>
       <div class="panel" role="dialog" aria-label="Chat with Coco">
         <div class="head"><img src="${PIC}" alt=""><div><b>Coco</b><small>Your Abaco parrot helper</small></div><button class="x" type="button" aria-label="Close">✕</button></div>
         <div class="log" aria-live="polite"></div>
@@ -183,6 +187,15 @@
     sh.querySelector('.fab').onclick = open;
     sh.querySelector('.tip').onclick = open;
     sh.querySelector('.x').onclick = close;
+    sh.querySelector('.bd').addEventListener('pointerdown', (e) => { e.preventDefault(); close(); });
+    // phone card size: about 60% of the screen, or just above the keyboard (leaving a strip of page to tap)
+    const vv = window.visualViewport;
+    const fit = () => {
+      const vh = vv ? vv.height : innerHeight, top = vv ? vv.offsetTop : 0, kb = vh < innerHeight * 0.75;
+      const h = kb ? Math.max(220, vh - 64) : Math.min(480, Math.max(320, Math.round(vh * 0.62)));
+      root.style.setProperty('--ch', h + 'px'); root.style.setProperty('--ct', (top + vh - h - 8) + 'px');
+    };
+    fit(); if (vv) { vv.addEventListener('resize', fit); vv.addEventListener('scroll', fit); } addEventListener('resize', fit);
     sh.querySelector('form').onsubmit = (e) => { e.preventDefault(); ask(input.value); };
     log.addEventListener('click', (e) => { const c = e.target.closest('.chip'); if (c) ask(c.dataset.q || c.textContent); });
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && opened) close(); });
@@ -195,16 +208,16 @@
       const fabEl = sh.querySelector('.fab'), tipEl = sh.querySelector('.tip');
       // ...and, more often than not, an old Bahamian saying with its meaning (Mo, 27 Nov 2026). The list lives once in
       // ClaudeBox/Coco/sayings.json and comes from the brain (profile), so every site's Coco says the same ones.
-      const SAY = (P.sayings || []).filter((x) => x && x.s);
-      let si = Math.floor(Math.random() * (SAY.length || 1));
+      // sayings, old Bahamian music, Junkanoo, culture and quotes from famous Bahamians (Culture Keeper, 27 Nov 2026)
+      const SAY = (P.idle && P.idle.length ? P.idle : (P.sayings || []).map((x) => `“${x.s}”`)).filter(Boolean);
       const squawk = () => {
         if (!opened && !document.hidden && tipEl.hidden && !root.classList.contains('notip')) {
           fabEl.classList.remove('sq'); void fabEl.offsetWidth; fabEl.classList.add('sq');
           let ms = 2600;
           if (SAY.length && Math.random() < 0.65) {
-            const x = SAY[si++ % SAY.length];
-            tipEl.textContent = `“${x.s}”`;   // just the saying, no explanation (Mo, 27 Nov 2026)
-            ms = 6500;
+            const x = SAY[Math.floor(Math.random() * SAY.length)];
+            tipEl.textContent = x;   // just the line, no explanation (Mo, 27 Nov 2026)
+            ms = Math.min(11000, 4000 + x.length * 45);
           } else tipEl.textContent = SQ[Math.floor(Math.random() * SQ.length)];
           tipEl.hidden = false;
           setTimeout(() => { tipEl.hidden = true; fabEl.classList.remove('sq'); }, ms);
