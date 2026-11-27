@@ -85,13 +85,19 @@
   @keyframes pop{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
   @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
   @keyframes blink{0%,100%{opacity:.3}50%{opacity:1}}
-  @media (prefers-reduced-motion:reduce){.fab,.head img,.fab .dot{animation:none}}`;
+  /* perched (data-perch="1", Mo 27 Nov 2026): a small parrot that sits still in the corner and squawks now and then */
+  .p .fab{width:56px;height:56px;bottom:14px;animation:none;z-index:45}.p.l .fab{left:12px}.p.r .fab{right:12px}
+  .p .fab .dot{display:none}.p .tip{bottom:76px;z-index:45;font-weight:600}.p .panel{z-index:46}
+  .p .fab.sq{animation:hop .9s ease-in-out}
+  @keyframes hop{0%,100%{transform:translateY(0) rotate(0)}20%{transform:translateY(-8px) rotate(-8deg)}45%{transform:translateY(0) rotate(6deg)}65%{transform:translateY(-4px) rotate(-4deg)}}
+  @media (prefers-reduced-motion:reduce){.fab,.head img,.fab .dot,.p .fab.sq{animation:none}}`;
 
   function build() {
     const host = document.createElement('div'); host.id = 'coco-parrot';
     document.body.appendChild(host);
     const sh = host.attachShadow({ mode: 'open' });
-    sh.innerHTML = `<style>${CSS}</style><div class="w ${((tag && tag.dataset.side) || P.position) === 'left' ? 'l' : 'r'}${P.quiet ? ' q' : ''}" style="--c:${esc(P.color || '#0b7a75')}">
+    const PERCH = !!(tag && tag.dataset.perch === '1'); if (PERCH) P.quiet = false;
+    sh.innerHTML = `<style>${CSS}</style><div class="w ${((tag && tag.dataset.side) || P.position) === 'left' ? 'l' : 'r'}${P.quiet ? ' q' : ''}${PERCH ? ' p' : ''}" style="--c:${esc(P.color || '#0b7a75')}">
       <button class="fab" type="button" aria-label="Chat with Coco the parrot"><img src="${PIC}" alt="">${P.quiet ? `<span>${esc(P.label || 'Ask Coco')}</span>` : '<span class="dot"></span>'}</button>
       <div class="tip" role="button" hidden></div>
       <div class="panel" role="dialog" aria-label="Chat with Coco">
@@ -110,6 +116,20 @@
     if (HIST.length) HIST.forEach((h) => add(h.role === 'user' ? 'u' : 'c', h.html || linkify(h.text)));
     // a little hello beside the closed parrot, once per visit
     if (!P.quiet && !store.get(KEY + '-tip')) setTimeout(() => { if (opened) return; const t = sh.querySelector('.tip'); t.textContent = P.tip || 'Hi! I’m Coco 🦜 Tap me to chat'; t.hidden = false; store.set(KEY + '-tip', 1); setTimeout(() => { t.hidden = true; }, 9000); }, 2500);
+    // perched Coco: a little hop and a "Squawk!" every 40 to 90 seconds while the chat is closed, so people know he's there
+    if (PERCH) {
+      const SQ = ['Squawk! 🦜', 'Squawk! Need help?', 'Squawk! Ask me anything', 'Squawk!'];
+      const fabEl = sh.querySelector('.fab'), tipEl = sh.querySelector('.tip');
+      const squawk = () => {
+        if (!opened && !document.hidden && tipEl.hidden) {
+          fabEl.classList.remove('sq'); void fabEl.offsetWidth; fabEl.classList.add('sq');
+          tipEl.textContent = SQ[Math.floor(Math.random() * SQ.length)]; tipEl.hidden = false;
+          setTimeout(() => { tipEl.hidden = true; fabEl.classList.remove('sq'); }, 2600);
+        }
+        setTimeout(squawk, 40000 + Math.random() * 50000);
+      };
+      setTimeout(squawk, 14000);
+    }
     if (tag && tag.dataset.open === '1') open();
     if (tag && tag.dataset.avoid) avoid(tag.dataset.avoid);
     if (tag && tag.dataset.mount) mount(tag.dataset);

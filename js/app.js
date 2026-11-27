@@ -631,7 +631,6 @@ Array.prototype.forEach.call(document.querySelectorAll(".ns-tree:not(.ns-scene)"
   if (window.ATM_SHOP) Object.keys(window.ATM_SHOP).forEach(function (k) { var c = window.ATM_SHOP[k]; if (c && typeof c === "object" && c.page) window.ATM_SHOP(c); });
   if (window.ATM_ALL) window.ATM_ALL();
   if (window.ATM_CART) window.ATM_CART.mount();
-
   /* ---------- reveal on scroll ---------- */
   if ("IntersectionObserver" in window) {
     var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }); }, { rootMargin: "0px 0px -6% 0px" });
