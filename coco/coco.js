@@ -125,11 +125,21 @@
     if (PERCH) {
       const SQ = ['Squawk! 🦜', 'Squawk! Need help?', 'Squawk! Ask me anything', 'Squawk!'];
       const fabEl = sh.querySelector('.fab'), tipEl = sh.querySelector('.tip');
+      // ...and, more often than not, an old Bahamian saying with its meaning (Mo, 27 Nov 2026). The list lives once in
+      // ClaudeBox/Coco/sayings.json and comes from the brain (profile), so every site's Coco says the same ones.
+      const SAY = (P.sayings || []).filter((x) => x && x.s);
+      let si = Math.floor(Math.random() * (SAY.length || 1));
       const squawk = () => {
         if (!opened && !document.hidden && tipEl.hidden) {
           fabEl.classList.remove('sq'); void fabEl.offsetWidth; fabEl.classList.add('sq');
-          tipEl.textContent = SQ[Math.floor(Math.random() * SQ.length)]; tipEl.hidden = false;
-          setTimeout(() => { tipEl.hidden = true; fabEl.classList.remove('sq'); }, 2600);
+          let ms = 2600;
+          if (SAY.length && Math.random() < 0.65) {
+            const x = SAY[si++ % SAY.length];
+            tipEl.innerHTML = `“${esc(x.s)}”<small style="display:block;font-weight:400;opacity:.75;margin-top:3px">${esc(x.m)}</small>`;
+            ms = 8000;
+          } else tipEl.textContent = SQ[Math.floor(Math.random() * SQ.length)];
+          tipEl.hidden = false;
+          setTimeout(() => { tipEl.hidden = true; fabEl.classList.remove('sq'); }, ms);
         }
         setTimeout(squawk, 40000 + Math.random() * 50000);
       };
