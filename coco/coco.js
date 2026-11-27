@@ -89,8 +89,13 @@
   .p .fab{width:56px;height:56px;bottom:14px;animation:none;z-index:45}.p.l .fab{left:12px}.p.r .fab{right:12px}
   .p .fab .dot{display:none}.p .tip{bottom:76px;z-index:45;font-weight:600}.p .panel{z-index:46}
   .p .fab.sq{animation:hop .9s ease-in-out}
+  /* in a circle so he reads as a button (Mo 27 Nov 2026), and the circle jiggles now and then */
+  .p .fab{border-radius:50%;background:#fff8e6;border:3px solid var(--c);box-shadow:0 4px 14px rgba(0,0,0,.35),0 0 0 3px rgba(255,255,255,.55);overflow:hidden;padding:3px}
+  .p .fab img{border-radius:50%;object-fit:cover;object-position:62% 30%;filter:none}
+  .p .fab.jig{animation:jig .6s ease-in-out}
   @keyframes hop{0%,100%{transform:translateY(0) rotate(0)}20%{transform:translateY(-8px) rotate(-8deg)}45%{transform:translateY(0) rotate(6deg)}65%{transform:translateY(-4px) rotate(-4deg)}}
-  @media (prefers-reduced-motion:reduce){.fab,.head img,.fab .dot,.p .fab.sq{animation:none}}`;
+  @keyframes jig{0%,100%{transform:translate(0,0) rotate(0)}15%{transform:translate(-2px,0) rotate(-6deg)}30%{transform:translate(2px,0) rotate(6deg)}45%{transform:translate(-2px,0) rotate(-5deg)}60%{transform:translate(2px,0) rotate(4deg)}75%{transform:translate(-1px,0) rotate(-2deg)}}
+  @media (prefers-reduced-motion:reduce){.fab,.head img,.fab .dot,.p .fab.sq,.p .fab.jig{animation:none}}`;
 
   function build() {
     const host = document.createElement('div'); host.id = 'coco-parrot';
@@ -129,6 +134,15 @@
         setTimeout(squawk, 40000 + Math.random() * 50000);
       };
       setTimeout(squawk, 14000);
+      // the circle jiggles on its own every 20 to 60 seconds (not while a squawk is showing)
+      const jiggle = () => {
+        if (!opened && !document.hidden && !fabEl.classList.contains('sq')) {
+          fabEl.classList.remove('jig'); void fabEl.offsetWidth; fabEl.classList.add('jig');
+          setTimeout(() => fabEl.classList.remove('jig'), 700);
+        }
+        setTimeout(jiggle, 20000 + Math.random() * 40000);
+      };
+      setTimeout(jiggle, 6000 + Math.random() * 6000);
     }
     if (tag && tag.dataset.open === '1') open();
     if (tag && tag.dataset.avoid) avoid(tag.dataset.avoid);
