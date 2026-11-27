@@ -93,9 +93,77 @@
   .p .fab{border-radius:50%;background:#fff8e6;border:3px solid var(--c);box-shadow:0 4px 14px rgba(0,0,0,.35),0 0 0 3px rgba(255,255,255,.55);overflow:hidden;padding:3px}
   .p .fab img{border-radius:50%;object-fit:cover;object-position:62% 30%;filter:none}
   .p .fab.jig{animation:jig .6s ease-in-out}
+  .p .fab{transition:left .35s,right .35s,bottom .35s}.p .tip{transition:left .35s,right .35s,bottom .35s}
+  .p.tight .fab{width:44px;height:44px;padding:2px;border-width:2px}
   @keyframes hop{0%,100%{transform:translateY(0) rotate(0)}20%{transform:translateY(-8px) rotate(-8deg)}45%{transform:translateY(0) rotate(6deg)}65%{transform:translateY(-4px) rotate(-4deg)}}
   @keyframes jig{0%,100%{transform:translate(0,0) rotate(0)}15%{transform:translate(-2px,0) rotate(-6deg)}30%{transform:translate(2px,0) rotate(6deg)}45%{transform:translate(-2px,0) rotate(-5deg)}60%{transform:translate(2px,0) rotate(4deg)}75%{transform:translate(-1px,0) rotate(-2deg)}}
   @media (prefers-reduced-motion:reduce){.fab,.head img,.fab .dot,.p .fab.sq,.p .fab.jig{animation:none}}`;
+
+  // ---- Coco never covers the page (Mo, 27 Nov 2026): before he sits down he looks for EMPTY space, far-left corner
+  // first, and his speech bubble opens where nothing is underneath. Same code in Coco/widget/coco.js and js/parrot.js.
+  const BUSY = 'a,button,input,select,textarea,img,video,iframe,svg,canvas,picture,h1,h2,h3,h4,h5,h6,p,li,dt,dd,td,th,label,figure,nav,header,footer,form,[role=button],[role=link],[role=img]';
+  function busyAt(x, y, mine, extra) {
+    if (x < 1 || y < 1 || x > innerWidth - 1 || y > innerHeight - 1) return true;
+    for (const el of document.elementsFromPoint(x, y)) {
+      if (mine(el)) continue;
+      if (el === document.documentElement || el === document.body) return false;
+      if ((extra && el.closest(extra)) || el.closest(BUSY)) return true;
+      for (const n of el.childNodes) if (n.nodeType === 3 && n.textContent.trim()) return true;
+      // a card, panel, ad square or floating button: something with its own look that isn't the whole page
+      for (let a = el; a && a !== document.body && a !== document.documentElement; a = a.parentElement) {
+        const cs = getComputedStyle(a), r = a.getBoundingClientRect();
+        if (r.width * r.height > innerWidth * innerHeight * 0.5) continue;   // the page or a big column is background, not a card
+        if (cs.position === 'fixed' || cs.position === 'sticky') return true;                                // a small floating button or bar
+        if (cs.backgroundImage !== 'none' || cs.boxShadow !== 'none' || parseFloat(cs.borderTopWidth) > 0 || !/rgba\(0, 0, 0, 0\)|transparent/.test(cs.backgroundColor)) return true;
+      }
+      return false;
+    }
+    return false;
+  }
+  // how many points of a box (x from the left, y from the top, w, h) land on something
+  function busyBox(x, y, w, h, mine, extra, stopAt = 40) {
+    let n = 0;
+    // a point every ~40 px across and ~12 px down, so even one thin line of small text is noticed
+    const nx = Math.max(3, Math.ceil(w / 40) + 1), ny = Math.max(3, Math.ceil(h / 12) + 1);
+    for (let i = 0; i < nx; i++) for (let j = 0; j < ny; j++) if (busyAt(x + 2 + (w - 4) * i / (nx - 1), y + 2 + (h - 4) * j / (ny - 1), mine, extra)) { n++; if (n >= stopAt) return n; }
+    return n;
+  }
+  // try spots from the bottom-left corner (bottom-right for a right-side Coco): up the edge first, then a little in.
+  // boxes(x, b) gives the boxes Coco needs there as [x from his side, y from the top, w, h]. Returns the first empty
+  // spot ({x, b, busy: 0}), or {busy: 1} when nothing is empty (the caller then tucks him small into the corner).
+  function findSpot(boxes, mine, extra, side) {
+    const C = [];
+    for (let x = 8; x <= Math.max(8, innerWidth * 0.3); x += 40) for (let b = 8; b <= innerHeight * 0.55; b += 26) C.push([x, b]);
+    C.sort((p, q) => (p[0] * 2 + p[1]) - (q[0] * 2 + q[1]));
+    const left = (r) => (side === 'r' ? innerWidth - r[0] - r[2] : r[0]);
+    for (const [x, b] of C) if (boxes(x, b).every((r) => !busyBox(left(r), r[1], r[2], r[3], mine, extra, 1))) return { x, b, busy: 0 };
+    return { x: 6, b: 6, busy: 1 };
+  }
+
+  // perched Coco finds his own empty corner and moves if the page changes under him (scroll, resize, new things showing)
+  function perchSpot() {
+    const fab = box.querySelector('.fab'), tip = box.querySelector('.tip'), host = box.host;
+    const side = root.classList.contains('r') ? 'r' : 'l', extra = (tag && tag.dataset.avoid) || '', k = side === 'r' ? 'right' : 'left';
+    const mine = (el) => el === host || host.contains(el);
+    const TW = 220, TH = 66;
+    const boxes = (S, withTip) => (x, b) => { const y = innerHeight - b - S; return withTip ? [[x, y, S, S], [x + 4, y - 8 - TH, TW, TH]] : [[x, y, S, S]]; };
+    let sig = '';
+    const run = (force) => {
+      if (opened || document.hidden || root.classList.contains('mounted')) return;
+      const now = `${innerWidth}x${innerHeight}|${Math.round(scrollY)}|${document.body.scrollHeight}|${location.hash}|${document.querySelectorAll('*').length}`;
+      if (!force && now === sig) return; sig = now;
+      // 1. room for him and his bubble  2. room for him only (bubble stays quiet)  3. nowhere empty: smaller, tucked in the corner
+      let s = findSpot(boxes(56, true), mine, extra, side), sz = 56, tipOk = true;
+      if (s.busy) { const s2 = findSpot(boxes(56, false), mine, extra, side); tipOk = false; if (!s2.busy) s = s2; else { s = { x: 6, b: 6, busy: 1 }; sz = 44; } }
+      root.classList.toggle('tight', sz === 44); root.classList.toggle('notip', !tipOk);
+      fab.style[k] = s.x + 'px'; fab.style.bottom = s.b + 'px';
+      tip.style[k] = (s.x + 4) + 'px'; tip.style.bottom = (s.b + sz + 8) + 'px';
+    };
+    let t1; const soon = () => { clearTimeout(t1); t1 = setTimeout(() => run(true), 250); };
+    setTimeout(() => run(true), 700); setTimeout(() => run(true), 2500);
+    addEventListener('resize', soon); addEventListener('scroll', soon, { passive: true }); addEventListener('hashchange', soon);
+    setInterval(run, 4000);
+  }
 
   function build() {
     const host = document.createElement('div'); host.id = 'coco-parrot';
@@ -120,7 +188,7 @@
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && opened) close(); });
     if (HIST.length) HIST.forEach((h) => add(h.role === 'user' ? 'u' : 'c', h.html || linkify(h.text)));
     // a little hello beside the closed parrot, once per visit
-    if (!P.quiet && !store.get(KEY + '-tip')) setTimeout(() => { if (opened) return; const t = sh.querySelector('.tip'); t.textContent = P.tip || 'Hi! I’m Coco 🦜 Tap me to chat'; t.hidden = false; store.set(KEY + '-tip', 1); setTimeout(() => { t.hidden = true; }, 9000); }, 2500);
+    if (!P.quiet && !store.get(KEY + '-tip')) setTimeout(() => { if (opened || root.classList.contains('notip')) return; const t = sh.querySelector('.tip'); t.textContent = P.tip || 'Hi! I’m Coco 🦜 Tap me to chat'; t.hidden = false; store.set(KEY + '-tip', 1); setTimeout(() => { t.hidden = true; }, 9000); }, 2500);
     // perched Coco: a little hop and a "Squawk!" every 40 to 90 seconds while the chat is closed, so people know he's there
     if (PERCH) {
       const SQ = ['Squawk! 🦜', 'Squawk! Need help?', 'Squawk! Ask me anything', 'Squawk!'];
@@ -130,13 +198,13 @@
       const SAY = (P.sayings || []).filter((x) => x && x.s);
       let si = Math.floor(Math.random() * (SAY.length || 1));
       const squawk = () => {
-        if (!opened && !document.hidden && tipEl.hidden) {
+        if (!opened && !document.hidden && tipEl.hidden && !root.classList.contains('notip')) {
           fabEl.classList.remove('sq'); void fabEl.offsetWidth; fabEl.classList.add('sq');
           let ms = 2600;
           if (SAY.length && Math.random() < 0.65) {
             const x = SAY[si++ % SAY.length];
-            tipEl.innerHTML = `“${esc(x.s)}”<small style="display:block;font-weight:400;opacity:.75;margin-top:3px">${esc(x.m)}</small>`;
-            ms = 8000;
+            tipEl.textContent = `“${x.s}”`;   // just the saying, no explanation (Mo, 27 Nov 2026)
+            ms = 6500;
           } else tipEl.textContent = SQ[Math.floor(Math.random() * SQ.length)];
           tipEl.hidden = false;
           setTimeout(() => { tipEl.hidden = true; fabEl.classList.remove('sq'); }, ms);
@@ -153,9 +221,10 @@
         setTimeout(jiggle, 20000 + Math.random() * 40000);
       };
       setTimeout(jiggle, 6000 + Math.random() * 6000);
+      perchSpot();
     }
     if (tag && tag.dataset.open === '1') open();
-    if (tag && tag.dataset.avoid) avoid(tag.dataset.avoid);
+    if (tag && tag.dataset.avoid && !PERCH) avoid(tag.dataset.avoid);
     if (tag && tag.dataset.mount) mount(tag.dataset);
   }
 
